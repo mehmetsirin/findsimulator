@@ -1,6 +1,7 @@
 ﻿using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Concrete;
+using FindSimulator.Service.Model.Users;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +19,34 @@ namespace FindSimulator.Api.Controllers
     {
 
         public readonly IBaseManager<int> baseManager;
-
-        public SimulatorController(IBaseManager<int> baseManager)
+        public readonly ISessionsManager sessionsManager;
+        public SimulatorController(IBaseManager<int> baseManager, ISessionsManager sessionsManager)
         {
             this.baseManager = baseManager;
+            this.sessionsManager = sessionsManager;
         }
-    
+
 
         [HttpGet]
         public async Task<Object> List()
         {
-            var res =   await this.baseManager.ListAsync<Simulator>();
+            var res = await this.baseManager.ListAsync<Sessions>();
             return res;
 
+        }
+
+        [HttpPost]
+        public async Task<Object> Search([FromBody]SimulatorSearcModel dto)
+        {
+
+            var data = await this.sessionsManager.Search(dto);
+            return data;
+        }
+        [HttpGet]
+        public async Task<Object> SimulatorSessionByID(int id)
+        {
+            var data = await this.sessionsManager.SimulatorSessionByID(id);
+            return data;
         }
     }
 }

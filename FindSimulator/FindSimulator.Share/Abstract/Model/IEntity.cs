@@ -15,7 +15,7 @@ namespace FindSimulator.Share.Abstract.Model
         public bool IsActive { get; set; }
 
     }
-    //public interface IEntity : IEntity<Guid>
+    //public interface IEntity 
     //{
     //}
 

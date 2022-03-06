@@ -21,6 +21,12 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         DbSet<Users> Users { get; set; }
         DbSet<AirCraft>  AirCrafts { get; set; }
         DbSet<Simulator>  Simulators { get; set; }
+        DbSet<Sessions> Sessions { get; set; }
+        DbSet<SimulatorType> SimulatorType { get; set; }
+        DbSet<SimulatorDevice> SimulatorDevice { get; set; }
+
+
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -29,5 +29,12 @@ namespace FindSimulator.Api.Controllers
             var res =  await baseManager.ListAsync<AirCraft>();
             return res;
         }
+
+        [HttpGet]
+        public async Task<Object> SimulatorTypeList()
+        {
+            var res = await baseManager.ListAsync<SimulatorType>();
+            return res;
+        }
     }
 }

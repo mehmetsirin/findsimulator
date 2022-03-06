@@ -9,4 +9,6 @@ namespace FindSimulator.Share.Abstract.Model
     public class ValueObject
     {
     }
+
+  
 }

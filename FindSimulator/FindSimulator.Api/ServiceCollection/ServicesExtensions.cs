@@ -27,6 +27,9 @@ namespace FindSimulator.Api.ServiceCollection
         public static void Repositories(this IServiceCollection services){
             services.AddScoped<IUserManager, UsersManager>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<ISessionsManager, SessionsManager>();
+            services.AddScoped<ISessionsRepository, SessionsRepository>();
+
 
         }
 
