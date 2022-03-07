@@ -4,6 +4,7 @@ using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.SimulatorDevice;
+using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Results.Concrete;
 
 using System;
@@ -41,7 +42,7 @@ namespace FindSimulator.Service.Concrete
         {
             var data =  baseRepository.GetQueryable<SimulatorDevice>().GetAwaiter().GetResult().Data.Where(y=>y.ID==id).ToList();
             dynamic resData = mapper.Map<SimulatorDeviceView>(data);
-            return resData;
+            return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success, resData);
         }
     }
 }
