@@ -14,5 +14,7 @@ namespace FindSimulator.Service.Abstract
     {
 
         public Task<DataResult< List<TDocument>>> ListAsync<TDocument>() where TDocument : class, IEntity<TKey>;
+        public Task<DataResult<TDocument>> GetByIDAsync<TDocument>(TKey ID) where TDocument : class, IEntity<TKey>;
+
     }
 }

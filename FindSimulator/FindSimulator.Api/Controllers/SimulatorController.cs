@@ -48,5 +48,7 @@ namespace FindSimulator.Api.Controllers
             var data = await this.sessionsManager.SimulatorSessionByID(id);
             return data;
         }
+
+      
     }
 }

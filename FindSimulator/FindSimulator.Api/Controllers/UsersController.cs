@@ -23,7 +23,7 @@ namespace FindSimulator.Api.Controllers
             _userManager = userManager;
 
         }
-        [HttpPut]
+        [HttpPost]
         public async Task<Object> Register(UserRegisterModel dto)
         {
             var res = _userManager.Register(dto);
@@ -31,25 +31,31 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpGet]
-        public  async  Task<object> GetUserList()
+        public async Task<object> GetUserList()
         {
             var res = _userManager.GetUserList();
             return res;
-        } 
+        }
 
         [HttpPost]
-        public  async  Task<Object> Update(UserUpdate dto)
+        public async Task<Object> Update(UserUpdate dto)
         {
             var res = _userManager.Update(dto);
             return res;
         }
         [HttpGet]
-        public   async  Task<Object> GetUserID(int userID)
+        public async Task<Object> GetUserID(int userID)
         {
             var res = _userManager.GetUserID(userID);
             return res;
         }
 
+        [HttpPost]
+        public async Task<Object> Confirm( string key)
+        {
 
+            var res = await _userManager.Confirm(key);
+            return res;
+        }
     }
 }

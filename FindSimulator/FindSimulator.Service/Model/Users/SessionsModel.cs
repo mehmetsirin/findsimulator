@@ -24,6 +24,7 @@ namespace FindSimulator.Service.Model.Users
         public string SimulatorType { get; set; }
         public string AircraftType { get; set; }
         public string Engine { get; set; }
+        public int SimulatorDeviceID { get; set; }
 
         public decimal Price { get; set; }
     }

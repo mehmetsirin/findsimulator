@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Domain.Entities
 {
-     public   sealed  partial class SimulatorDevice:BaseEntity<int>
+     public      class SimulatorDevice:BaseEntity<int>
     {
         public string Approval { get; set; }
         public string Code { get; set; }
@@ -18,7 +18,7 @@ namespace FindSimulator.Domain.Entities
         public string EngineType { get; set; }
         public string Year { get; set; }
         public string Manufacturer { get; set; }
-        public string Uprt { get; set; }
+        public bool Uprt { get; set; }
         public string MotionSytem { get; set; }
         public string ImageGenerator { get; set; }
       

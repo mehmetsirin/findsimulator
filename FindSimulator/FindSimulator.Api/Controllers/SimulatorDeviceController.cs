@@ -33,7 +33,7 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
         [HttpGet]
-        public async Task<Object> List(int ID)
+        public async Task<Object> ListByID(int ID)
         {
             var data = await simulatorDeviceService.ListAsync(ID);
             return data;

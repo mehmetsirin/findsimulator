@@ -1,4 +1,5 @@
-﻿using FindSimulator.Infrastructure.Repositories.BaseRepository;
+﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Infrastructure.Repositories.IBaseRepository;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Share.Abstract.Model;
@@ -30,6 +31,13 @@ namespace FindSimulator.Service.Concrete
         {
             var res =   await this.baseRepository.List<TDocument>();
             return res;
+        }
+
+        public  async   Task<DataResult<TDocument>> GetByIDAsync<TDocument>(TKey ID) where TDocument : class, IEntity<TKey>
+        {
+            var res =   await baseRepository.GetByIdAsync<TDocument>(ID);
+            return res;
+           
         }
     }
 }

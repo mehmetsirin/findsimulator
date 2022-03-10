@@ -19,6 +19,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<UserModelView>>> GetUserList();
         Task<DataResult<bool>> Update(UserUpdate dto);
         Task<DataResult<bool>> Update(Users dto);
+        Task<DataResult<bool>> Confirm(string key);
 
     }
 }

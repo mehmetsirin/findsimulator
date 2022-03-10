@@ -8,7 +8,6 @@
     <Folder Include="Abstarct\Model\" />
     <Folder Include="Concrete\Model\" />
     <Folder Include="EventBus\" />
-    <Folder Include="Results\" />
     <Folder Include="RabbitMq\" />
   </ItemGroup>
 

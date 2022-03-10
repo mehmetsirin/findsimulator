@@ -62,7 +62,8 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
 
                 if (id.GetType() == typeof(int))
                 {
-                    var data = _context.Set<TDocument>().ToList().Where((y => Convert.ToInt32(y.ID) == Convert.ToInt32(id) && y.IsActive == true)).AsQueryable().AsNoTracking().FirstOrDefault();
+                    var data = _context.Set<TDocument>().ToList().Where((y => Convert.ToInt32(y.ID) == Convert.ToInt32(id) 
+                    )).AsQueryable().AsNoTracking().FirstOrDefault();
                     return new DataResult<TDocument>(ResultStatus.Success, data);
 
                 }

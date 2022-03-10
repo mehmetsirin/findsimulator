@@ -42,6 +42,7 @@ namespace FindSimulator.Api
             //services.AddScoped<IJWTAuthenticacationManager>(y => new JWTAuthenticacationManager(settings.TokenSettings.SigningKey));
 
             services.Repositories();
+            services.ServiceRedis();
             services.Jwt(settings.TokenSettings);
             services.Mapper();
             services.RabbitMq(settings.RabbitMQSetting);

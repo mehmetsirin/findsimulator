@@ -24,6 +24,6 @@ namespace FindSimulator.Domain.Entities
         public string Engine { get; set; }
 
         public decimal Price { get; set; }
-
+        public int SimulatorDeviceID { get; set; }
     }
 }

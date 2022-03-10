@@ -24,9 +24,10 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         DbSet<Sessions> Sessions { get; set; }
         DbSet<SimulatorType> SimulatorType { get; set; }
         DbSet<SimulatorDevice> SimulatorDevice { get; set; }
+        DbSet<SessionDetails>  SessionDetails { get; set; }
 
 
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

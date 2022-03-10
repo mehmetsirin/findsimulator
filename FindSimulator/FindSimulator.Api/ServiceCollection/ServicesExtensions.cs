@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using FindSimulator.Infrastructure.Concrete.Repositories;
+using FindSimulator.Infrastructure.Notification;
 using FindSimulator.Infrastructure.Repositories.EntityRepository;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.AutoMapper;
@@ -29,7 +30,11 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ISessionsManager, SessionsManager>();
             services.AddScoped<ISessionsRepository, SessionsRepository>();
+            services.AddScoped<ISessionDetailManager, SessionDetailManager>();
+            services.AddScoped<ISessionDetailRepository, SessionDetailRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
+            
 
         }
 

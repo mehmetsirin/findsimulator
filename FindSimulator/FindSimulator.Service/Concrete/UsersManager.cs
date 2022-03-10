@@ -2,6 +2,7 @@
 
 using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Concrete.Repositories;
+using FindSimulator.Infrastructure.Notification;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.ComplexTypes;
@@ -19,13 +20,35 @@ namespace FindSimulator.Service.Concrete
     {
         readonly IUsersRepository usersRepository;
         readonly IMapper mapper;
-        public UsersManager(IUsersRepository usersRepository, IMapper _mapper)
+        readonly IRedisManager redisManager;
+        readonly INotificationRepository notificationRepository;
+        public UsersManager(IUsersRepository usersRepository, IMapper _mapper,  IRedisManager redisManager, INotificationRepository notificationRepository)
         {
             this.usersRepository = usersRepository;
             this.mapper = _mapper;
+            this.redisManager = redisManager;
+            this.notificationRepository = notificationRepository;
         }
 
-        
+        public   async Task<DataResult<bool>> Confirm(string key)
+        {
+            var redisData =  await redisManager.Get(key);
+              if( redisData!=null || redisData.ResultStatus==0)
+            {
+
+                var user =  await usersRepository.GetByIdAsync<Users>(redisData.Data.UserID);
+                user.Data.IsActive = true;
+                usersRepository.UpdateOne<Users>(user.Data);
+                usersRepository.SaveChanges();
+                return new DataResult<bool>(ResultStatus.Success);
+                
+            }
+            else
+            {
+                return new DataResult<bool>(ResultStatus.Error);
+            }
+
+        }
 
         public     async Task<DataResult<UserModelView>> GetUserID(int id)
         {
@@ -53,7 +76,8 @@ namespace FindSimulator.Service.Concrete
                 {
                     UserModelView modelView = mapper.Map<UserModelView>(user);
                     user.DeviceID = deviceID;
-                    Update(user);
+                   await   Update(user);
+                      
                     return new DataResult<UserModelView>(ResultStatus.Success, modelView);
                 }
                 else
@@ -74,9 +98,17 @@ namespace FindSimulator.Service.Concrete
         public  async Task<DataResult<bool>> Register(UserRegisterModel _user)
         {
             var user = mapper.Map<Users>(_user);
+            user.IsActive = false;
             var res = this.usersRepository.AddOne<Users>(user);
             var  effected=  this.usersRepository.SaveChanges();
+              if(effected>0)
+            {
+                Random random = new Random();
+                var code = random.Next(5000, 99999).ToString();
+                await redisManager.Set(code, new RedisModel() { UserID=user.ID, InsertDateTime=DateTime.Now },DateTime.Now.AddMinutes(7));
 
+                 await notificationRepository.SenMailOutlook(code,user.Email, user);
+            }
             return new DataResult<bool>(ResultStatus.Success, true);
         }
 
