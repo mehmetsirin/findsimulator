@@ -21,6 +21,6 @@ namespace FindSimulator.Service.Model.Users
 
     }
     public record UserLoginModel(string pass, string email,string  deviceID=null);
-    public   record  UserRegisterModel(  string userName, string Surname, string password,string email,string personIdentity,string deviceID, string TelNo);
+    public   record  UserRegisterModel(  string userName, string Surname, string password,string email,string personIdentity,string deviceID, string TelNo,  string CountryCode);
     public  record  UserUpdate(string userName, string Surname, string password, string email, string personIdentity, string TelNo,int  ID);
 }

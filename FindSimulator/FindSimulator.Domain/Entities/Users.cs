@@ -16,7 +16,7 @@ namespace FindSimulator.Domain.Entities
         {
         }
 
-        public Users(string userName, string password, string email, string personIdentity, string surname, string deviceID, string telNo):base()
+        public Users(string userName, string password, string email, string personIdentity, string surname, string deviceID, string telNo, string countryCode) :base()
         {
             UserName = userName;
             Password = password;
@@ -25,6 +25,7 @@ namespace FindSimulator.Domain.Entities
             Surname = surname;
             DeviceID = deviceID;
             TelNo = telNo;
+            CountryCode = countryCode;
         }
 
         public string UserName { get; set; }
@@ -34,5 +35,6 @@ namespace FindSimulator.Domain.Entities
         public string Surname { get; set; }
         public  string DeviceID { get; set; }
         public string TelNo { get; set; }
+        public string CountryCode { get; set; }
     }
 }

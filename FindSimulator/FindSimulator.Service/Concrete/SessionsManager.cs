@@ -29,7 +29,11 @@ namespace FindSimulator.Service.Concrete
         public   async  Task<DataResult<List<SessionsView>>>Search(SimulatorSearcModel dto)
         {
 
-            var sessionsList =  sessions.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y =>y.StartDate>dto.StarDate  && y.EndDate < dto.EndDate).ToList();
+            List<Sessions> sessionsList = null;
+            if (DateTime.Now>dto.StarDate)
+               sessionsList = sessions.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y => y.StartDate > dto.StarDate && y.EndDate < dto.EndDate).ToList();
+            else
+            sessionsList =  sessions.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y =>y.StartDate>dto.StarDate  && y.EndDate < dto.EndDate).ToList();
             if (!string.IsNullOrEmpty(dto.simulatorType))
                 sessionsList = sessionsList.Where(y=>y.SimulatorType==dto.simulatorType).ToList();
             if (!string.IsNullOrEmpty(dto.aircraftType))
