@@ -12,6 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
+using FindSimulator.Api.Action;
+using FindSimulator.Infrastructure.EventBus.EventBusHandler;
+using RabbitMQ.Client;
+using System;
+using FindSimulator.Share.RabbitMq;
+using FindSimulator.Share.Event;
 
 namespace FindSimulator.Api
 {
@@ -31,6 +37,29 @@ namespace FindSimulator.Api
             var settings = Configuration.Get<AppConfiguration>();
 
             //services.AddDbContext<SimulatorContext>(options => options(settings.SqlServerSettings.ConnectionString));
+            //services.AddScoped<LogEventAction>();
+            services.AddTransient<LogEventHandler>(provider => { return new LogEventHandler(services); });
+
+
+            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+            {
+                var factory = new ConnectionFactory()
+                {
+                    Uri = new Uri(settings.RabbitMQSetting.ConnectionString)
+
+                };
+                return new DefaultRabbitMQPersistentConnection(factory);
+            });
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+
+
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, sp);
+            });
+
+            services.AddScoped<LogEventAction>();
+
             services.AddDbContext<SimulatorContext>(options => options.UseSqlServer(settings.SqlServerSettings.ConnectionString));
             services.Configure<TokenSettings>(Configuration.GetSection("TokenSettings"));
             services.Configure<DocumentSettings>(Configuration.GetSection("DocumentSettings"));
@@ -57,6 +86,9 @@ namespace FindSimulator.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
+
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<LogEvent, LogEventHandler>();
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FindSimulator.Api v1"));

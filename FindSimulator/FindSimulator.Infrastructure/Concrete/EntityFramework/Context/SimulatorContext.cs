@@ -25,7 +25,7 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         DbSet<SimulatorType> SimulatorType { get; set; }
         DbSet<SimulatorDevice> SimulatorDevice { get; set; }
         DbSet<SessionDetails>  SessionDetails { get; set; }
-
+        DbSet<Logger> Logger { get; set; }
 
 
 

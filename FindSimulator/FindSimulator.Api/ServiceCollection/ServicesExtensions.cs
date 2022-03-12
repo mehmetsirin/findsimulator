@@ -50,22 +50,6 @@ namespace FindSimulator.Api.ServiceCollection
         }
         public static void RabbitMq(this IServiceCollection services, RabbitMQSettings rabbitMQSettings)
         {
-            services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-            {
-                var factory = new ConnectionFactory()
-                {
-                    Uri = new Uri(rabbitMQSettings.ConnectionString)
-
-                };
-                return new DefaultRabbitMQPersistentConnection(factory);
-            });
-            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
-            {
-                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-
-
-                return new EventBusRabbitMQ(rabbitMQPersistentConnection, sp);
-            });
 
         }
 

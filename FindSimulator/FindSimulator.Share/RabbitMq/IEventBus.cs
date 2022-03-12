@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,16 +29,14 @@ namespace FindSimulator.Share.RabbitMq
             CreationDate = DateTime.UtcNow;
         }
 
-        [JsonConstructor]
+        [Newtonsoft.Json.JsonConstructor]
         public IntegrationEvent(Guid id, DateTime createDate)
         {
             Id = id;
             CreationDate = createDate;
         }
 
-        //[JsonProperty]
         public Guid Id { get; private set; }
-        //[JsonProperty]
         public DateTime CreationDate { get; private set; }
     }
 }

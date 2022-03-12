@@ -6,8 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace FindSimulator.Share.EventBus.Event
+namespace FindSimulator.Share.Event
 {
     public class LogEvent : IntegrationEvent
     {

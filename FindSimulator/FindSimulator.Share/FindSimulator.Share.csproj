@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Abstarct\Model\" />
     <Folder Include="Concrete\Model\" />
-    <Folder Include="EventBus\" />
     <Folder Include="RabbitMq\" />
   </ItemGroup>
 
