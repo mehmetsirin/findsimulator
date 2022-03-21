@@ -12,15 +12,38 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
 {
     public partial class BaseRepository<TKey> : DataAccessBase, IBaseRepository_Create<TKey> where TKey : IEquatable<TKey>
     {
-        public void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IEntity<TKey>
+        public void AddMany<TDocument>(List<TDocument> documents) where TDocument : class, IEntity<TKey>
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Set<TDocument>().AddRange(documents);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message.ToString());
+            }
         }
 
-        public Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : IEntity<TKey>
+      
+
+        public   async Task AddManyAsync<TDocument>(List<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : class,IEntity<TKey>
         {
-            throw new NotImplementedException();
+            try
+            {
+                await  _context.Set<TDocument>().AddRangeAsync(documents);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message.ToString());
+            }
         }
+
+        
 
         public   TDocument AddOne<TDocument>(TDocument document) where TDocument :   class,IEntity<TKey>
         {
@@ -39,20 +62,6 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
         }
 
 
-        //public async Task<TDocument> AddOneAsync<TDocument>(TDocument document) where TDocument : class,IEntity<TKey>
-        //{
-        //    try
-        //    {
-        //        await _context.Set<TDocument>().AddAsync(document);
-        //        return document;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return document;
-        //        //throw new Exception(ex.Message.ToString());
-        //    }
-        //}
+        
     }
 }

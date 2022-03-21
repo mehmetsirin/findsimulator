@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Service.Model.Users;
 
@@ -27,7 +28,10 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<SessionsView, Sessions>();
             CreateMap<SimulatorDeviceView, SimulatorDevice>();
             CreateMap< SimulatorDevice, SimulatorDeviceView>();
-
+            CreateMap<SessionPerson, SessionPersonView>().ReverseMap();
+            CreateMap<SessionPerson, SessionPersonUpdate>().ReverseMap();
+            CreateMap<SessionPerson, SessionPersonAdd>().ReverseMap();
+          
 
 
         }

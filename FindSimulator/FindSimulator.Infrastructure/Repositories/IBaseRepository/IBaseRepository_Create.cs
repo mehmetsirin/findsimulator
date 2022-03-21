@@ -12,8 +12,8 @@ namespace FindSimulator.Infrastructure.Repositories.IBaseRepository
     public interface IBaseRepository_Create<TKey> where TKey : IEquatable<TKey>
     {
         TDocument AddOne<TDocument>(TDocument document) where TDocument : class, IEntity<TKey>;
-        Task AddManyAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : IEntity<TKey>;
-        void AddMany<TDocument>(IEnumerable<TDocument> documents) where TDocument : IEntity<TKey>;
+        Task AddManyAsync<TDocument>(List<TDocument> documents, CancellationToken cancellationToken = default) where TDocument :   class,IEntity<TKey>;
+        void AddMany<TDocument>(List<TDocument> documents) where TDocument : class,IEntity<TKey>;
         //Task<TDocument> AddOneAsync<TDocument>(TDocument document) where TDocument : IEntity<TKey>;
 
     }

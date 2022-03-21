@@ -33,7 +33,7 @@ namespace FindSimulator.Service.Concrete
         public   async Task<DataResult<bool>> Confirm(string key)
         {
             var redisData =  await redisManager.Get(key);
-              if( redisData!=null || redisData.ResultStatus==0)
+              if( redisData!=null && redisData.ResultStatus==0 &&  redisData.Data.UserID!=0)
             {
 
                 var user =  await usersRepository.GetByIdAsync<Users>(redisData.Data.UserID);
@@ -45,7 +45,7 @@ namespace FindSimulator.Service.Concrete
             }
             else
             {
-                return new DataResult<bool>(ResultStatus.Error);
+                return new DataResult<bool>(ResultStatus.Error,"Yanlış Code  Girdiniz");
             }
 
         }

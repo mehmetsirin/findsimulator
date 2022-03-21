@@ -26,7 +26,7 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         DbSet<SimulatorDevice> SimulatorDevice { get; set; }
         DbSet<SessionDetails>  SessionDetails { get; set; }
         DbSet<Logger> Logger { get; set; }
-
+         DbSet<SessionPerson> SessionPerson { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

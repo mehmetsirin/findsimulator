@@ -33,8 +33,10 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<ISessionDetailManager, SessionDetailManager>();
             services.AddScoped<ISessionDetailRepository, SessionDetailRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<ISessionPersonManager, SessionPersonManager>();
 
-            
+
+
 
         }
 
