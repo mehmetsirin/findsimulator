@@ -26,6 +26,16 @@ namespace FindSimulator.Service.Concrete
             this.sessions = sessions;
         }
 
+        public  async Task<DataResult<List<SessionsView>>> ListAsync(List<int> Ids)
+        {
+
+            var sessionData = sessions.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y =>Ids.Contains(y.ID)).ToList();
+            var resData = mapper.Map<List<SessionsView>>(sessionData);
+             
+            return new DataResult<List<SessionsView>>(ResultStatus.Success,resData);
+
+        }
+
         public   async  Task<DataResult<List<SessionsView>>>Search(SimulatorSearcModel dto)
         {
 
@@ -45,6 +55,8 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<List<SessionsView>>(ResultStatus.Success,  data);
 
         }
+
+      
 
         public   async Task<DataResult<SessionsView>> SimulatorSessionByID(int SessionID)
         {

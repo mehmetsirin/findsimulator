@@ -12,6 +12,8 @@ namespace FindSimulator.Service.Abstract
     public partial interface ISessionPersonManager
     {
         Task<DataResult<List<SessionPersonView>>> ListAsync();
+        Task<DataResult<List<SessionwithPersonwithDetailModel>>> GetUserByIDSessions(int userID);
+
         Task<DataResult<List<SessionPersonView>>> ListAsync(int SessionID,int SessionDetailID);
         Task<DataResult<SessionPersonView>> GetByIDAsync(int id);
         Task<DataResult<List<SessionPersonView>>> ListAsync(int SessionID);

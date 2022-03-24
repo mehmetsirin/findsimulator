@@ -14,5 +14,6 @@ namespace FindSimulator.Service.Abstract
      public  partial interface ISessionDetailManager
     {
         Task<DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>> GetSessionDetail(int sessionID, int SimulatorDeviceID);
+        Task<DataResult<List<SessionDetails>>> GetSessionDetail(List<int> sessionsIds);
     }
 }

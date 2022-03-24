@@ -14,7 +14,8 @@ namespace FindSimulator.Service.Abstract
 
         Task<DataResult<List<SessionsView>>> Search(SimulatorSearcModel dto);
         Task<DataResult<SessionsView>> SimulatorSessionByID(int SessionID);
-        
+        Task<DataResult<List<SessionsView>>> ListAsync(List<int> Ids);
+
 
     }
 }

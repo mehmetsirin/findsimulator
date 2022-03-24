@@ -38,5 +38,11 @@ namespace FindSimulator.Service.Concrete
             var tuple = new Tuple<SimulatorDevice, List<SessionDetails>>(device.Data, sessionsDetailData);
             return new DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>(ResultStatus.Success,tuple);
         }
+
+        public async  Task<DataResult<List<SessionDetails>>> GetSessionDetail(List<int> sessionsIds)
+        {
+            var sessionsDetailData =   sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionsIds.Contains(y.SessionsID)).ToList();
+            return new DataResult<List<SessionDetails>>(ResultStatus.Success,sessionsDetailData);
+        }
     }
 }

@@ -20,11 +20,15 @@ namespace FindSimulator.Service.Concrete
 
         public Infrastructure.Repositories.BaseRepository.IBaseRepository<int> baseRepository;
         private readonly IMapper mapper;
+        private ISessionDetailManager sessionDetailManager;
+        private ISessionsManager sessionsManager;
 
-        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper)
+        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper, ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
         {
             this.baseRepository = baseRepository;
             this.mapper = mapper;
+            this.sessionsManager = sessionsManager;
+            this.sessionDetailManager = sessionDetailManager;
         }
 
         public async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> add)
@@ -91,6 +95,36 @@ namespace FindSimulator.Service.Concrete
               baseRepository.AddOne<SessionPerson>(data);
             baseRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success);
+        }
+
+        public    async Task<DataResult<List<SessionwithPersonwithDetailModel>>> GetUserByIDSessions(int userID)
+        {
+
+            var resData = new List<SessionwithPersonwithDetailModel>();
+
+             var sessionsPersons =   baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.UserID == userID).ToList();
+            var sessions =     await sessionsManager.ListAsync(sessionsPersons.Select(y=>y.ID).ToList());
+            var SessionDetails =   await sessionDetailManager.GetSessionDetail(sessions.Data.Select(y=>y.ID).ToList());
+
+            foreach (var item in   sessions.Data)
+            {
+                var itemdata = new SessionwithPersonwithDetailModel();
+                itemdata.AircraftType = item.AircraftType;
+                itemdata.CompanyName = item.CompanyName;
+                itemdata.EndDate = SessionDetails.Data.Where(y => y.SessionsID == item.ID).FirstOrDefault().EndDate;
+                itemdata.Engine = item.Engine;
+                itemdata.IsTeacher = item.IsTeacher;
+                itemdata.Location = item.Location;
+                itemdata.SimulatorType = item.SimulatorType;
+                itemdata.StartDate =   SessionDetails.Data.Where(y=>y.SessionsID==item.ID).FirstOrDefault().StartDate;
+
+             
+                var personView = mapper.Map<List<SessionPersonView>>(sessionsPersons.Where(y => y.SessionID == item.ID).ToList());
+                itemdata.sessionPersonViews.AddRange(personView);
+                resData.Add(itemdata);
+
+            }
+            return new DataResult<List<SessionwithPersonwithDetailModel>>(ResultStatus.Success,resData);
         }
     }
 }

@@ -25,11 +25,11 @@ namespace FindSimulator.Api.Controllers
         }
 
 
-        public Guid UserID
+        public int UserID
         {
             get
             {
-                return new Guid(HttpContext.User.Claims.Where(a => a.Type == "userId").Select(x => x.Value).FirstOrDefault());
+                return  int.Parse(HttpContext.User.Claims.Where(a => a.Type == "userId").Select(x => x.Value).FirstOrDefault());
             }
         }
 
