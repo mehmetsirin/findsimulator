@@ -31,9 +31,10 @@ namespace FindSimulator.Service.Concrete
             this.sessionDetailManager = sessionDetailManager;
         }
 
-        public async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> add)
+        public async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> add,int  userID)
         {
             var data = mapper.Map<List<SessionPerson>>(add);
+            data.ForEach(y => { y.UserID = userID; });
             await baseRepository.AddManyAsync<SessionPerson>(data);
             baseRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success);

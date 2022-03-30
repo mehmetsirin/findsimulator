@@ -63,7 +63,8 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public   async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> adds)
         {
-            var data = await sessionPersonManager.AddMultipleAsync(adds);
+         
+            var data = await sessionPersonManager.AddMultipleAsync(adds,UserID);
             return data;
         }
         [HttpPost]

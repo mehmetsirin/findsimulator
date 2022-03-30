@@ -18,7 +18,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<SessionPersonView>> GetByIDAsync(int id);
         Task<DataResult<List<SessionPersonView>>> ListAsync(int SessionID);
 
-        Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> adds);
+        Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> adds, int userID);
         Task<DataResult<bool>> AddAsync(SessionPersonAdd add);
 
         Task<Result> UpdateAsync(SessionPersonUpdate update);
