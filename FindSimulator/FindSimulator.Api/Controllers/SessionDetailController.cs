@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class SessionDetailController : ControllerBase
     {
@@ -21,9 +21,15 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpGet]
-          public    async  Task<Object> SessionsDetailGet(int sessionID, int simulatorDeviceID)
+        public async Task<Object> SessionsDetailGet(int sessionID, int simulatorDeviceID)
         {
-            var data =   await sessionDetailManager.GetSessionDetail(sessionID,simulatorDeviceID);
+            var data = await sessionDetailManager.GetSessionDetail(sessionID, simulatorDeviceID);
+            return data;
+        }
+        [HttpGet]
+        public   async  Task<object> GetCalendarAsync()
+        {
+            var data = await sessionDetailManager.GetCalendarAsync();
             return data;
         }
     }

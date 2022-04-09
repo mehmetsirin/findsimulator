@@ -30,6 +30,30 @@ namespace FindSimulator.Service.Concrete
             this.mapper = mapper;
         }
 
+        public    async Task<DataResult<List<CalendarView>>> GetCalendarAsync()
+        {
+            var sessionsPerson =   await baseManager.ListAsync<SessionPerson>();
+            var details = sessionDetail.List<SessionDetails>().GetAwaiter().GetResult().Data;
+            var resData = new List<CalendarView>();
+            foreach (var item in sessionsPerson.Data)
+            {
+                var res = new CalendarView();
+                var detail = details.Where(y => y.ID == item.SessionDetailID).FirstOrDefault();
+                if(detail is not null)
+                {
+                    res.End = detail.EndDate;
+                    res.Id = item.ID;
+                    res.Start = detail.StartDate;
+                    res.Title = item.FirstName??"İsim Girilmemiş";
+                    res.Url = "";
+                    resData.Add(res);
+
+                }
+
+            }
+            return new DataResult<List<CalendarView>>(ResultStatus.Success,resData);
+        }
+
         public    async Task<DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>> GetSessionDetail(int sessionID, int SimulatorDeviceID)
         {
             var device = await baseManager.GetByIDAsync<SimulatorDevice>(SimulatorDeviceID);
@@ -44,5 +68,7 @@ namespace FindSimulator.Service.Concrete
             var sessionsDetailData =   sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionsIds.Contains(y.SessionsID)).ToList();
             return new DataResult<List<SessionDetails>>(ResultStatus.Success,sessionsDetailData);
         }
+
+     
     }
 }

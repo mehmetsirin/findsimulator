@@ -30,7 +30,7 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public async  Task<Object> Login(UserLoginModel dto)
         {
-            var response = await userManager.Login(dto.email, dto.pass,dto.deviceID);
+            var response = await userManager.Login(dto.email, dto.pass,"");
             if (response.ResultStatus == ResultStatus.Success)
             
                JWTAuthenticacation.Authhenticate(ref response);

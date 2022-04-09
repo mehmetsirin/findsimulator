@@ -10,7 +10,8 @@ namespace FindSimulator.Domain.Entities
 {
      public    sealed   partial class AirCraft: BaseEntity<int>
     {
-
         public string Name { get; set; }
+        public  string District { get; set; }
+        public string Province  { get; set; }
     }
 }

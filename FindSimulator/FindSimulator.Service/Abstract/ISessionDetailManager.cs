@@ -15,5 +15,7 @@ namespace FindSimulator.Service.Abstract
     {
         Task<DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>> GetSessionDetail(int sessionID, int SimulatorDeviceID);
         Task<DataResult<List<SessionDetails>>> GetSessionDetail(List<int> sessionsIds);
+        Task<DataResult<List<CalendarView>>> GetCalendarAsync();
+      
     }
 }
