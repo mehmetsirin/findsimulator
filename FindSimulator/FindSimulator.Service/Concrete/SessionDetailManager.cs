@@ -34,6 +34,7 @@ namespace FindSimulator.Service.Concrete
         {
             var sessionsPerson =   await baseManager.ListAsync<SessionPerson>();
             var details = sessionDetail.List<SessionDetails>().GetAwaiter().GetResult().Data;
+            var sesions = await baseManager.ListAsync<Sessions>();
             var resData = new List<CalendarView>();
             foreach (var item in sessionsPerson.Data)
             {
@@ -41,11 +42,14 @@ namespace FindSimulator.Service.Concrete
                 var detail = details.Where(y => y.ID == item.SessionDetailID).FirstOrDefault();
                 if(detail is not null)
                 {
+                    var session = sesions.Data.Where(y => y.ID == detail.SessionsID).FirstOrDefault();
                     res.End = detail.EndDate;
                     res.Id = item.ID;
                     res.Start = detail.StartDate;
                     res.Title = item.FirstName??"İsim Girilmemiş";
                     res.Url = "";
+                   
+                    res.ExtendedProps = new ExtendedProps(session.AircraftType);
                     resData.Add(res);
 
                 }

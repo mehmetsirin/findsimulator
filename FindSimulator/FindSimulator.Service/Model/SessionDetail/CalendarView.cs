@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Service.Model.SessionDetail
 {
-    public    sealed record CalendarView
+    public sealed record CalendarView
     {
         public int Id { get; set; }
         public string Url { get; set; }
@@ -15,7 +15,9 @@ namespace FindSimulator.Service.Model.SessionDetail
         public DateTime End { get; set; }
         public bool AllDay { get; set; } = true;
 
-        public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay)
+        public ExtendedProps ExtendedProps { get; set; }
+
+        public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay, string extendedProps)
         {
             Id = ıd;
             Url = url;
@@ -23,10 +25,20 @@ namespace FindSimulator.Service.Model.SessionDetail
             Start = start;
             End = end;
             AllDay = allDay;
+            ExtendedProps = new ExtendedProps(extendedProps);
         }
 
         public CalendarView()
         {
         }
+    }
+    public record ExtendedProps
+    {
+        public ExtendedProps(string calendar)
+        {
+            Calendar = calendar;
+        }
+
+        public string Calendar { get; set; }
     }
 }

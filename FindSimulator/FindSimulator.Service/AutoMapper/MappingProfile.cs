@@ -26,12 +26,10 @@ namespace FindSimulator.Service.AutoMapper
 
             CreateMap<Sessions, SessionsView>();
             CreateMap<SessionsView, Sessions>();
-            CreateMap<SimulatorDeviceView, SimulatorDevice>();
-            CreateMap< SimulatorDevice, SimulatorDeviceView>();
             CreateMap<SessionPerson, SessionPersonView>().ReverseMap();
             CreateMap<SessionPerson, SessionPersonUpdate>().ReverseMap();
             CreateMap<SessionPerson, SessionPersonAdd>().ReverseMap();
-          
+            CreateMap<SimulatorDeviceView, SimulatorDevice>().ReverseMap();
 
 
         }

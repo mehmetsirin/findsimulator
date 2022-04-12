@@ -34,8 +34,8 @@ namespace FindSimulator.Service.Concrete
         public   async Task<DataResult<List<SimulatorDeviceView>>> ListAsync()
         {
             var data =   await baseRepository.List<SimulatorDevice>();
-            dynamic resData = mapper.Map<SimulatorDeviceView>(data);
-            return resData;
+            var resData = mapper.Map<List<SimulatorDeviceView>>(data.Data);
+            return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success,resData);
         }
 
         public   async Task<DataResult<List<SimulatorDeviceView>>> ListAsync(int id)
