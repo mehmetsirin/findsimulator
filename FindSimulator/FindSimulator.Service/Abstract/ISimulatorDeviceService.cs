@@ -15,7 +15,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<SimulatorDeviceView>>> ListAsync();
         Task<DataResult<List<SimulatorDeviceView>>> ListAsync(int id);
         Task<DataResult<List<SimulatorDeviceView>>>GetByIDAsync(int id);
-
+        Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create);
 
     }
 }

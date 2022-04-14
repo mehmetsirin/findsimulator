@@ -30,9 +30,17 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public async   Task<Object> List()
         {
-            var res = await airCraftManager.ListGroupAsync();
+            var res = await airCraftManager.List();
 
             return   new  DataResult<object>(ResultStatus.Success,res);
+        }
+
+        [HttpGet]
+        public  async  Task<Object> ListGroupAsync()
+        {
+            var res = await airCraftManager.ListGroupAsync();
+
+            return new DataResult<object>(ResultStatus.Success, res);
         }
 
         [HttpGet]

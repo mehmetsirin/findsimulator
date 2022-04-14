@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.AirCraft;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Service.Model.Users;
@@ -30,8 +31,9 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<SessionPerson, SessionPersonUpdate>().ReverseMap();
             CreateMap<SessionPerson, SessionPersonAdd>().ReverseMap();
             CreateMap<SimulatorDeviceView, SimulatorDevice>().ReverseMap();
-
-
+            CreateMap<AirCraft, AirCraftView>().ReverseMap();
+            CreateMap<SimulatorDeviceCreate, SimulatorDevice>().ReverseMap();
+         
         }
     }
 }

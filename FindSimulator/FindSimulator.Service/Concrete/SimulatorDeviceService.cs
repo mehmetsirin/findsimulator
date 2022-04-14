@@ -44,5 +44,13 @@ namespace FindSimulator.Service.Concrete
             dynamic resData = mapper.Map<SimulatorDeviceView>(data);
             return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success, resData);
         }
+
+        public  async Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create)
+        {
+            var map = mapper.Map<SimulatorDevice>(create);
+              await baseRepository.AddOneAsync<SimulatorDevice>(map);
+            baseRepository.SaveChanges();
+            return new DataResult<bool>(ResultStatus.Success, true);
+        }
     }
 }

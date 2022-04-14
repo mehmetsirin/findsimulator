@@ -1,7 +1,9 @@
 ﻿using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.SimulatorDevice;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace FindSimulator.Api.Controllers
 
         public readonly IBaseManager<int> baseManager;
         public readonly ISimulatorDeviceService simulatorDeviceService;
+        private readonly ILogger<SimulatorDeviceController> logger;
 
         public SimulatorDeviceController(IBaseManager<int> baseManager, ISimulatorDeviceService simulatorDeviceService)
         {
@@ -39,5 +42,17 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
 
+        [HttpPost]
+        public  async  Task<object> Create(SimulatorDeviceCreate deviceCreate)
+        {
+            var data = await simulatorDeviceService.AddAsync(deviceCreate);
+            return null;
+        }
+        [HttpPost]
+        public async Task<object> Update(SimulatorDeviceUpdate model)
+        {
+
+            return null;
+        }
     }
 }

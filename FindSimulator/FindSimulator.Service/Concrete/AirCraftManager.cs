@@ -1,6 +1,10 @@
-﻿using FindSimulator.Domain.Entities;
+﻿using AutoMapper;
+
+using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.AirCraft;
+using FindSimulator.Share.ComplexTypes;
+using FindSimulator.Share.Results.Concrete;
 
 using System;
 using System.Collections.Generic;
@@ -14,10 +18,19 @@ namespace FindSimulator.Service.Concrete
     {
 
         public readonly IBaseManager<int> baseManager;
-
-        public AirCraftManager(IBaseManager<int> baseManager)
+        public readonly IMapper mapper;
+        public AirCraftManager(IBaseManager<int> baseManager,IMapper mapper)
         {
             this.baseManager = baseManager;
+            this.mapper = mapper;
+        }
+
+        public  async Task<DataResult<List<AirCraftView>>> List()
+        {
+
+            var crafts = await baseManager.ListAsync<AirCraft>();
+            var craftsMapper = mapper.Map<List<AirCraftView>>(crafts.Data);
+            return new DataResult<List<AirCraftView>>(ResultStatus.Success,craftsMapper);
         }
 
         public async Task<object> ListGroupAsync()
