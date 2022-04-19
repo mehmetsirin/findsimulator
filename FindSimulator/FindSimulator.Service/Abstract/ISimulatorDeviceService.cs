@@ -1,4 +1,5 @@
-﻿using FindSimulator.Service.Model.SimulatorDevice;
+﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.Results.Concrete;
 
 using System;
@@ -14,8 +15,9 @@ namespace FindSimulator.Service.Abstract
 
         Task<DataResult<List<SimulatorDeviceView>>> ListAsync();
         Task<DataResult<List<SimulatorDeviceView>>> ListAsync(int id);
-        Task<DataResult<List<SimulatorDeviceView>>>GetByIDAsync(int id);
+        Task<DataResult<SimulatorDeviceView>>GetByIDAsync(int id);
         Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create);
-
+        Task<DataResult<bool>> DeleteAsync(int id);
+        Task<DataResult<bool>> UpdateAsync(SimulatorDeviceUpdate update);
     }
 }

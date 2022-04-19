@@ -43,16 +43,23 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpPost]
-        public  async  Task<object> Create(SimulatorDeviceCreate deviceCreate)
+        public  async  Task<object> Create([FromBody]SimulatorDeviceCreate deviceCreate)
         {
             var data = await simulatorDeviceService.AddAsync(deviceCreate);
             return null;
         }
         [HttpPost]
-        public async Task<object> Update(SimulatorDeviceUpdate model)
+        public async Task<object> Update([FromBody] SimulatorDeviceUpdate model)
         {
+            var data =  await simulatorDeviceService.UpdateAsync(model);
+            return data;
+        }
+        [HttpPost]
+        public  async Task<object> Delete(int id)
+        {
+            var data =  await simulatorDeviceService.DeleteAsync(id);
+            return data;
 
-            return null;
         }
     }
 }

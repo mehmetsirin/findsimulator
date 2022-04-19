@@ -27,5 +27,29 @@ namespace FindSimulator.Domain.Entities
         public int SimulatorTypeID { get; set; }
         public int AirCraftsID { get; set; }
 
+        public SimulatorDevice()
+        {
+        }
+
+        public SimulatorDevice(string approval, string code, string simulatorCertificate, string easaCode, string cerfiticationLevel, string engineType, int year, string manufacturer, bool uprt, string motionSystem, string ımageGenerator, string cycle, int? manufacturerYear, string companyName, int simulatorTypeID, int airCraftsID,int id)
+        {
+            Approval = approval;
+            Code = code;
+            SimulatorCertificate = simulatorCertificate;
+            EasaCode = easaCode;
+            CerfiticationLevel = cerfiticationLevel;
+            EngineType = engineType;
+            Year = year;
+            Manufacturer = manufacturer;
+            Uprt = uprt;
+            MotionSystem = motionSystem;
+            ImageGenerator = ımageGenerator;
+            Cycle = cycle;
+            ManufacturerYear = manufacturerYear;
+            CompanyName = companyName;
+            SimulatorTypeID = simulatorTypeID;
+            AirCraftsID = airCraftsID;
+            ID = id;
+        }
     }
 }

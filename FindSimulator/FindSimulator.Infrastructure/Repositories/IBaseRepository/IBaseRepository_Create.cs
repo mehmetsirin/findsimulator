@@ -13,6 +13,8 @@ namespace FindSimulator.Infrastructure.Repositories.IBaseRepository
     {
         TDocument AddOne<TDocument>(TDocument document) where TDocument : class, IEntity<TKey>;
         Task AddManyAsync<TDocument>(List<TDocument> documents, CancellationToken cancellationToken = default) where TDocument :   class,IEntity<TKey>;
+        //Task AddManyAsync<TDocument>(List<TDocument> documents) where TDocument : class, IEntity<TKey>;
+
         void AddMany<TDocument>(List<TDocument> documents) where TDocument : class,IEntity<TKey>;
         Task  AddOneAsync<TDocument>(TDocument document) where TDocument :class, IEntity<TKey>;
 

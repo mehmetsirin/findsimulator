@@ -1,4 +1,6 @@
 ﻿using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.Session;
+using FindSimulator.Service.Model.SessionDetail;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +17,11 @@ namespace FindSimulator.Api.Controllers
     public class SessionDetailController : ControllerBase
     {
         private ISessionDetailManager sessionDetailManager;
-        public SessionDetailController(ISessionDetailManager sessionDetailManager)
+        readonly private ISessionsManager sessionsManager;
+        public SessionDetailController(ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
         {
             this.sessionDetailManager = sessionDetailManager;
+            this.sessionsManager = sessionsManager;
         }
 
         [HttpGet]
@@ -30,6 +34,33 @@ namespace FindSimulator.Api.Controllers
         public   async  Task<object> GetCalendarAsync()
         {
             var data = await sessionDetailManager.GetCalendarAsync();
+            return data;
+        }
+
+        [HttpPost]
+        public  async  Task<object> SessionAdd(SessionCreate create)
+        {
+            var data =  await sessionDetailManager.SessionAddAsync(create);
+            return data;
+        }
+        [HttpGet]
+        public  async Task<Object> SessionList()
+        {
+            var data = await sessionsManager.ListAsync();
+            return data;
+        }
+
+        [HttpPost]
+        public  async Task<object> SessionDetailAddAsync(List<SessionDetailCreate> models)
+        {
+            var data = await sessionDetailManager.SessionDetailAddAsync(models);
+            return data;
+
+        }
+        [HttpGet]
+        public  async  Task<object> SessionwithSessionDetailAsync()
+        {
+            var data = await sessionDetailManager.SessionwithSessionDetailAsync();
             return data;
         }
     }

@@ -4,6 +4,7 @@ using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Concrete.Repositories;
 using FindSimulator.Infrastructure.Repositories.EntityRepository;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.ComplexTypes;
@@ -22,12 +23,15 @@ namespace FindSimulator.Service.Concrete
         private readonly ISessionDetailRepository sessionDetail;
         private readonly IBaseManager<int> baseManager;
          private  readonly IMapper mapper;
-
-        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper)
+        private readonly ISimulatorDeviceService simulatorDeviceService;
+        private readonly ISessionsManager sessionsManager;
+        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager)
         {
             this.sessionDetail = sessionDetail;
             this.baseManager = baseManager;
             this.mapper = mapper;
+            this.simulatorDeviceService = simulatorDeviceService;
+            this.sessionsManager = sessionsManager;
         }
 
         public    async Task<DataResult<List<CalendarView>>> GetCalendarAsync()
@@ -73,6 +77,34 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<List<SessionDetails>>(ResultStatus.Success,sessionsDetailData);
         }
 
-     
+        public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model)
+        {
+            var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
+            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,simulalator.CompanyName,simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID);
+            await  sessionsManager.AddAsync(sessions);
+            return new DataResult<bool>(ResultStatus.Success,true);
+
+
+        }
+
+        public  async Task<DataResult<bool>> SessionDetailAddAsync(List<SessionDetailCreate> models)
+        {
+
+            var sessionDetails = mapper.Map<List<SessionDetails>>(models);
+             await sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
+             await  sessionDetail.SaveChangesAsync();
+            return new DataResult<bool>(ResultStatus.Success,true);
+        }
+
+        public async Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync()
+        {
+
+            var sessionDetailList = await sessionDetail.List<SessionDetails>();
+            var resData = mapper.Map<List<SessionwithSessionDetailView>>(sessionDetailList.Data);
+            return new DataResult<List<SessionwithSessionDetailView>>(ResultStatus.Success, resData);
+
+
+        }
+
     }
 }

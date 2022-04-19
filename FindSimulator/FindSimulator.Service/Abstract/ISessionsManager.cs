@@ -1,4 +1,5 @@
-﻿using FindSimulator.Service.Model.Users;
+﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.Results.Concrete;
 
 using System;
@@ -15,6 +16,9 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<SessionsView>>> Search(SimulatorSearcModel dto);
         Task<DataResult<SessionsView>> SimulatorSessionByID(int SessionID);
         Task<DataResult<List<SessionsView>>> ListAsync(List<int> Ids);
+        Task<DataResult<List<SessionsView>>> ListAsync();
+
+        Task<DataResult<bool>> AddAsync(Sessions sessions);
 
 
     }

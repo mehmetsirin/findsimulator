@@ -1,5 +1,7 @@
 ﻿using FindSimulator.Infrastructure.Concrete.EntityFramework.Context;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
                 {
                     //_context = new  SimulatorContext();
                 }
+                
             }
 
 

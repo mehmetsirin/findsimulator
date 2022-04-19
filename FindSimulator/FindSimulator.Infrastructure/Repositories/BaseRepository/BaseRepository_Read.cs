@@ -56,6 +56,8 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
 
         public   async Task<DataResult<TDocument>> GetByIdAsync<TDocument>(TKey id) where TDocument :class,IEntity<TKey>
         {
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
 
             try
             {

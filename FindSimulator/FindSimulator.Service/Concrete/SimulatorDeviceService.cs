@@ -18,7 +18,7 @@ namespace FindSimulator.Service.Concrete
     public sealed partial class SimulatorDeviceService : ISimulatorDeviceService
     {
         public Infrastructure.Repositories.BaseRepository.IBaseRepository<int> baseRepository;
-         private  readonly IMapper mapper;
+        private readonly IMapper mapper;
 
         public SimulatorDeviceService(IBaseRepository<int> baseRepository, IMapper mapper)
         {
@@ -26,31 +26,67 @@ namespace FindSimulator.Service.Concrete
             this.mapper = mapper;
         }
 
-        public   async Task<DataResult<List<SimulatorDeviceView>>> GetByIDAsync(int id)
+        public async Task<DataResult<SimulatorDeviceView>> GetByIDAsync(int id)
         {
-            throw new NotImplementedException();
+            var data = await baseRepository.GetByIdAsync<SimulatorDevice>(id);
+            var resData = mapper.Map<SimulatorDeviceView>(data.Data);
+            var airCrafts = await baseRepository.List<AirCraft>();
+            var simulatorTypes = await baseRepository.List<SimulatorType>();
+            resData.CraftName = airCrafts.Data.Where(y => y.ID == resData.AirCraftsID)?.FirstOrDefault()?.Name;
+            resData.SimulatorTypeName = simulatorTypes.Data.Where(y => y.ID == resData.SimulatorTypeID)?.FirstOrDefault()?.Name;
+
+
+
+            return new DataResult<SimulatorDeviceView>(ResultStatus.Success, resData);
         }
 
-        public   async Task<DataResult<List<SimulatorDeviceView>>> ListAsync()
+        public async Task<DataResult<List<SimulatorDeviceView>>> ListAsync()
         {
-            var data =   await baseRepository.List<SimulatorDevice>();
+            var data = await baseRepository.List<SimulatorDevice>();
             var resData = mapper.Map<List<SimulatorDeviceView>>(data.Data);
-            return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success,resData);
+            var airCrafts = await baseRepository.List<AirCraft>();
+            var simulatorTypes = await baseRepository.List<SimulatorType>();
+            foreach (var item in resData)
+            {
+                item.CraftName = airCrafts.Data.Where(y => y.ID == item.AirCraftsID)?.FirstOrDefault()?.Name;
+                item.SimulatorTypeName = simulatorTypes.Data.Where(y => y.ID == item.SimulatorTypeID)?.FirstOrDefault()?.Name;
+
+            }
+
+            return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success, resData);
         }
 
-        public   async Task<DataResult<List<SimulatorDeviceView>>> ListAsync(int id)
+        public async Task<DataResult<List<SimulatorDeviceView>>> ListAsync(int id)
         {
-            var data =  baseRepository.GetQueryable<SimulatorDevice>().GetAwaiter().GetResult().Data.Where(y=>y.ID==id).ToList();
+            var data = baseRepository.GetQueryable<SimulatorDevice>().GetAwaiter().GetResult().Data.Where(y => y.ID == id).ToList();
             dynamic resData = mapper.Map<SimulatorDeviceView>(data);
             return new DataResult<List<SimulatorDeviceView>>(ResultStatus.Success, resData);
         }
 
-        public  async Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create)
+        public async Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create)
         {
             var map = mapper.Map<SimulatorDevice>(create);
-              await baseRepository.AddOneAsync<SimulatorDevice>(map);
+            map.ManufacturerYear = map.Year;
+            await baseRepository.AddOneAsync<SimulatorDevice>(map);
             baseRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success, true);
+        }
+
+        public async Task<DataResult<bool>> DeleteAsync(int id)
+        {
+            var delete = await baseRepository.DeleteAsync<SimulatorDevice>(id);
+            _ = baseRepository.SaveChangesAsync();
+            return new DataResult<bool>(ResultStatus.Success, delete);
+
+        }
+
+        public async Task<DataResult<bool>> UpdateAsync(SimulatorDeviceUpdate update)
+        {
+            var modelUpdate = new SimulatorDevice(update.Approval, update.Code, update.SimulatorCertificate, update.EasaCode, update.CerfiticationLevel, update.EngineType, update.Year, update.Manufacturer, update.Uprt, update.MotionSystem, update.ImageGenerator, update.Cycle, update.ManufacturerYear, update.CompanyName, update.SimulatorTypeID, update.AirCraftsID, update.ID);
+            await baseRepository.UpdateOneAsync<SimulatorDevice>(modelUpdate);
+            await baseRepository.SaveChangesAsync();
+            return new DataResult<bool>(ResultStatus.Success, true);
+
         }
     }
 }

@@ -22,8 +22,25 @@ namespace FindSimulator.Domain.Entities
         public string SimulatorType { get; set; }
         public string AircraftType { get; set; }
         public string Engine { get; set; }
-
         public decimal Price { get; set; }
         public int SimulatorDeviceID { get; set; }
+
+        public Sessions(DateTime startDate, DateTime endDate, string location, bool ısTeacher, string companyName, string simulatorType, string aircraftType, string engine, decimal price, int simulatorDeviceID)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            Location = location;
+            IsTeacher = ısTeacher;
+            CompanyName = companyName;
+            SimulatorType = simulatorType;
+            AircraftType = aircraftType;
+            Engine = engine;
+            Price = price;
+            SimulatorDeviceID = simulatorDeviceID;
+        }
+
+        public Sessions()
+        {
+        }
     }
 }
