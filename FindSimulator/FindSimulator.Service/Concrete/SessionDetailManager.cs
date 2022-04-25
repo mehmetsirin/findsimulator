@@ -77,6 +77,12 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<List<SessionDetails>>(ResultStatus.Success,sessionsDetailData);
         }
 
+        public   async Task<DataResult<bool>> RemoveAsync(int id)
+        {
+            var data =   await sessionDetail.DeleteAsync<SessionDetails>(id);
+            return new DataResult<bool>(ResultStatus.Success, true);
+        }
+
         public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model)
         {
             var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
@@ -87,10 +93,11 @@ namespace FindSimulator.Service.Concrete
 
         }
 
-        public  async Task<DataResult<bool>> SessionDetailAddAsync(List<SessionDetailCreate> models)
+        public  async Task<DataResult<bool>> SessionDetailAddAsync(SessionDetailCreate models)
         {
 
-            var sessionDetails = mapper.Map<List<SessionDetails>>(models);
+            var sessionDetails = mapper.Map<List<SessionDetails>>(models.sessionDates);
+            sessionDetails.ForEach(y => { y.SessionsID = models.SessionsID;   y.EndDate = y.EndDate.AddHours(3);y.StartDate = y.StartDate.AddHours(3); });
              await sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
              await  sessionDetail.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success,true);
@@ -103,8 +110,8 @@ namespace FindSimulator.Service.Concrete
             var resData = mapper.Map<List<SessionwithSessionDetailView>>(sessionDetailList.Data);
             return new DataResult<List<SessionwithSessionDetailView>>(ResultStatus.Success, resData);
 
-
         }
+       
 
     }
 }

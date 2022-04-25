@@ -1,6 +1,7 @@
 ﻿using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
+using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,7 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpPost]
-        public  async Task<object> SessionDetailAddAsync(List<SessionDetailCreate> models)
+        public  async Task<object> SessionDetailAddAsync(SessionDetailCreate models)
         {
             var data = await sessionDetailManager.SessionDetailAddAsync(models);
             return data;
@@ -61,6 +62,12 @@ namespace FindSimulator.Api.Controllers
         public  async  Task<object> SessionwithSessionDetailAsync()
         {
             var data = await sessionDetailManager.SessionwithSessionDetailAsync();
+            return data;
+        }
+        [HttpPost]
+        public  async   Task<object> Delete(int id)
+        {
+            var data = await sessionDetailManager.RemoveAsync(id);
             return data;
         }
     }

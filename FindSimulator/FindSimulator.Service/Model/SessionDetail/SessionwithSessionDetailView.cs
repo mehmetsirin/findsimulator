@@ -10,7 +10,7 @@ namespace FindSimulator.Service.Model.SessionDetail
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int SessionID  { get; set; }
+        public int SessionsID  { get; set; }
         public  int ID { get; set; }
     }
 }

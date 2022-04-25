@@ -35,7 +35,7 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<AirCraft, AirCraftView>().ReverseMap();
             CreateMap<SimulatorDeviceCreate, SimulatorDevice>().ReverseMap();
             CreateMap<SessionwithSessionDetailView, SessionDetails>().ReverseMap();
-           
+            CreateMap<SessionDate, SessionDetails>().ReverseMap();
          
         }
     }
