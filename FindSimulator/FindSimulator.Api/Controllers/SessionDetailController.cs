@@ -65,7 +65,7 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
         [HttpPost]
-        public  async   Task<object> Delete(int id)
+        public  async   Task<object> Remove(int id)
         {
             var data = await sessionDetailManager.RemoveAsync(id);
             return data;

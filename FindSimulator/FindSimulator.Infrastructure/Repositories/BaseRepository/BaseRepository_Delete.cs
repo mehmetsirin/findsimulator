@@ -19,7 +19,9 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
             if (data == null)
                 return false;
             data.Data.IsActive= false;
-            await UpdateOneAsync<TDocument>(data.Data);
+              
+             UpdateOne<TDocument>(data.Data);
+             await SaveChangesAsync();
             return true;
         }
     }
