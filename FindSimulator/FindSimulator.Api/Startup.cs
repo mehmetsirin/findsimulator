@@ -18,6 +18,7 @@ using RabbitMQ.Client;
 using System;
 using FindSimulator.Share.RabbitMq;
 using FindSimulator.Share.Event;
+using FindSimulator.Api.Filter;
 
 namespace FindSimulator.Api
 {
@@ -39,6 +40,7 @@ namespace FindSimulator.Api
             //services.AddDbContext<SimulatorContext>(options => options(settings.SqlServerSettings.ConnectionString));
             //services.AddScoped<LogEventAction>();
             services.AddTransient<LogEventHandler>(provider => { return new LogEventHandler(services); });
+            services.Configure<DocumentSettings>(Configuration.GetSection("DocumentSettings"));
 
 
             services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
@@ -79,6 +81,7 @@ namespace FindSimulator.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FindSimulator.Api", Version = "v1" });
+                c.OperationFilter<SwaggerFileOperationFilter>();
             });
         }
 
