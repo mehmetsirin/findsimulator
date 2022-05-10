@@ -22,8 +22,10 @@ namespace FindSimulator.Service.Model.SessionPerson
         public string CompanyName { get; set; }
         public int SessionID { get; set; }
         public int SessionDetailID { get; set; }
+        public string Url { get; set; }
+
     }
-     public    sealed record SessionPersonAdd
+    public    sealed record SessionPersonAdd
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -34,6 +36,7 @@ namespace FindSimulator.Service.Model.SessionPerson
         public string CompanyName { get; set; }
         public int SessionID { get; set; }
         public int SessionDetailID { get; set; }
+        public string Url { get; set; }
 
     }
     public sealed record SessionPersonUpdate

@@ -20,6 +20,7 @@ namespace FindSimulator.Domain.Entities
         public string  CompanyName { get; set; }
         public int  SessionID { get; set; }
         public int  SessionDetailID { get; set; }
+        public string Url { get; set; }
 
         public int UserID { get; set; }
 
