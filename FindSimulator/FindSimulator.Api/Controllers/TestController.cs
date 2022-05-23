@@ -22,7 +22,6 @@ namespace FindSimulator.Api.Controllers
     {
 
         private readonly IEventBus eventBus;
-        public int MyProperty { get; set; }
         public TestController(IEventBus eventBus)
         {
             this.eventBus = eventBus;

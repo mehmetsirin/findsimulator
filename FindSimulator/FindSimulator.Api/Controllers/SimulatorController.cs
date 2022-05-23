@@ -49,7 +49,7 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
         [HttpGet]
-        public  async  Task<object> GetSimulatorDeviceLocation()
+        public  async  Task<object> SimulatorDeviceLocationList()
         {
             var data = await baseManager.ListAsync<SimulatorDeviceLocation>();
             return data.Data.Where(y => y.CompanyID == 1).ToList();
