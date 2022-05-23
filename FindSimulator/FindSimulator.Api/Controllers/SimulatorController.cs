@@ -15,7 +15,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SimulatorController : ControllerBase
+    public class SimulatorController : BaseController
     {
 
         public readonly IBaseManager<int> baseManager;
@@ -48,9 +48,14 @@ namespace FindSimulator.Api.Controllers
             var data = await this.sessionsManager.SimulatorSessionByID(id);
             return data;
         }
+        [HttpGet]
+        public  async  Task<object> GetSimulatorDeviceLocation()
+        {
+            var data = await baseManager.ListAsync<SimulatorDeviceLocation>();
+            return data.Data.Where(y => y.CompanyID == 1).ToList();
 
-      
+        }
 
-      
+
     }
 }

@@ -52,6 +52,11 @@ namespace FindSimulator.Service.Concrete
 
         }
 
+        public Task<DataResult<bool>> RemoveAsync(int id)
+        {
+            return null;
+             
+        }
 
         public async  Task<DataResult<List<SessionsView>>>Search(SimulatorSearcModel dto)
         {

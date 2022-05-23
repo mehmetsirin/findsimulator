@@ -13,5 +13,6 @@ namespace FindSimulator.Domain.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int SessionsID { get; set; }
+        public int  Reserved { get; set; }
     }
 }

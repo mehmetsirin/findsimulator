@@ -5,6 +5,7 @@ using FindSimulator.Share.RabbitMq;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace FindSimulator.Api.Controllers
     {
 
         private readonly IEventBus eventBus;
-
+        public int MyProperty { get; set; }
         public TestController(IEventBus eventBus)
         {
             this.eventBus = eventBus;

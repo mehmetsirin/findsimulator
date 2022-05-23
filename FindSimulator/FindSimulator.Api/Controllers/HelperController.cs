@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Abstract;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
@@ -13,14 +16,30 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class HelperController : ControllerBase
+    public class HelperController : BaseController
     {
-      [HttpGet]
+
+        public readonly IBaseManager<int> baseManager;
+
+        public HelperController(IBaseManager<int> baseManager)
+        {
+            this.baseManager = baseManager;
+        }
+
+        [HttpGet]
       public  async Task<Object> GetCountryList()
         {
             StreamReader r = new StreamReader("Country.json");
             string jsonString = r.ReadToEnd();
             return jsonString;
+        }
+
+      [HttpGet]
+      public  async  Task<object> GetManufacturers()
+        {
+            var data =  await baseManager.ListAsync<Manufacturer>();
+
+            return data;
         }
     }
 }

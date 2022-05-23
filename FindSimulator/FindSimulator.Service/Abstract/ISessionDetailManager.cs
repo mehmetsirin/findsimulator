@@ -19,6 +19,8 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<CalendarView>>> GetCalendarAsync();
         Task<DataResult<bool>> SessionDetailAddAsync(SessionDetailCreate  models);
         Task<DataResult<bool>> SessionAddAsync(SessionCreate model);
+
+        Task<DataResult<bool>> SessionRemove(int id);
         Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
 

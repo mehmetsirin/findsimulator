@@ -38,7 +38,7 @@ namespace FindSimulator.Service.Concrete
         {
             var sessionsPerson =   await baseManager.ListAsync<SessionPerson>();
             var details = sessionDetail.List<SessionDetails>().GetAwaiter().GetResult().Data;
-            var sesions = await baseManager.ListAsync<Sessions>();
+            var sessions = await baseManager.ListAsync<Sessions>();
             var resData = new List<CalendarView>();
             foreach (var item in sessionsPerson.Data)
             {
@@ -46,14 +46,16 @@ namespace FindSimulator.Service.Concrete
                 var detail = details.Where(y => y.ID == item.SessionDetailID).FirstOrDefault();
                 if(detail is not null)
                 {
-                    var session = sesions.Data.Where(y => y.ID == detail.SessionsID).FirstOrDefault();
+                    var session = sessions.Data.Where(y => y.ID == detail.SessionsID).FirstOrDefault();
                     res.End = detail.EndDate;
                     res.Id = item.ID;
                     res.Start = detail.StartDate;
                     res.Title = item.FirstName??"İsim Girilmemiş";
+                    res.Title = item.FirstName + " " + detail.StartDate.Hour + ":" + detail.StartDate.Minute + "-" + detail.EndDate.Hour + ":" + detail.EndDate.Hour;
+
                     res.Url = "";
-                   
-                    res.ExtendedProps = new ExtendedProps(session.AircraftType);
+                    res.Reserved = detail.Reserved;
+                    res.ExtendedProps = new ExtendedProps(detail.Reserved==1? "Reserved": "NotReserved", session.AircraftType);
                     resData.Add(res);
 
                 }
@@ -90,9 +92,7 @@ namespace FindSimulator.Service.Concrete
             await  sessionsManager.AddAsync(sessions);
             return new DataResult<bool>(ResultStatus.Success,true);
 
-
         }
-
         public  async Task<DataResult<bool>> SessionDetailAddAsync(SessionDetailCreate models)
         {
 
@@ -101,6 +101,12 @@ namespace FindSimulator.Service.Concrete
              await sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
              await  sessionDetail.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success,true);
+        }
+
+        public Task<DataResult<bool>> SessionRemove(int id)
+        {
+            //var  data = var sessionsPerson = await baseManager.<SessionPerson>();
+            return null;
         }
 
         public async Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync()

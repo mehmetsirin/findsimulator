@@ -17,7 +17,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<SessionsView>> SimulatorSessionByID(int SessionID);
         Task<DataResult<List<SessionsView>>> ListAsync(List<int> Ids);
         Task<DataResult<List<SessionsView>>> ListAsync();
-
+        Task<DataResult<bool>> RemoveAsync(int id);
         Task<DataResult<bool>> AddAsync(Sessions sessions);
 
 

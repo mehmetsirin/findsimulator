@@ -80,7 +80,7 @@ namespace FindSimulator.Infrastructure.Notification
             if (!string.IsNullOrWhiteSpace(senMail) && senMail != ".")
             {
                 ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2013_SP1);
-                service.Credentials = new WebCredentials("service.smtp@rota.net.tr", "KEd89zAP470147");
+                service.Credentials = new WebCredentials("service.smtp@rota.net.tr", "KEd89zAP47014747");
 
                 try
                 {
