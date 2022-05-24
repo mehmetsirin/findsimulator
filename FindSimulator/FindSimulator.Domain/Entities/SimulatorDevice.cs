@@ -17,21 +17,20 @@ namespace FindSimulator.Domain.Entities
         public string CerfiticationLevel { get; set; }
         public string EngineType { get; set; }
         public int Year { get; set; }
-        public string Manufacturer { get; set; }
+        public int ManufacturerID { get; set; }
         public bool Uprt { get; set; }
         public string MotionSystem { get; set; }
         public string ImageGenerator { get; set; }
-        public string Cycle { get; set; }
         public int? ManufacturerYear { get; set; }
-        public string CompanyName { get; set; }
         public int SimulatorTypeID { get; set; }
         public int AirCraftsID { get; set; }
-
+        public int CompanyID { get; set; }
+        public int DeviceLocationID { get; set; }
         public SimulatorDevice()
         {
         }
 
-        public SimulatorDevice(string approval, string code, string simulatorCertificate, string easaCode, string cerfiticationLevel, string engineType, int year, string manufacturer, bool uprt, string motionSystem, string ımageGenerator, string cycle, int? manufacturerYear, string companyName, int simulatorTypeID, int airCraftsID,int id)
+        public SimulatorDevice(string approval, string code, string simulatorCertificate, string easaCode, string cerfiticationLevel, string engineType, int year, int manufacturerID, bool uprt, string motionSystem, string ımageGenerator, int deviceLocationID, int? manufacturerYear,int companyID, int simulatorTypeID, int airCraftsID,int id)
         {
             Approval = approval;
             Code = code;
@@ -40,13 +39,13 @@ namespace FindSimulator.Domain.Entities
             CerfiticationLevel = cerfiticationLevel;
             EngineType = engineType;
             Year = year;
-            Manufacturer = manufacturer;
+            ManufacturerID = manufacturerID;
             Uprt = uprt;
             MotionSystem = motionSystem;
             ImageGenerator = ımageGenerator;
-            Cycle = cycle;
+            DeviceLocationID = deviceLocationID;
             ManufacturerYear = manufacturerYear;
-            CompanyName = companyName;
+            CompanyID = companyID;
             SimulatorTypeID = simulatorTypeID;
             AirCraftsID = airCraftsID;
             ID = id;

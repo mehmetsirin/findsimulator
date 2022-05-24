@@ -88,7 +88,7 @@ namespace FindSimulator.Service.Concrete
         public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model)
         {
             var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
-            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,simulalator.CompanyName,simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID);
+            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,"Company Name",simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID);
             await  sessionsManager.AddAsync(sessions);
             return new DataResult<bool>(ResultStatus.Success,true);
 

@@ -11,7 +11,7 @@ namespace FindSimulator.Domain.Entities
     public class SimulatorDeviceLocation: BaseEntity<int>
     {
 
-        public string Distrinct { get; set; }
+        public string District { get; set; }
         public string Province { get; set; }
         public int CompanyID { get; set; }
     }

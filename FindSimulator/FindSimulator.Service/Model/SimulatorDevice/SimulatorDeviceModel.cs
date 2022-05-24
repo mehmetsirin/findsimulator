@@ -19,18 +19,18 @@ namespace FindSimulator.Service.Model.SimulatorDevice
         public string CerfiticationLevel { get; set; }
         public string EngineType { get; set; }
         public int Year { get; set; }
-        public string Manufacturer { get; set; }
+        public int ManufacturerID { get; set; }
         public bool Uprt { get; set; }
         public string MotionSystem { get; set; }
         public string ImageGenerator { get; set; }
-        public string Cycle { get; set; }
         public int? ManufacturerYear { get; set; }
-        public string CompanyName { get; set; }
         public int SimulatorTypeID { get; set; }
         public int AirCraftsID { get; set; }
         public string CraftName { get; set; }
         public string SimulatorTypeName { get; set; }
-   
+        public int CompanyID { get; set; }
+        public int DeviceLocationID { get; set; }
+
     }
     public  record SimulatorDeviceUpdate
     {
@@ -42,17 +42,18 @@ namespace FindSimulator.Service.Model.SimulatorDevice
         public string CerfiticationLevel { get; set; }
         public string EngineType { get; set; }
         public int Year { get; set; }
-        public string Manufacturer { get; set; }
+        public int ManufacturerID { get; set; }
         public bool Uprt { get; set; }
         public string MotionSystem { get; set; }
         public string ImageGenerator { get; set; }
         public string Cycle { get; set; }
         public int? ManufacturerYear { get; set; }
-        public string CompanyName { get; set; }
         public int SimulatorTypeID { get; set; }
         public int AirCraftsID { get; set; }
 
         public string Approval { get; set; }
+        public int CompanyID { get; set; }
+        public int DeviceLocationID { get; set; }
     }
     public sealed partial record SimulatorDeviceCreate {
 
@@ -68,11 +69,13 @@ namespace FindSimulator.Service.Model.SimulatorDevice
         public string ImageGenerator { get; set; }
         public string Cycle { get; set; }
         public int? ManufacturerYear { get; set; }
-        public string CompanyName { get; set; }
         public int SimulatorTypeID { get; set; }
         public int AirCraftsID { get; set; }
+        public int DeviceLocationID { get; set; }
+        public int ManufacturerID { get; set; }
+        public int CompanyID { get; set; }
 
-        public  string Approval { get; set; }
+        public string Approval { get; set; }
     }
 
     

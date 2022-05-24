@@ -82,7 +82,7 @@ namespace FindSimulator.Service.Concrete
 
         public async Task<DataResult<bool>> UpdateAsync(SimulatorDeviceUpdate update)
         {
-            var modelUpdate = new SimulatorDevice(update.Approval, update.Code, update.SimulatorCertificate, update.EasaCode, update.CerfiticationLevel, update.EngineType, update.Year, update.Manufacturer, update.Uprt, update.MotionSystem, update.ImageGenerator, update.Cycle, update.ManufacturerYear, update.CompanyName, update.SimulatorTypeID, update.AirCraftsID, update.ID);
+            var modelUpdate = new SimulatorDevice(update.Approval, update.Code, update.SimulatorCertificate, update.EasaCode, update.CerfiticationLevel, update.EngineType, update.Year, update.ManufacturerID, update.Uprt, update.MotionSystem, update.ImageGenerator, update.DeviceLocationID, update.ManufacturerYear, update.CompanyID, update.SimulatorTypeID, update.AirCraftsID, update.ID);
             await baseRepository.UpdateOneAsync<SimulatorDevice>(modelUpdate);
             await baseRepository.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success, true);
