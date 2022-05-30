@@ -30,6 +30,8 @@ namespace FindSimulator.Service.Model.SimulatorDevice
         public string SimulatorTypeName { get; set; }
         public int CompanyID { get; set; }
         public int DeviceLocationID { get; set; }
+        public string DeviceLocationName { get; set; }
+        public string ManufacturerName { get; set; }
 
     }
     public  record SimulatorDeviceUpdate

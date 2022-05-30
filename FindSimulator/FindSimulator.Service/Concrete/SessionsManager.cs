@@ -26,11 +26,11 @@ namespace FindSimulator.Service.Concrete
             this.sessions = sessions;
         }
 
-        public    async Task<DataResult<bool>> AddAsync(Sessions model)
+        public    async Task<DataResult<Sessions>> AddAsync(Sessions model)
         {
                 await sessions.AddOneAsync<Sessions>(model);
                sessions.SaveChanges();
-            return new DataResult<bool>(ResultStatus.Success,true);
+            return new DataResult<Sessions>(ResultStatus.Success,model);
         }
 
         public  async Task<DataResult<List<SessionsView>>> ListAsync(List<int> Ids)

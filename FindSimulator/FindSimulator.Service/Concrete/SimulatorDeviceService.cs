@@ -46,8 +46,12 @@ namespace FindSimulator.Service.Concrete
             var resData = mapper.Map<List<SimulatorDeviceView>>(data.Data);
             var airCrafts = await baseRepository.List<AirCraft>();
             var simulatorTypes = await baseRepository.List<SimulatorType>();
+            var simulatorLocation = await baseRepository.List<SimulatorDeviceLocation>();
+            var manufacturers = await baseRepository.List<Manufacturer>();
             foreach (var item in resData)
             {
+                item.ManufacturerName = manufacturers.Data.Where(y => y.ID == item.ManufacturerID)?.FirstOrDefault()?.Name;
+                item.DeviceLocationName = simulatorLocation.Data.Where(y => y.ID == item.DeviceLocationID)?.FirstOrDefault()?.District;
                 item.CraftName = airCrafts.Data.Where(y => y.ID == item.AirCraftsID)?.FirstOrDefault()?.Name;
                 item.SimulatorTypeName = simulatorTypes.Data.Where(y => y.ID == item.SimulatorTypeID)?.FirstOrDefault()?.Name;
 

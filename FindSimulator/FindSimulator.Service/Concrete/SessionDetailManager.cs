@@ -20,14 +20,14 @@ namespace FindSimulator.Service.Concrete
 {
     public  class SessionDetailManager:  ISessionDetailManager
     {
-        private readonly ISessionDetailRepository sessionDetail;
+        private readonly ISessionDetailRepository _sessionDetail;
         private readonly IBaseManager<int> baseManager;
          private  readonly IMapper mapper;
         private readonly ISimulatorDeviceService simulatorDeviceService;
         private readonly ISessionsManager sessionsManager;
         public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager)
         {
-            this.sessionDetail = sessionDetail;
+            this._sessionDetail = sessionDetail;
             this.baseManager = baseManager;
             this.mapper = mapper;
             this.simulatorDeviceService = simulatorDeviceService;
@@ -37,7 +37,7 @@ namespace FindSimulator.Service.Concrete
         public    async Task<DataResult<List<CalendarView>>> GetCalendarAsync()
         {
             var sessionsPerson =   await baseManager.ListAsync<SessionPerson>();
-            var details = sessionDetail.List<SessionDetails>().GetAwaiter().GetResult().Data;
+            var details = _sessionDetail.List<SessionDetails>().GetAwaiter().GetResult().Data;
             var sessions = await baseManager.ListAsync<Sessions>();
             var resData = new List<CalendarView>();
             foreach (var item in sessionsPerson.Data)
@@ -67,7 +67,7 @@ namespace FindSimulator.Service.Concrete
         public    async Task<DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>> GetSessionDetail(int sessionID, int SimulatorDeviceID)
         {
             var device = await baseManager.GetByIDAsync<SimulatorDevice>(SimulatorDeviceID);
-            var sessionsDetailData = sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.SessionsID == sessionID).ToList();
+            var sessionsDetailData = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.SessionsID == sessionID).ToList();
 
             var tuple = new Tuple<SimulatorDevice, List<SessionDetails>>(device.Data, sessionsDetailData);
             return new DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>(ResultStatus.Success,tuple);
@@ -75,21 +75,36 @@ namespace FindSimulator.Service.Concrete
 
         public async  Task<DataResult<List<SessionDetails>>> GetSessionDetail(List<int> sessionsIds)
         {
-            var sessionsDetailData =   sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionsIds.Contains(y.SessionsID)).ToList();
+            var sessionsDetailData =   _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionsIds.Contains(y.SessionsID)).ToList();
             return new DataResult<List<SessionDetails>>(ResultStatus.Success,sessionsDetailData);
         }
 
         public   async Task<DataResult<bool>> RemoveAsync(int id)
         {
-            var data =   await sessionDetail.DeleteAsync<SessionDetails>(id);
+            var data =   await _sessionDetail.DeleteAsync<SessionDetails>(id);
             return new DataResult<bool>(ResultStatus.Success, true);
         }
 
-        public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model)
+        public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model,int companyID,int userId)
         {
             var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
-            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,"Company Name",simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID);
-            await  sessionsManager.AddAsync(sessions);
+            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,"Company Name",simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID,model.Currency);
+          var session=    await  sessionsManager.AddAsync(sessions);
+              
+            List<SessionDetails> sessionDetails = new List<SessionDetails>();
+
+            for ( var day=model.StartDate;  model.StartDate<model.EndDate;  model.StartDate=model.StartDate.AddDays(1) )
+            {
+
+                for (int i = 0; i < model.SlotDate.Count; i++)
+                {
+                    sessionDetails.Add(  new SessionDetails() { SessionsID=session.Data.ID, InsertDate=  new DateTime(day.Year,day.Month,day.Day,model.SlotDate[i].StartDate.Hour,model.SlotDate[i].StartDate.Minute,0), EndDate= new DateTime(day.Year, day.Month, day.Day, model.SlotDate[i].EndDate.Hour, model.SlotDate[i].EndDate.Minute, 0) });
+                }
+            }
+            await  _sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
+           
+            _sessionDetail.SaveChanges();
+            
             return new DataResult<bool>(ResultStatus.Success,true);
 
         }
@@ -98,8 +113,8 @@ namespace FindSimulator.Service.Concrete
 
             var sessionDetails = mapper.Map<List<SessionDetails>>(models.sessionDates);
             sessionDetails.ForEach(y => { y.SessionsID = models.SessionsID;   y.EndDate = y.EndDate.AddHours(3);y.StartDate = y.StartDate.AddHours(3); });
-             await sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
-             await  sessionDetail.SaveChangesAsync();
+             await _sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
+             await _sessionDetail.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success,true);
         }
 
@@ -112,7 +127,7 @@ namespace FindSimulator.Service.Concrete
         public async Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync()
         {
 
-            var sessionDetailList = await sessionDetail.List<SessionDetails>();
+            var sessionDetailList = await _sessionDetail.List<SessionDetails>();
             var resData = mapper.Map<List<SessionwithSessionDetailView>>(sessionDetailList.Data);
             return new DataResult<List<SessionwithSessionDetailView>>(ResultStatus.Success, resData);
 

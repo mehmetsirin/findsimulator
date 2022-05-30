@@ -47,7 +47,7 @@ namespace FindSimulator.Api.Controllers
         {
             deviceCreate.CompanyID = 1;
             var data = await simulatorDeviceService.AddAsync(deviceCreate);
-            return null;
+            return data;
         }
         [HttpPost]
         public async Task<object> Update([FromBody] SimulatorDeviceUpdate model)
