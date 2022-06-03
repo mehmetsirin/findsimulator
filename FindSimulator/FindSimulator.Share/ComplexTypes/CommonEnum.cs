@@ -23,20 +23,13 @@ namespace Fleet.Share.ComplexTypes
             Information = 2
 
         }
-        public enum CriminalEnum
+        public enum SessionDetails
         {
+            Close = 0,
+            Open = 1,
+            Reserved = 2
 
-            OgsHgs = 1,
-            Accident = 4,
-            Examination = 3,
-            TrafficCriminal = 2,
-            Maintenance = 9,
-            Muayene = 10,
-            Emmisyon = 11,
-            Mtv = 12,
-            Trafficinsurance = 13,
-            Kasko = 14,
-            Akaryakit = 15
         }
+
     }
 }

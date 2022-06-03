@@ -20,12 +20,11 @@ namespace FindSimulator.Service.Model.Users
         public string Location { get; set; }
 
         public bool IsTeacher { get; set; }
-        public string CompanyName { get; set; }
         public string SimulatorType { get; set; }
         public string AircraftType { get; set; }
         public string Engine { get; set; }
         public int SimulatorDeviceID { get; set; }
-
+        public  string Currency { get; set; }
         public decimal Price { get; set; }
     }
 }

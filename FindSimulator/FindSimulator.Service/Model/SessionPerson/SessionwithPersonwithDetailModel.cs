@@ -19,7 +19,6 @@ namespace FindSimulator.Service.Model.SessionPerson
         public string Location { get; set; }
 
         public bool IsTeacher { get; set; }
-        public string CompanyName { get; set; }
         public string SimulatorType { get; set; }
         public string AircraftType { get; set; }
         public string Engine { get; set; }

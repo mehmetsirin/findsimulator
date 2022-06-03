@@ -111,7 +111,6 @@ namespace FindSimulator.Service.Concrete
             {
                 var itemdata = new SessionwithPersonwithDetailModel();
                 itemdata.AircraftType = item.AircraftType;
-                itemdata.CompanyName = item.CompanyName;
                 itemdata.EndDate = SessionDetails.Data.Where(y => y.SessionsID == item.ID).FirstOrDefault().EndDate;
                 itemdata.Engine = item.Engine;
                 itemdata.IsTeacher = item.IsTeacher;

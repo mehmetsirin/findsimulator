@@ -1,4 +1,5 @@
 ﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.Results.Concrete;
 
@@ -19,6 +20,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<SessionsView>>> ListAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
         Task<DataResult<Sessions>> AddAsync(Sessions sessions);
+        Task<DataResult<Sessions>> UpdateAsync(SessionUpdate _session);
 
 
     }

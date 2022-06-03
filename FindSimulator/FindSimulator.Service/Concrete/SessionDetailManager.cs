@@ -88,7 +88,7 @@ namespace FindSimulator.Service.Concrete
         public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model,int companyID,int userId)
         {
             var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
-            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,"Company Name",simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID,model.Currency);
+            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,companyID ,simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID,model.Currency);
           var session=    await  sessionsManager.AddAsync(sessions);
               
             List<SessionDetails> sessionDetails = new List<SessionDetails>();
@@ -98,13 +98,13 @@ namespace FindSimulator.Service.Concrete
 
                 for (int i = 0; i < model.SlotDate.Count; i++)
                 {
-                    sessionDetails.Add(  new SessionDetails() { SessionsID=session.Data.ID, InsertDate=  new DateTime(day.Year,day.Month,day.Day,model.SlotDate[i].StartDate.Hour,model.SlotDate[i].StartDate.Minute,0), EndDate= new DateTime(day.Year, day.Month, day.Day, model.SlotDate[i].EndDate.Hour, model.SlotDate[i].EndDate.Minute, 0) });
+                    sessionDetails.Add(  new SessionDetails() { Price=model.Price,SessionsID=session.Data.ID, StartDate= new DateTime(model.StartDate.Year,model.StartDate.Month,model.StartDate.Day,model.SlotDate[i].StartDate.Hour,model.SlotDate[i].StartDate.Minute,0), EndDate= new DateTime(model.StartDate.Year,model.StartDate.Month, model.StartDate.Day, model.SlotDate[i].EndDate.Hour, model.SlotDate[i].EndDate.Minute, 0) });
                 }
             }
             await  _sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
-           
-            _sessionDetail.SaveChanges();
-            
+
+                _sessionDetail.SaveChanges();
+
             return new DataResult<bool>(ResultStatus.Success,true);
 
         }

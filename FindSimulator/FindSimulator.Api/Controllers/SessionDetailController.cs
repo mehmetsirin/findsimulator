@@ -1,4 +1,5 @@
-﻿using FindSimulator.Service.Abstract;
+﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Share.Results.Concrete;
@@ -68,6 +69,20 @@ namespace FindSimulator.Api.Controllers
         public  async   Task<object> Remove(int id)
         {
             var data = await sessionDetailManager.RemoveAsync(id);
+            return data;
+        }
+
+         [HttpPost]
+         public   async  Task<DataResult<bool>> SessionRemove(int id)
+        {
+            var data = await sessionsManager.RemoveAsync(id);
+            return data;
+        }
+
+        [HttpPost]
+        public async Task<DataResult<Sessions>> UpdateAsync(SessionUpdate _session)
+        {
+            var data = await sessionsManager.UpdateAsync(_session);
             return data;
         }
     }
