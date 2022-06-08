@@ -32,12 +32,12 @@ namespace FindSimulator.Api.Controllers
             var data = await sessionDetailManager.GetSessionDetail(sessionID, simulatorDeviceID);
             return data;
         }
-        [HttpGet]
-        public   async  Task<object> GetCalendarAsync()
-        {
-            var data = await sessionDetailManager.GetCalendarAsync();
-            return data;
-        }
+        //[HttpGet]
+        //public   async  Task<object> GetCalendarAsync()
+        //{
+        //    var data = await sessionDetailManager.GetCalendarAsync();
+        //    return data;
+        //}
 
         [HttpPost]
         public  async  Task<object> SessionAdd(SessionCreate create)
@@ -83,6 +83,13 @@ namespace FindSimulator.Api.Controllers
         public async Task<DataResult<Sessions>> UpdateAsync(SessionUpdate _session)
         {
             var data = await sessionsManager.UpdateAsync(_session);
+            return data;
+        }
+
+        [HttpGet]
+       public async Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType)
+        {
+            var data = await sessionDetailManager.GetCalendarAsync(simulatorDeviceID,aircraftType);
             return data;
         }
     }

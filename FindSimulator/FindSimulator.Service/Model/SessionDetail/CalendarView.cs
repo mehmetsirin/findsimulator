@@ -15,7 +15,7 @@ namespace FindSimulator.Service.Model.SessionDetail
         public DateTime End { get; set; }
         public bool AllDay { get; set; } = true;
         public int Reserved { get; set; }
-
+        public int Status { get; set; }
         public ExtendedProps ExtendedProps { get; set; }
 
         public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay, string extendedProps,int reserved,string aircraftType)

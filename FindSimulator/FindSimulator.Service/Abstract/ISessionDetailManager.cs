@@ -23,6 +23,8 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<bool>> SessionRemove(int id);
         Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
+        Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType);
+
 
 
     }

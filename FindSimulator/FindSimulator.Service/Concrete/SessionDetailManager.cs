@@ -10,6 +10,8 @@ using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Results.Concrete;
 
+using Fleet.Share.ComplexTypes;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,17 +23,19 @@ namespace FindSimulator.Service.Concrete
     public  class SessionDetailManager:  ISessionDetailManager
     {
         private readonly ISessionDetailRepository _sessionDetail;
+        private readonly ISessionsRepository _sessionsRepository;
         private readonly IBaseManager<int> baseManager;
          private  readonly IMapper mapper;
         private readonly ISimulatorDeviceService simulatorDeviceService;
         private readonly ISessionsManager sessionsManager;
-        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager)
+        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager, ISessionsRepository sessionsRepository)
         {
             this._sessionDetail = sessionDetail;
             this.baseManager = baseManager;
             this.mapper = mapper;
             this.simulatorDeviceService = simulatorDeviceService;
             this.sessionsManager = sessionsManager;
+            this._sessionsRepository = sessionsRepository;
         }
 
         public    async Task<DataResult<List<CalendarView>>> GetCalendarAsync()
@@ -62,6 +66,36 @@ namespace FindSimulator.Service.Concrete
 
             }
             return new DataResult<List<CalendarView>>(ResultStatus.Success,resData);
+        }
+
+        public  async Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType)
+        {
+
+            var sessions = _sessionsRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y => y.SimulatorDeviceID==simulatorDeviceID && y.AircraftType==aircraftType).ToList();
+            var sessionDetailList = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessions.Select(y=>y.ID).ToList().Contains(y.SessionsID)).ToList();
+
+
+            if (sessionDetailList.Count == 0)
+                return new DataResult<List<CalendarView>>(ResultStatus.DataNull);
+            var resData = new List<CalendarView>();
+            foreach (var item in sessionDetailList)
+            {
+                var res = new CalendarView();
+               
+                    res.End = item.EndDate;
+                    res.Id = item.ID;
+                    res.Start = item.StartDate;
+                    res.Title = "Title" ?? "İsim Girilmemiş";
+                    res.Title = item.ID + "-" +  item.StartDate.Hour + ":" + item.StartDate.Minute + "-" + item.EndDate.Hour + ":" + item.EndDate.Hour;
+                    res.Url = "";
+                    res.Reserved = item.Reserved;
+                    res.Status = item.Status;
+                    res.ExtendedProps = new ExtendedProps(Enum.GetName(typeof(CommonEnum.SessionDetails),item.Status).ToString(), "");
+                    resData.Add(res);
+
+            }
+            return new DataResult<List<CalendarView>>(ResultStatus.Success, resData);
+
         }
 
         public    async Task<DataResult<Tuple<SimulatorDevice, List<SessionDetails>>>> GetSessionDetail(int sessionID, int SimulatorDeviceID)
