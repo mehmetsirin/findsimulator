@@ -37,7 +37,7 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<ISimulatorDeviceService, SimulatorDeviceService>();
             services.AddScoped<IAirCraftManager, AirCraftManager>();
             services.AddScoped<IFileManager, FileManager>();
-
+            services.AddScoped<ICalendarManager, CalendarManager>();
 
         }
 

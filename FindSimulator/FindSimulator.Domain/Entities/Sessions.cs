@@ -25,8 +25,9 @@ namespace FindSimulator.Domain.Entities
         public decimal Price { get; set; }
         public int SimulatorDeviceID { get; set; }
         public string Currency { get; set; }
+        public string SlotDate { get; set; }
 
-        public Sessions(DateTime startDate, DateTime endDate, string location, bool ısTeacher, int companyID, string simulatorType, string aircraftType, string engine, decimal price, int simulatorDeviceID,string currency)
+        public Sessions(DateTime startDate, DateTime endDate, string location, bool ısTeacher, int companyID, string simulatorType, string aircraftType, string engine, decimal price, int simulatorDeviceID,string currency,string slotDate)
         {
             StartDate = startDate;
             EndDate = endDate;
@@ -39,6 +40,7 @@ namespace FindSimulator.Domain.Entities
             Price = price;
             SimulatorDeviceID = simulatorDeviceID;
             Currency = currency;
+            SlotDate = slotDate;
         }
 
         public Sessions()

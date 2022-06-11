@@ -1,4 +1,5 @@
 ﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.Calendar;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SimulatorDevice;
@@ -24,7 +25,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
         Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType);
-
+        Task<DataResult<bool>> SessionDetailUpdateAsync(SessionDetailStateUpdate update);
 
 
     }

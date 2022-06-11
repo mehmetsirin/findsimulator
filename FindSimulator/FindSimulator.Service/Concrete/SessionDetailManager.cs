@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using FindSimulator.Service.Model.Calendar;
 
 namespace FindSimulator.Service.Concrete
 {
@@ -59,7 +61,7 @@ namespace FindSimulator.Service.Concrete
 
                     res.Url = "";
                     res.Reserved = detail.Reserved;
-                    res.ExtendedProps = new ExtendedProps(detail.Reserved==1? "Reserved": "NotReserved", session.AircraftType);
+                    res.ExtendedProps = new ExtendedProps(detail.Reserved==1? "Reserved": "NotReserved", session.AircraftType,item.SessionID);
                     resData.Add(res);
 
                 }
@@ -90,7 +92,7 @@ namespace FindSimulator.Service.Concrete
                     res.Url = "";
                     res.Reserved = item.Reserved;
                     res.Status = item.Status;
-                    res.ExtendedProps = new ExtendedProps(Enum.GetName(typeof(CommonEnum.SessionDetails),item.Status).ToString(), "");
+                    res.ExtendedProps = new ExtendedProps(Enum.GetName(typeof(CommonEnum.SessionDetails),item.Status).ToString(), "",item.SessionsID);
                     resData.Add(res);
 
             }
@@ -121,8 +123,10 @@ namespace FindSimulator.Service.Concrete
 
         public  async Task<DataResult<bool>> SessionAddAsync(SessionCreate model,int companyID,int userId)
         {
+
+            var slotDate = JsonSerializer.Serialize(model.SlotDate.Select(y => new { startDate = y.StartDate.ToString("HH:mm"), endDate = y.EndDate.ToString("HH:mm") }));
             var simulalator =   simulatorDeviceService.GetByIDAsync(model.SimulatorDeviceID).GetAwaiter().GetResult().Data;
-            var sessions = new Sessions(model.StartDate,model.EndDate,"",true,companyID ,simulalator.SimulatorTypeName,simulalator.CraftName,model.Engine,model.Price,model.SimulatorDeviceID,model.Currency);
+            var sessions = new Sessions(model.StartDate, model.EndDate, "", true, companyID, simulalator.SimulatorTypeName, simulalator.CraftName, model.Engine, model.Price, model.SimulatorDeviceID, model.Currency, slotDate) ;
           var session=    await  sessionsManager.AddAsync(sessions);
               
             List<SessionDetails> sessionDetails = new List<SessionDetails>();
@@ -150,6 +154,12 @@ namespace FindSimulator.Service.Concrete
              await _sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
              await _sessionDetail.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success,true);
+        }
+
+        public Task<DataResult<bool>> SessionDetailUpdateAsync(SessionDetailStateUpdate update)
+        {
+            return null;
+             
         }
 
         public Task<DataResult<bool>> SessionRemove(int id)

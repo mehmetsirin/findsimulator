@@ -86,11 +86,13 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
 
-        [HttpGet]
-       public async Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType)
+        [HttpPost]
+        public  async  Task<DataResult<bool>> SessionDetailUpdateAsync( List<SessionDetailStateUpdate> sessionDetailStateUpdates)
         {
-            var data = await sessionDetailManager.GetCalendarAsync(simulatorDeviceID,aircraftType);
-            return data;
+
+            return null;
         }
+
+
     }
 }

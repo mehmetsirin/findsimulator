@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FindSimulator.Service.Model.SessionDetail
+namespace FindSimulator.Service.Model.Calendar
 {
     public sealed record CalendarView
     {
@@ -18,16 +18,16 @@ namespace FindSimulator.Service.Model.SessionDetail
         public int Status { get; set; }
         public ExtendedProps ExtendedProps { get; set; }
 
-        public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay, string extendedProps,int reserved,string aircraftType)
+        public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay, string extendedProps, int reserved, string aircraftType,int sessionId=0)
         {
             Id = ıd;
             Url = url;
-            Title = title +  start.Hour +":" +start.Minute +"-"+end.Hour +":"+end.Minute;
+            Title = title + start.Hour + ":" + start.Minute + "-" + end.Hour + ":" + end.Minute;
             Start = start;
             End = end;
             AllDay = allDay;
             Reserved = reserved;
-            ExtendedProps = new ExtendedProps(extendedProps,aircraftType);
+            ExtendedProps = new ExtendedProps(extendedProps, aircraftType,sessionId);
         }
 
         public CalendarView()
@@ -36,13 +36,16 @@ namespace FindSimulator.Service.Model.SessionDetail
     }
     public record ExtendedProps
     {
-        public ExtendedProps(string calendar,string aircraftType)
+        public ExtendedProps(string calendar, string aircraftType,int  sessionID)
         {
             Calendar = calendar;
             AircraftType = aircraftType;
+            SessionID = sessionID;
         }
 
         public string Calendar { get; set; }
         public string AircraftType { get; set; }
+        public int SessionID { get; set; }
+
     }
 }

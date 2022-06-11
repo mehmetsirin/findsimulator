@@ -26,5 +26,9 @@ namespace FindSimulator.Service.Model.Users
         public int SimulatorDeviceID { get; set; }
         public  string Currency { get; set; }
         public decimal Price { get; set; }
+        public string SlotDate { get; set; }
+        public string Code { get; set; }
+
+
     }
 }

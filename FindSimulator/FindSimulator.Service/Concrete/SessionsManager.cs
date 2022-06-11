@@ -2,6 +2,7 @@
 
 using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Concrete.Repositories;
+using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.Users;
@@ -22,11 +23,14 @@ namespace FindSimulator.Service.Concrete
     {
         readonly IMapper mapper;
         readonly ISessionsRepository _sessionsRepository;
-
-        public SessionsManager(IMapper mapper, ISessionsRepository sessions)
+ 
+        readonly IBaseRepository<int> _baseRepository;
+        public SessionsManager(IMapper mapper, ISessionsRepository sessions, IBaseRepository<int> baseRepository)
         {
             this.mapper = mapper;
             this._sessionsRepository = sessions;
+            this._baseRepository = baseRepository;
+          
         }
 
         public async Task<DataResult<Sessions>> AddAsync(Sessions model)
@@ -51,7 +55,9 @@ namespace FindSimulator.Service.Concrete
         {
 
             var sessionData = _sessionsRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.ToList();
-            var resData = mapper.Map<List<SessionsView>>(sessionData);
+            var simulatorDevice = _baseRepository.GetQueryable<SimulatorDevice>().GetAwaiter().GetResult().Data.Where(y => sessionData.Select(y => y.SimulatorDeviceID).ToList().Contains(y.ID)).ToList();
+
+              var   resData= (from   s in sessionData   join  sd in simulatorDevice on  s.SimulatorDeviceID  equals sd.ID  select   new SessionsView() { AircraftType=s.AircraftType, ID=s.ID, SimulatorDeviceID=s.SimulatorDeviceID, Currency=s.Currency,SimulatorType=s.SimulatorType, EndDate=s.EndDate,SlotDate=s.SlotDate, Engine=s.Engine, IsTeacher=s.IsTeacher, Location=s.Location, Price=s.Price, StartDate=s.StartDate, Code=sd.Code }).ToList();
 
             return new DataResult<List<SessionsView>>(ResultStatus.Success, resData);
 
