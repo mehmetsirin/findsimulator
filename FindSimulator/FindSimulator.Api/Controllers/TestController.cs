@@ -41,9 +41,6 @@ namespace FindSimulator.Api.Controllers
             var xr = 10111;
             var d = "mehmet2";
             var d1 = "mehmet3";
-            var d4 = "mehmet3";
-
-
             return "Mehmet";
         }
 
