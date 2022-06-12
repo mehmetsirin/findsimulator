@@ -41,5 +41,11 @@ namespace FindSimulator.Api.Controllers
             var xr = 101111;
             return "";
         }
+
+
+         public  string Amend()
+        {
+            return "mehmet";
+        }
     }
 }
