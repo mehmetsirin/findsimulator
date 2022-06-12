@@ -46,11 +46,6 @@ namespace FindSimulator.Api.Controllers
 
          public  string Amend()
         {
-
-            int x = 1;
-                x=2;
-            x = 3;
-
             return "mehmet";
         }
     }
