@@ -39,7 +39,7 @@ namespace FindSimulator.Api.Controllers
         public string GetToken1(int x = 10)
         {
             var xr = 101111;
-
+            return "";
         }
     }
 }
