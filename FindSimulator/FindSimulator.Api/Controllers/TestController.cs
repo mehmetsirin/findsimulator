@@ -53,7 +53,6 @@ namespace FindSimulator.Api.Controllers
          public  void testRebase()
         {
 
-            return "main";
         }
         public void testRebase1()
         {
