@@ -38,8 +38,19 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public string GetToken1(int x = 10)
         {
-            var xr = 101111;
+            var xr = 10111;
+            var d = "mehmet2";
+            var d1 = "mehmet3";
+            var d4 = "mehmet3";
 
+
+            return "Mehmet";
+        }
+
+
+         public  string Amend()
+        {
+            return "mehmet";
         }
     }
 }
