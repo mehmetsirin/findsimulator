@@ -81,9 +81,9 @@ namespace FindSimulator.Service.Concrete
 
             List<Sessions> sessionsList = null;
             if (DateTime.Now > dto.StarDate)
-                sessionsList = _sessionsRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y => y.StartDate > dto.StarDate && y.EndDate < dto.EndDate).ToList();
-            else
-                sessionsList = _sessionsRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y => y.StartDate > dto.StarDate && y.EndDate < dto.EndDate).ToList();
+                dto.StarDate = DateTime.Today;
+              var sessionSlotIDs=_baseRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.StartDate > dto.StarDate && y.EndDate < dto.EndDate).Select(y=>y.SessionsID).Distinct().ToList();
+            sessionsList = _sessionsRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y =>  sessionSlotIDs.Contains(y.ID)).ToList();
             if (!string.IsNullOrEmpty(dto.simulatorType))
                 sessionsList = sessionsList.Where(y => y.SimulatorType == dto.simulatorType).ToList();
             if (!string.IsNullOrEmpty(dto.aircraftType))

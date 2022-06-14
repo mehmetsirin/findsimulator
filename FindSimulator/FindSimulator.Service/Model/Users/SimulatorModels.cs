@@ -9,5 +9,8 @@ namespace FindSimulator.Service.Model.Users
     public  class SimulatorModels
     {
     }
-      public  record   SimulatorSearcModel(DateTime StarDate, DateTime EndDate, string simulatorType,string  aircraftType,string location);
+      public  record   SimulatorSearcModel( DateTime EndDate, string simulatorType,string  aircraftType,string location)
+    {
+        public DateTime StarDate { get; set; }
+    }
 }
