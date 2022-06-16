@@ -38,7 +38,7 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public string GetToken1(int x = 10)
         {
-            int feature = 1;
+            int feature = 12;
             int ds = 10;
             return "Mehmet";
         }
