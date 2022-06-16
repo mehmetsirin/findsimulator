@@ -90,7 +90,6 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public  async  Task<DataResult<bool>> SessionDetailUpdateAsync( List<SessionDetailStateUpdate> sessionDetailStateUpdates)
         {
-
             return null;
         }
 
