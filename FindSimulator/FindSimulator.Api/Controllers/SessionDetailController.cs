@@ -96,6 +96,8 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public async Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync()
         {
+
+            int x = 10;
             var data = await sessionDetailManager.GetSessionDetailOrderAsync();
             return data;
         }
