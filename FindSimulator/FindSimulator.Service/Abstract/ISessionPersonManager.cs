@@ -1,4 +1,5 @@
-﻿using FindSimulator.Service.Model.SessionPerson;
+﻿using FindSimulator.Service.Model.SessionDetail;
+using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.Results.Concrete;
 using System;
@@ -23,7 +24,7 @@ namespace FindSimulator.Service.Abstract
 
         Task<Result> UpdateAsync(SessionPersonUpdate update);
         Task<Result> Remove(int ID);
-         
+
 
     }
 }

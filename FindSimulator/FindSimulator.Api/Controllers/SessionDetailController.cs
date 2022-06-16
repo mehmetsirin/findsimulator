@@ -2,6 +2,7 @@
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
+using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Http;
@@ -91,6 +92,13 @@ namespace FindSimulator.Api.Controllers
         {
 
             return null;
+        }
+
+        [HttpGet]
+        public async Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync()
+        {
+            var data = await sessionDetailManager.GetSessionDetailOrderAsync();
+            return data;
         }
 
 

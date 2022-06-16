@@ -1,4 +1,5 @@
 ﻿using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Share.Results.Concrete;
 
@@ -15,7 +16,6 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
     public class SessionPersonController : BaseController
     {
         private readonly ISessionPersonManager sessionPersonManager;
@@ -88,5 +88,7 @@ namespace FindSimulator.Api.Controllers
             var data =   await  sessionPersonManager.GetUserByIDSessions(UserID);
             return data;
         }
+
+        
     }
 }

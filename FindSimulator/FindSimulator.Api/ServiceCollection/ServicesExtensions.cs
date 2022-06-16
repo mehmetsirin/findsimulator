@@ -11,6 +11,7 @@ using FindSimulator.Share.RabbitMq;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 using RabbitMQ.Client;
@@ -38,6 +39,7 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<IAirCraftManager, AirCraftManager>();
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<ICalendarManager, CalendarManager>();
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
         }
 

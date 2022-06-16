@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Service.Model.SessionDetail
 {
-    public  class SessionwithSessionDetailView
+    public  class SessionDetailView
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -22,10 +22,11 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<bool>> SessionAddAsync(SessionCreate model, int companyID, int userId);
 
         Task<DataResult<bool>> SessionRemove(int id);
-        Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync();
+        Task<DataResult<List<SessionDetailView>>> SessionwithSessionDetailAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
         Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType);
         Task<DataResult<bool>> SessionDetailUpdateAsync(SessionDetailStateUpdate update);
+        Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync();
 
 
     }

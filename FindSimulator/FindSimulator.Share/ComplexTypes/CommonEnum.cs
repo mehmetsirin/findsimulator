@@ -27,7 +27,8 @@ namespace Fleet.Share.ComplexTypes
         {
             Close = 0,
             Open = 1,
-            Reserved = 2
+            Reserved = 2,
+             Received=3
 
         }
 

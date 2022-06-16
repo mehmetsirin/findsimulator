@@ -2,6 +2,7 @@
 using FindSimulator.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,15 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
 {
     sealed public class SimulatorContext : DbContext
     {
-
-        public SimulatorContext(DbContextOptions<SimulatorContext> dbContextOptions) : base(dbContextOptions)
+        public readonly ILoggerFactory _loggerFactory;
+        public SimulatorContext(DbContextOptions<SimulatorContext> dbContextOptions,ILoggerFactory loggerFactory) : base(dbContextOptions)
         {
-
+            _loggerFactory = loggerFactory;
         }
+
+      
+
+
         DbSet<Users> Users { get; set; }
         DbSet<AirCraft> AirCrafts { get; set; }
         DbSet<Simulator> Simulators { get; set; }
@@ -34,9 +39,12 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
             base.OnModelCreating(modelBuilder);
         }
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(_loggerFactory);
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
     }
 }

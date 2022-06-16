@@ -19,6 +19,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using FindSimulator.Service.Model.Calendar;
+using FindSimulator.Infrastructure.Repositories.BaseRepository;
+using FindSimulator.Service.Model.SessionPerson;
+using FindSimulator.Service.Model.Users;
 
 namespace FindSimulator.Service.Concrete
 {
@@ -30,7 +33,9 @@ namespace FindSimulator.Service.Concrete
          private  readonly IMapper mapper;
         private readonly ISimulatorDeviceService simulatorDeviceService;
         private readonly ISessionsManager sessionsManager;
-        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager, ISessionsRepository sessionsRepository)
+        public Infrastructure.Repositories.BaseRepository.IBaseRepository<int> baseRepository;
+
+        public SessionDetailManager(ISessionDetailRepository sessionDetail, IBaseManager<int> baseManager, IMapper mapper, ISimulatorDeviceService simulatorDeviceService, ISessionsManager sessionsManager, ISessionsRepository sessionsRepository, IBaseRepository<int> _baseRepository)
         {
             this._sessionDetail = sessionDetail;
             this.baseManager = baseManager;
@@ -38,6 +43,8 @@ namespace FindSimulator.Service.Concrete
             this.simulatorDeviceService = simulatorDeviceService;
             this.sessionsManager = sessionsManager;
             this._sessionsRepository = sessionsRepository;
+            this.baseRepository = _baseRepository;
+
         }
 
         public    async Task<DataResult<List<CalendarView>>> GetCalendarAsync()
@@ -168,15 +175,39 @@ namespace FindSimulator.Service.Concrete
             return null;
         }
 
-        public async Task<DataResult<List<SessionwithSessionDetailView>>> SessionwithSessionDetailAsync()
+        public async Task<DataResult<List<SessionDetailView>>> SessionwithSessionDetailAsync()
         {
 
             var sessionDetailList = await _sessionDetail.List<SessionDetails>();
-            var resData = mapper.Map<List<SessionwithSessionDetailView>>(sessionDetailList.Data);
-            return new DataResult<List<SessionwithSessionDetailView>>(ResultStatus.Success, resData);
+            var resData = mapper.Map<List<SessionDetailView>>(sessionDetailList.Data);
+            return new DataResult<List<SessionDetailView>>(ResultStatus.Success, resData);
 
         }
-       
+        public async Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync()
+        {
+
+            var sessionsPersons = baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.ToList();
+            var sessions = baseRepository.GetQueryable<Sessions>().GetAwaiter().GetResult().Data.Where(y => sessionsPersons.Select(x => x.SessionID).ToList().Contains(y.ID)).ToList();
+            var sessionsView = mapper.Map<List<SessionsView>>(sessions);
+            var personView = mapper.Map<List<SessionPersonView>>(sessionsPersons);
+            var sessionDetails = baseRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionsPersons.Select(x => x.SessionDetailID).ToList().Contains(y.ID)).ToList();
+            var resDatas = new List<SessionDetailWithSessionView>();
+            foreach (var item in sessionDetails)
+            {
+                var resData = new SessionDetailWithSessionView();
+                resData.EndDate = item.EndDate;
+                resData.StartDate = item.StartDate;
+                resData.SessionsID = item.SessionsID;
+                resData.Status = item.Status;
+                resData.DsStatus = (Enum.GetName(typeof(CommonEnum.SessionDetails), item.Status).ToString());
+                resData.SessionsView = sessionsView.Where(y => y.ID == item.SessionsID).FirstOrDefault();
+                resDatas.Add(resData);
+
+            }
+
+
+            return new DataResult<List<SessionDetailWithSessionView>>(ResultStatus.Success, resDatas);
+        }
 
     }
 }

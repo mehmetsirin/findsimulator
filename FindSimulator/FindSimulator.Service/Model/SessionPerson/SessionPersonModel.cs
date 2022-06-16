@@ -9,7 +9,7 @@ namespace FindSimulator.Service.Model.SessionPerson
     class SessionPersonModel
     {
     }
- public   sealed record SessionPersonView
+  public   sealed record SessionPersonView
     {
 
         public int ID { get; init; } = default!;

@@ -44,23 +44,7 @@ namespace FindSimulator.Api.Controllers
         }
 
 
-         public  string Amend()
-        {
-            return "master";
-        }
-
-
-         public  void testRebase()
-        {
-
-        }
-        public void testRebase1()
-        {
-
-        }
-        public void MainRebase1()
-        {
-
-        }
+      
+        
     }
 }
