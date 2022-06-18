@@ -1,4 +1,6 @@
-﻿using FindSimulator.Share.Results.Concrete;
+﻿using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.RequestModel;
+using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,19 @@ namespace FindSimulator.Api.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        [HttpPost]
-        public Task<DataResult<bool>> OrderConfirm([FromBody] )
-        {
+        readonly ISessionDetailManager _sessionDetailManager;
 
+        public OrderController(ISessionDetailManager sessionDetailManager)
+        {
+            _sessionDetailManager = sessionDetailManager;
+        }
+
+        [HttpPost]
+        [Route("order-confirm")]
+        public   async Task<DataResult<bool>> OrderConfirm([FromBody] OrderConfirmRequest request )
+        {
+          var data=   await _sessionDetailManager.OrderConfirm(request);
+            return data;
         }
     }
 }

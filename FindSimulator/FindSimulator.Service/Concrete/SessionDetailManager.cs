@@ -22,6 +22,7 @@ using FindSimulator.Service.Model.Calendar;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.Users;
+using FindSimulator.Service.Model.RequestModel;
 
 namespace FindSimulator.Service.Concrete
 {
@@ -195,6 +196,7 @@ namespace FindSimulator.Service.Concrete
             foreach (var item in sessionDetails)
             {
                 var resData = new SessionDetailWithSessionView();
+                resData.OrderID = item.OrderID;
                 resData.EndDate = item.EndDate;
                 resData.StartDate = item.StartDate;
                 resData.SessionsID = item.SessionsID;
@@ -209,5 +211,14 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<List<SessionDetailWithSessionView>>(ResultStatus.Success, resDatas);
         }
 
+        public  async Task<DataResult<bool>> OrderConfirm(OrderConfirmRequest request)
+        {
+            var sessionDetail = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y =>y.OrderID==request.OrderID).FirstOrDefault();
+            sessionDetail.UpdateDate = DateTime.Now;
+            sessionDetail.Status = request.Status;
+             _sessionDetail.UpdateOne<SessionDetails>(sessionDetail);
+               await _sessionDetail.SaveChangesAsync();
+            return    new DataResult<bool>(ResultStatus.Success,true);
+        }
     }
 }
