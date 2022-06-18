@@ -2,6 +2,7 @@
 
 using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Model.AirCraft;
+using FindSimulator.Service.Model.Helper;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.SimulatorDevice;
@@ -37,6 +38,9 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<SessionDetailView, SessionDetails>().ReverseMap();
             CreateMap<SessionDate, SessionDetails>().ReverseMap();
             CreateMap<SessionDetails, SessionDetailView>();
+            CreateMap<SimulatorDevice, SelectObject>().ForMember(dest=>dest.Value,act=>act.MapFrom(src=>src.Code)).
+                ForMember(dest => dest.ParentID, act => act.MapFrom(src => src.AirCraftsID));
+
         }
     }
 }
