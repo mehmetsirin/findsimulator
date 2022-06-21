@@ -10,5 +10,7 @@ namespace FindSimulator.Service.Model.SessionDetail
     {
         public  int SessionDetailID { get; set; }
         public int SessionID { get; set; }
+
+        public Guid OrderID { get; set; }
     }
 }

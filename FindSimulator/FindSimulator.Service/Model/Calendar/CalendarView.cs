@@ -17,6 +17,7 @@ namespace FindSimulator.Service.Model.Calendar
         public int Reserved { get; set; }
         public int Status { get; set; }
         public ExtendedProps ExtendedProps { get; set; }
+        public Guid  OrderID { get; set; }
 
         public CalendarView(int ıd, string url, string title, DateTime start, DateTime end, bool allDay, string extendedProps, int reserved, string aircraftType,int sessionId=0)
         {

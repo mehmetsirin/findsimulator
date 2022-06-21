@@ -23,7 +23,7 @@ namespace Fleet.Share.ComplexTypes
             Information = 2
 
         }
-        public enum SessionDetails
+        public enum SessionDetailStatus
         {
             Close = 0,
             Open = 1,

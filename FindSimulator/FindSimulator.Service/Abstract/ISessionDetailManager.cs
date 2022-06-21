@@ -26,7 +26,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<List<SessionDetailView>>> SessionwithSessionDetailAsync();
         Task<DataResult<bool>> RemoveAsync(int id);
         Task<DataResult<List<CalendarView>>> GetCalendarAsync(int simulatorDeviceID, string aircraftType);
-        Task<DataResult<bool>> SessionDetailUpdateAsync(SessionDetailStateUpdate update);
+        Task<DataResult<bool>> SessionStateUpdateAsync(List<SessionDetailStateUpdate> sessionDetailStateUpdates);
         Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync();
         Task<DataResult<bool>> OrderConfirm(OrderConfirmRequest request);
 

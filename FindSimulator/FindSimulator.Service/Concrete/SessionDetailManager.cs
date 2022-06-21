@@ -23,6 +23,7 @@ using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.Users;
 using FindSimulator.Service.Model.RequestModel;
+using static Fleet.Share.ComplexTypes.CommonEnum;
 
 namespace FindSimulator.Service.Concrete
 {
@@ -91,16 +92,16 @@ namespace FindSimulator.Service.Concrete
             foreach (var item in sessionDetailList)
             {
                 var res = new CalendarView();
-               
+                res.OrderID = item.OrderID;
                     res.End = item.EndDate;
                     res.Id = item.ID;
                     res.Start = item.StartDate;
                     res.Title = "Title" ?? "İsim Girilmemiş";
-                    res.Title = item.ID + "-" +  item.StartDate.Hour + ":" + item.StartDate.Minute + "-" + item.EndDate.Hour + ":" + item.EndDate.Hour;
+                    res.Title =  item.StartDate.Hour + ":" + item.StartDate.Minute + "-" + item.EndDate.Hour + ":" + item.EndDate.Hour;
                     res.Url = "";
                     res.Reserved = item.Reserved;
                     res.Status = item.Status;
-                    res.ExtendedProps = new ExtendedProps(Enum.GetName(typeof(CommonEnum.SessionDetails),item.Status).ToString(), "",item.SessionsID);
+                    res.ExtendedProps = new ExtendedProps(Enum.GetName(typeof(CommonEnum.SessionDetailStatus),item.Status).ToString(), "",item.SessionsID);
                     resData.Add(res);
 
             }
@@ -164,9 +165,18 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<bool>(ResultStatus.Success,true);
         }
 
-        public Task<DataResult<bool>> SessionDetailUpdateAsync(SessionDetailStateUpdate update)
+       public async  Task<DataResult<bool>> SessionStateUpdateAsync(List<SessionDetailStateUpdate> sessionDetailStateUpdates)
         {
-            return null;
+
+            var sessionDetailList = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => sessionDetailStateUpdates.Select(y => y.SessionDetailID).ToList().Contains(y.ID)).ToList();
+
+            foreach (var item in sessionDetailList)
+            {
+                item.Status = (int)CommonEnum.SessionDetailStatus.Open;
+                _sessionDetail.UpdateOne<Domain.Entities.SessionDetails>(item);
+            }
+            _sessionDetail.SaveChanges();
+            return new DataResult<bool>(ResultStatus.Success,true);
              
         }
 
@@ -201,7 +211,7 @@ namespace FindSimulator.Service.Concrete
                 resData.StartDate = item.StartDate;
                 resData.SessionsID = item.SessionsID;
                 resData.Status = item.Status;
-                resData.DsStatus = (Enum.GetName(typeof(CommonEnum.SessionDetails), item.Status).ToString());
+                resData.DsStatus = (Enum.GetName(typeof(CommonEnum.SessionDetailStatus), item.Status).ToString());
                 resData.SessionsView = sessionsView.Where(y => y.ID == item.SessionsID).FirstOrDefault();
                 resDatas.Add(resData);
 

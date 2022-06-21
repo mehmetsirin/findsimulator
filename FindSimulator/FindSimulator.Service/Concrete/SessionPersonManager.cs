@@ -108,7 +108,7 @@ namespace FindSimulator.Service.Concrete
             var resData = new List<SessionwithPersonwithDetailModel>();
 
             var sessionsPersons = baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.UserID == userID).ToList();
-            var sessions = await sessionsManager.ListAsync(sessionsPersons.Select(y => y.ID).ToList());
+            var sessions = await sessionsManager.ListAsync(sessionsPersons.Select(y => y.SessionID).ToList());
             var SessionDetails = await sessionDetailManager.GetSessionDetail(sessions.Data.Select(y => y.ID).ToList());
 
             foreach (var item in sessions.Data)
