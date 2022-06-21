@@ -36,5 +36,6 @@ namespace FindSimulator.Domain.Entities
         public  string DeviceID { get; set; }
         public string TelNo { get; set; }
         public string CountryCode { get; set; }
+        public int  CompanyID { get; set; }
     }
 }

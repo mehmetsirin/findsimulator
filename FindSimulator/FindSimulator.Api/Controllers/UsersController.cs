@@ -14,7 +14,7 @@ namespace FindSimulator.Api.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         readonly IUserManager _userManager;
 
@@ -33,20 +33,20 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public async Task<object> GetUserList()
         {
-            var res = _userManager.GetUserList();
+            var res =  await _userManager.GetUserListAsync();
             return res;
         }
 
         [HttpPost]
         public async Task<Object> Update(UserUpdate dto)
         {
-            var res = _userManager.Update(dto);
+            var res =  await _userManager.Update(dto);
             return res;
         }
         [HttpGet]
         public async Task<Object> GetUserID(int userID)
         {
-            var res = _userManager.GetUserID(userID);
+            var res =  await _userManager.GetUserID(userID);
             return res;
         }
 

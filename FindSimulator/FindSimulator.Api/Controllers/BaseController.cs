@@ -15,12 +15,12 @@ namespace FindSimulator.Api.Controllers
         {
         }
 
-        public Guid CompanyID
+        public int CompanyID
         {
             get
             {
 
-                return new Guid(HttpContext.User.Claims.Where(a => a.Type == "companyId").Select(x => x.Value).FirstOrDefault());
+                return int.Parse(HttpContext.User.Claims.Where(a => a.Type == "companyId").Select(x => x.Value).FirstOrDefault());
             }
         }
 
