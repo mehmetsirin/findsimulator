@@ -16,5 +16,6 @@ namespace FindSimulator.Domain.Entities
         public int  Reserved { get; set; }
         public decimal Price { get; set; }
         public int Status { get; set; }
+        public Guid OrderID { get; set; }
     }
 }

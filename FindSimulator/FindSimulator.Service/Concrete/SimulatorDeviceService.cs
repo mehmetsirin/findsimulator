@@ -3,6 +3,7 @@
 using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.Helper;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Results.Concrete;
@@ -91,6 +92,13 @@ namespace FindSimulator.Service.Concrete
             await baseRepository.SaveChangesAsync();
             return new DataResult<bool>(ResultStatus.Success, true);
 
+        }
+
+        public  async Task<DataResult<List<SelectObject>>> GetSelectObjectAync()
+        {
+            var data = baseRepository.GetQueryable<SimulatorDevice>().GetAwaiter().GetResult().Data.ToList();
+            dynamic resData = mapper.Map<List<SelectObject>>(data);
+            return new DataResult<List<SelectObject>>(ResultStatus.Success, resData);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace FindSimulator.Service.Model.Users
         public int ID { get; set; }
         public string AccessToken { get; set; }
          public string RefreshToken { get; set; }
+        public  string FullName { get; set; }
 
     }
     public record UserLoginModel(string pass, string email);

@@ -1,5 +1,7 @@
 ﻿using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Model.Helper;
 using FindSimulator.Service.Model.SimulatorDevice;
+using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +63,12 @@ namespace FindSimulator.Api.Controllers
             var data =  await simulatorDeviceService.DeleteAsync(id);
             return data;
 
+        }
+       [HttpGet]
+       public  async Task<DataResult<List<SelectObject>>> GetSelectObjectAync()
+        {
+            var data =  await simulatorDeviceService.GetSelectObjectAync();
+            return data;
         }
     }
 }

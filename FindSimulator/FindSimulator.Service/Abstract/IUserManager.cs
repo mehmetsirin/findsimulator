@@ -16,7 +16,7 @@ namespace FindSimulator.Service.Abstract
 
         Task<DataResult<bool>> Register(UserRegisterModel user);
         Task<DataResult<UserModelView>> GetUserID(int id);
-        Task<DataResult<List<UserModelView>>> GetUserList();
+        Task<DataResult<List<UserModelView>>> GetUserListAsync();
         Task<DataResult<bool>> Update(UserUpdate dto);
         Task<DataResult<bool>> Update(Users dto);
         Task<DataResult<bool>> Confirm(string key);

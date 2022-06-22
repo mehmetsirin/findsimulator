@@ -12,5 +12,9 @@ namespace FindSimulator.Service.Model.SessionDetail
         public DateTime EndDate { get; set; }
         public int SessionsID  { get; set; }
         public  int ID { get; set; }
+        public int Status { get; set; }
+
+        public Guid OrderID { get; set; }
+
     }
 }

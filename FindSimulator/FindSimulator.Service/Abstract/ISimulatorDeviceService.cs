@@ -1,4 +1,5 @@
 ﻿using FindSimulator.Domain.Entities;
+using FindSimulator.Service.Model.Helper;
 using FindSimulator.Service.Model.SimulatorDevice;
 using FindSimulator.Share.Results.Concrete;
 
@@ -19,5 +20,6 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<bool>> AddAsync(SimulatorDeviceCreate create);
         Task<DataResult<bool>> DeleteAsync(int id);
         Task<DataResult<bool>> UpdateAsync(SimulatorDeviceUpdate update);
+        Task<DataResult<List<SelectObject>>> GetSelectObjectAync();
     }
 }

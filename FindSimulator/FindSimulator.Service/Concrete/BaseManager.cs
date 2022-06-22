@@ -39,5 +39,11 @@ namespace FindSimulator.Service.Concrete
             return res;
            
         }
+
+     public  async   Task<DataResult<IQueryable<TDocument>>>GetQueryable<TDocument>() where TDocument : class, IEntity<TKey>
+        {
+            var res = await baseRepository.GetQueryable<TDocument>();
+            return res;
+        }
     }
 }

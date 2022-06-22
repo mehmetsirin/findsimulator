@@ -7,6 +7,7 @@ using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Results.Concrete;
+using FindSimulator.Share.Scope;
 
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,14 @@ namespace FindSimulator.Service.Concrete
         readonly IMapper mapper;
         readonly IRedisManager redisManager;
         readonly INotificationRepository notificationRepository;
-        public UsersManager(IUsersRepository usersRepository, IMapper _mapper,  IRedisManager redisManager, INotificationRepository notificationRepository)
+        readonly IActionScope _actionScope;
+        public UsersManager(IUsersRepository usersRepository, IMapper _mapper,  IRedisManager redisManager, INotificationRepository notificationRepository,IActionScope actionScope)
         {
             this.usersRepository = usersRepository;
             this.mapper = _mapper;
             this.redisManager = redisManager;
             this.notificationRepository = notificationRepository;
+            _actionScope = actionScope;
         }
 
         public   async Task<DataResult<bool>> Confirm(string key)
@@ -55,12 +58,13 @@ namespace FindSimulator.Service.Concrete
             
             var data =    await usersRepository.GetByIdAsync<Users>(id);
             var dataRes = mapper.Map<UserModelView>(data.Data);
+            dataRes.FullName = dataRes?.UserName + " " + dataRes?.Surname;
             return new DataResult<UserModelView>(ResultStatus.Success,dataRes);
         }
-        public  async Task<DataResult<List<UserModelView>>> GetUserList()
+        public  async Task<DataResult<List<UserModelView>>> GetUserListAsync()
         {
-            var data =   await usersRepository.List<Users>();
-            var dataRes = mapper.Map<List<UserModelView>>(data.Data);
+            var data =    usersRepository.GetQueryable<Users>().GetAwaiter().GetResult().Data.Where(y=>y.CompanyID==_actionScope.IdCompany).ToList();
+            var dataRes = mapper.Map<List<UserModelView>>(data);
             return new DataResult<List<UserModelView>>(ResultStatus.Success,dataRes);
         }
 

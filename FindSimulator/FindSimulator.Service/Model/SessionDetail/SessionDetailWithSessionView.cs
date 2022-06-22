@@ -22,6 +22,7 @@ namespace FindSimulator.Service.Model.SessionDetail
         public int Status { get; set; }
         public string DsStatus { get; set; }
         public SessionsView  SessionsView { get; set; }
+        public Guid OrderID { get; set; }
 
     }
 }

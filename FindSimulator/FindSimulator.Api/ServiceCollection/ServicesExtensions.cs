@@ -8,6 +8,7 @@ using FindSimulator.Service.AutoMapper;
 using FindSimulator.Service.Concrete;
 using FindSimulator.Share.AppConfiguration;
 using FindSimulator.Share.RabbitMq;
+using FindSimulator.Share.Scope;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,8 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<IFileManager, FileManager>();
             services.AddScoped<ICalendarManager, CalendarManager>();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddScoped<IActionScope, ActionScope>();
+            services.AddScoped<IUserComponentManager, UserComponentManager>();
 
         }
 
