@@ -58,7 +58,7 @@ namespace FindSimulator.Service.Concrete
             
             var data =    await usersRepository.GetByIdAsync<Users>(id);
             var dataRes = mapper.Map<UserModelView>(data.Data);
-            dataRes.FullName = dataRes.UserName + " " + dataRes.Surname;
+            dataRes.FullName = dataRes?.UserName + " " + dataRes?.Surname;
             return new DataResult<UserModelView>(ResultStatus.Success,dataRes);
         }
         public  async Task<DataResult<List<UserModelView>>> GetUserListAsync()

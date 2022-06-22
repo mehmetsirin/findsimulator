@@ -42,6 +42,7 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<ICalendarManager, CalendarManager>();
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddScoped<IActionScope, ActionScope>();
+            services.AddScoped<IUserComponentManager, UserComponentManager>();
 
         }
 
