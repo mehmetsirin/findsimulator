@@ -1,4 +1,4 @@
-﻿using FindSimulator.Api.Action;
+using FindSimulator.Api.Action;
 using FindSimulator.Infrastructure.EventBus.Event;
 using FindSimulator.Share.Event;
 using FindSimulator.Share.RabbitMq;
@@ -30,7 +30,6 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public string GetToken(int x=10)
         {
-            var xr= 101111;
          
             return AccessToken;
         }
