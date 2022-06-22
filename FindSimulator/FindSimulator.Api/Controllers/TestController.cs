@@ -32,6 +32,7 @@ namespace FindSimulator.Api.Controllers
         {
       
             var xb = 1;
+            var d02 = "";
 
 
 
