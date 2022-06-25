@@ -24,7 +24,7 @@ namespace FindSimulator.Service.Concrete
         readonly IRedisManager redisManager;
         readonly INotificationRepository notificationRepository;
         readonly IActionScope _actionScope;
-        public UsersManager(IUsersRepository usersRepository, IMapper _mapper,  IRedisManager redisManager, INotificationRepository notificationRepository,IActionScope actionScope)
+        public UsersManager(IUsersRepository usersRepository, IMapper _mapper, IRedisManager redisManager, INotificationRepository notificationRepository, IActionScope actionScope)
         {
             this.usersRepository = usersRepository;
             this.mapper = _mapper;
@@ -33,51 +33,61 @@ namespace FindSimulator.Service.Concrete
             _actionScope = actionScope;
         }
 
-        public  async Task<DataResult<bool>> ChangeActiveAsync(int userID, bool isActive)
+        public async Task<DataResult<bool>> AddAsync(UserCreate create)
         {
-            var user =usersRepository.GetByIdAsync<Users>(userID).GetAwaiter().GetResult().Data;
+
+            var user = mapper.Map<Users>(create);
+            user.CompanyID = _actionScope.IdCompany;
+            await usersRepository.AddOneAsync<Users>(user);
+            usersRepository.SaveChanges();
+            return new DataResult<bool>(ResultStatus.Authority,true);
+        }
+
+        public async Task<DataResult<bool>> ChangeActiveAsync(int userID, bool isActive)
+        {
+            var user = usersRepository.GetByIdAsync<Users>(userID).GetAwaiter().GetResult().Data;
             user.IsActive = false;
-             await  Update(user);
+            await Update(user);
             usersRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success);
         }
 
-        public   async Task<DataResult<bool>> Confirm(string key)
+        public async Task<DataResult<bool>> Confirm(string key)
         {
-            var redisData =  await redisManager.Get(key);
-              if( redisData!=null && redisData.ResultStatus==0 &&  redisData.Data.UserID!=0)
+            var redisData = await redisManager.Get(key);
+            if (redisData != null && redisData.ResultStatus == 0 && redisData.Data.UserID != 0)
             {
 
-                var user =  await usersRepository.GetByIdAsync<Users>(redisData.Data.UserID);
+                var user = await usersRepository.GetByIdAsync<Users>(redisData.Data.UserID);
                 user.Data.IsActive = true;
                 usersRepository.UpdateOne<Users>(user.Data);
                 usersRepository.SaveChanges();
                 return new DataResult<bool>(ResultStatus.Success);
-                
+
             }
             else
             {
-                return new DataResult<bool>(ResultStatus.Error,"Yanlış Code  Girdiniz");
+                return new DataResult<bool>(ResultStatus.Error, "Yanlış Code  Girdiniz");
             }
 
         }
 
-        public     async Task<DataResult<UserModelView>> GetUserID(int id)
+        public async Task<DataResult<UserModelView>> GetUserID(int id)
         {
-            
-            var data =    await usersRepository.GetByIdAsync<Users>(id);
+
+            var data = await usersRepository.GetByIdAsync<Users>(id);
             var dataRes = mapper.Map<UserModelView>(data.Data);
-            if(dataRes==null)
+            if (dataRes == null)
                 return new DataResult<UserModelView>(ResultStatus.DataNull);
 
             dataRes.FullName = dataRes?.UserName + " " + dataRes?.Surname;
-            return new DataResult<UserModelView>(ResultStatus.Success,dataRes);
+            return new DataResult<UserModelView>(ResultStatus.Success, dataRes);
         }
-        public  async Task<DataResult<List<UserModelView>>> GetUserListAsync()
+        public async Task<DataResult<List<UserModelView>>> GetUserListAsync()
         {
-            var data =    usersRepository.GetQueryable<Users>().GetAwaiter().GetResult().Data.Where(y=>y.CompanyID==_actionScope.IdCompany).ToList();
+            var data = usersRepository.GetQueryable<Users>().GetAwaiter().GetResult().Data.Where(y => y.CompanyID == _actionScope.IdCompany).ToList();
             var dataRes = mapper.Map<List<UserModelView>>(data);
-            return new DataResult<List<UserModelView>>(ResultStatus.Success,dataRes);
+            return new DataResult<List<UserModelView>>(ResultStatus.Success, dataRes);
         }
 
         public async Task<DataResult<UserModelView>> Login(string email, string pass, string deviceID = null)
@@ -86,19 +96,19 @@ namespace FindSimulator.Service.Concrete
             try
             {
                 var user = this.usersRepository.List<Users>().GetAwaiter().GetResult().Data.Where(y => y.Password == pass && y.Email == email).FirstOrDefault();
-               
+
 
                 if (user != null)
                 {
                     UserModelView modelView = mapper.Map<UserModelView>(user);
                     user.DeviceID = deviceID;
-                   await   Update(user);
-                      
+                    await Update(user);
+
                     return new DataResult<UserModelView>(ResultStatus.Success, modelView);
                 }
                 else
                 {
-                    return new DataResult<UserModelView>(ResultStatus.DataNull,"Boyle Bir Kullanıcı Bulunamadı");
+                    return new DataResult<UserModelView>(ResultStatus.DataNull, "Boyle Bir Kullanıcı Bulunamadı");
                 }
             }
             catch (Exception ex)
@@ -109,27 +119,27 @@ namespace FindSimulator.Service.Concrete
             //return new DataResult<UserModelView>(ResultStatus.Error, "Kullanıcı Bilgileriniz  Yanlış");
         }
 
-       
 
-        public  async Task<DataResult<bool>> Register(UserRegisterModel _user)
+
+        public async Task<DataResult<bool>> Register(UserRegisterModel _user)
         {
             var user = mapper.Map<Users>(_user);
             user.IsActive = false;
-          
+
             var res = this.usersRepository.AddOne<Users>(user);
-            var  effected=  this.usersRepository.SaveChanges();
-              if(effected>0)
+            var effected = this.usersRepository.SaveChanges();
+            if (effected > 0)
             {
                 Random random = new Random();
                 var code = random.Next(5000, 99999).ToString();
-                await redisManager.Set(code, new RedisModel() { UserID=user.ID, InsertDateTime=DateTime.Now },DateTime.Now.AddMinutes(7));
+                await redisManager.Set(code, new RedisModel() { UserID = user.ID, InsertDateTime = DateTime.Now }, DateTime.Now.AddMinutes(7));
 
-                 await notificationRepository.SenMailOutlook(code,user.Email, user);
+                await notificationRepository.SenMailOutlook(code, user.Email, user);
             }
             return new DataResult<bool>(ResultStatus.Success, true);
         }
 
-        public  async Task<DataResult<bool>> Update(UserUpdate dto)
+        public async Task<DataResult<bool>> Update(UserUpdate dto)
         {
             var user = mapper.Map<Users>(dto);
             var res = this.usersRepository.UpdateOne<Users>(user);
@@ -137,11 +147,11 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<bool>(ResultStatus.Success, true);
         }
 
-        public  async Task<DataResult<bool>> Update(Users dto)
+        public async Task<DataResult<bool>> Update(Users dto)
         {
             var res = this.usersRepository.UpdateOne<Users>(dto);
             var effected = this.usersRepository.SaveChanges();
-            return   new DataResult<bool>(ResultStatus.Success, true);
+            return new DataResult<bool>(ResultStatus.Success, true);
         }
     }
 }

@@ -21,5 +21,6 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<bool>> Update(Users dto);
         Task<DataResult<bool>> Confirm(string key);
         Task<DataResult<bool>> ChangeActiveAsync(int userID, bool isActive);
+        Task<DataResult<bool>> AddAsync(UserCreate create);
     }
 }
