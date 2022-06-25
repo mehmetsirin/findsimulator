@@ -30,7 +30,6 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
         public string GetToken(int x=10)
         {
-            var xr= 101111;
          
             return AccessToken;
         }
