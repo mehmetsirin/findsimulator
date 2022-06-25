@@ -103,6 +103,7 @@ namespace FindSimulator.Service.Concrete
         {
             var user = mapper.Map<Users>(_user);
             user.IsActive = false;
+          
             var res = this.usersRepository.AddOne<Users>(user);
             var  effected=  this.usersRepository.SaveChanges();
               if(effected>0)

@@ -27,10 +27,10 @@ namespace Fleet.Share.ComplexTypes
         {
             Close = 0,
             Open = 1,
-            Reserved = 2,
-            Received=3,
-            Refusal=4,
-            Approved=5
+            Pending = 2,
+            Sold=3,
+            Canceled=4,
+            Training=5
 
         }
 
