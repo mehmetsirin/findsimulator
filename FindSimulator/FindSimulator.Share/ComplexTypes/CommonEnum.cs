@@ -33,6 +33,10 @@ namespace Fleet.Share.ComplexTypes
             Training=5
 
         }
+        public enum UserStatus
+        {
+
+        }
 
     }
 }

@@ -33,6 +33,15 @@ namespace FindSimulator.Service.Concrete
             _actionScope = actionScope;
         }
 
+        public  async Task<DataResult<bool>> ChangeActiveAsync(int userID, bool isActive)
+        {
+            var user =usersRepository.GetByIdAsync<Users>(userID).GetAwaiter().GetResult().Data;
+            user.IsActive = false;
+             await  Update(user);
+            usersRepository.SaveChanges();
+            return new DataResult<bool>(ResultStatus.Success);
+        }
+
         public   async Task<DataResult<bool>> Confirm(string key)
         {
             var redisData =  await redisManager.Get(key);
@@ -58,6 +67,9 @@ namespace FindSimulator.Service.Concrete
             
             var data =    await usersRepository.GetByIdAsync<Users>(id);
             var dataRes = mapper.Map<UserModelView>(data.Data);
+            if(dataRes==null)
+                return new DataResult<UserModelView>(ResultStatus.DataNull);
+
             dataRes.FullName = dataRes?.UserName + " " + dataRes?.Surname;
             return new DataResult<UserModelView>(ResultStatus.Success,dataRes);
         }

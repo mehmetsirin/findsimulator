@@ -15,7 +15,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ComponentController : BaseController
     {
         private readonly IUserComponentManager _userComponentManager;
@@ -32,5 +32,7 @@ namespace FindSimulator.Api.Controllers
             var res =  await _userComponentManager.GetUserComponentUserByIDsAsync(userID);
             return res;
         }
+
+        
     }
 }

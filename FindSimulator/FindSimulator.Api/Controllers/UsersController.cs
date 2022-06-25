@@ -53,8 +53,13 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public async Task<Object> Confirm( string key)
         {
-
             var res = await _userManager.Confirm(key);
+            return res;
+        }
+       [HttpPost]
+       public   async Task<object> RemoveAsync( [FromQuery] int  userId)
+        {
+            var res = await _userManager.ChangeActiveAsync(userId,false);
             return res;
         }
     }

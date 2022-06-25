@@ -36,8 +36,8 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         DbSet<SimulatorDeviceLocation> SimulatorDeviceLocations { get; set; }
         DbSet<Manufacturer> Manufacturers { get; set; }
         DbSet<Companies> Companies { get; set; }
-        DbSet<UserComponent>  UserComponents { get; set; }
-        DbSet<PageComponent>  PageComponents { get; set; }
+        DbSet<UserComponent>  UserComponent { get; set; }
+        DbSet<PageComponent>  PageComponent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
