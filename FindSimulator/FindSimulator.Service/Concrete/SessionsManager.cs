@@ -66,7 +66,7 @@ namespace FindSimulator.Service.Concrete
         public async Task<DataResult<bool>> RemoveAsync(int id)
         {
             var sessionDetails = _sessionsRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.SessionsID == id).ToList();
-            sessionDetails = sessionDetails.Where(y => y.Status == (int)CommonEnum.SessionDetailStatus.Reserved).ToList();
+            sessionDetails = sessionDetails.Where(y => y.Status == (int)CommonEnum.SessionDetailStatus.Pending).ToList();
             if (sessionDetails.Count() > 0)
                 return new DataResult<bool>(ResultStatus.Info, "Daha Onceden Satılan Slot Olduğundan Silinemez");
              sessionDetails.ForEach(y => { y.UpdateDate = DateTime.Now; y.IsActive = false; });
@@ -108,7 +108,7 @@ namespace FindSimulator.Service.Concrete
         {
             var session =  SimulatorSessionByID(_session.ID).GetAwaiter().GetResult().Data;
             var slotList = _sessionsRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.SessionsID == _session.ID).OrderBy(y=>y.StartDate).ToList();
-            var reservedSlots = slotList.Where(y => y.Status == (int)CommonEnum.SessionDetailStatus.Reserved).ToList();
+            var reservedSlots = slotList.Where(y => y.Status == (int)CommonEnum.SessionDetailStatus.Pending).ToList();
             if (reservedSlots.Count() > 0)
             {
                 session.StartDate = slotList.FirstOrDefault().StartDate;

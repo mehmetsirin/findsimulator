@@ -1,6 +1,7 @@
 ﻿using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.Users;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace FindSimulator.Api.Controllers
 
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class UsersController : BaseController
     {
         readonly IUserManager _userManager;
@@ -53,8 +55,19 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public async Task<Object> Confirm( string key)
         {
-
             var res = await _userManager.Confirm(key);
+            return res;
+        }
+       [HttpPost]
+       public   async Task<object> RemoveAsync( [FromQuery] int  userId)
+        {
+            var res = await _userManager.ChangeActiveAsync(userId,false);
+            return res;
+        }
+        [HttpPost]
+        public async Task<object> AddAsync(UserCreate userCreate)
+        {
+            var res = await _userManager.AddAsync(userCreate);
             return res;
         }
     }

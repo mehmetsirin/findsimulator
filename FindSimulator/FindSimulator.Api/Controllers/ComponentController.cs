@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.UserComponent;
+using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +16,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ComponentController : BaseController
     {
         private readonly IUserComponentManager _userComponentManager;
@@ -32,5 +33,13 @@ namespace FindSimulator.Api.Controllers
             var res =  await _userComponentManager.GetUserComponentUserByIDsAsync(userID);
             return res;
         }
+        [HttpPost]
+        [Route("update-user-with-usercomponent")]
+        public  async  Task<DataResult<bool>>UpdateUserWithUserComponent(UserWithUserComponentUpdate componentUpdate)
+        {
+
+            return new DataResult<bool>();
+        }
+        
     }
 }

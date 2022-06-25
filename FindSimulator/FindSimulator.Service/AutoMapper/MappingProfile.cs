@@ -41,6 +41,8 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<SimulatorDevice, SelectObject>().ForMember(dest=>dest.Value,act=>act.MapFrom(src=>src.Code)).
                 ForMember(dest => dest.ParentID, act => act.MapFrom(src => src.AirCraftsID));
 
+            CreateMap<UserCreate, Users>();
+
         }
     }
 }

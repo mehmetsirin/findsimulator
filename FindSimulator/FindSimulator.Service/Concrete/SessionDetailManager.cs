@@ -89,7 +89,7 @@ namespace FindSimulator.Service.Concrete
             if (sessionDetailList.Count == 0)
                 return new DataResult<List<CalendarView>>(ResultStatus.DataNull);
             var resData = new List<CalendarView>();
-            foreach (var item in sessionDetailList)
+            foreach (var item in sessionDetailList.OrderBy(Y=>Y.StartDate).ToList())
             {
                 var res = new CalendarView();
                 res.OrderID = item.OrderID;
@@ -97,7 +97,7 @@ namespace FindSimulator.Service.Concrete
                     res.Id = item.ID;
                     res.Start = item.StartDate;
                     res.Title = "Title" ?? "İsim Girilmemiş";
-                    res.Title =  item.StartDate.Hour + ":" + item.StartDate.Minute + "-" + item.EndDate.Hour + ":" + item.EndDate.Hour;
+                    res.Title = item.StartDate.ToString("hh") + ":" + item.StartDate.ToString("mm") + "-" + item.EndDate.ToString("hh") + ":" + item.EndDate.ToString("mm");
                     res.Url = "";
                     res.Reserved = item.Reserved;
                     res.Status = item.Status;

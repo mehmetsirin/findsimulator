@@ -11,5 +11,7 @@ namespace FindSimulator.Domain.Entities
   public  class PageComponent: BaseEntity<int>
     {
         public string Name { get; set; }
+
+
     }
 }
