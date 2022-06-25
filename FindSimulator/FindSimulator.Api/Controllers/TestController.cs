@@ -35,7 +35,7 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpGet]
-        public string GetToken1(int x = 10)
+        public string GetToken1(int x = 1)
         {
           
             return "Mehmet";
