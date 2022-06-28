@@ -21,10 +21,11 @@ namespace FindSimulator.Service.Model.Users
         public string AccessToken { get; set; }
          public string RefreshToken { get; set; }
         public  string FullName { get; set; }
+        public string BuyerCompany { get; set; }
 
     }
     public record UserLoginModel(string pass, string email);
     public   record  UserRegisterModel(  string userName, string Surname, string password,string email,string personIdentity,string deviceID, string TelNo,  string CountryCode);
-    public  record  UserUpdate(string userName, string Surname, string password, string email, string personIdentity, string TelNo,int  ID);
+    public  record  UserUpdate(string userName, string Surname, string password, string email, string personIdentity, string TelNo,int  ID,string buyerCompany);
     public record UserCreate(string userName, string Surname, string password, string email);
 }

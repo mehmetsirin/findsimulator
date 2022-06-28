@@ -29,6 +29,7 @@ namespace FindSimulator.Service.Abstract
         Task<DataResult<bool>> SessionStateUpdateAsync(List<SessionDetailStateUpdate> sessionDetailStateUpdates);
         Task<DataResult<List<SessionDetailWithSessionView>>> GetSessionDetailOrderAsync();
         Task<DataResult<bool>> OrderConfirm(OrderConfirmRequest request);
+        Task<DataResult<bool>> SessionPersonWithSessionDetailUpdateAsync(SessionPersonDelete sessionPersonDelete);
 
     }
 }

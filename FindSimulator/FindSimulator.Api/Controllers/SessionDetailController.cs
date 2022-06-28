@@ -103,6 +103,13 @@ namespace FindSimulator.Api.Controllers
             return data;
         }
 
-
+        [HttpPost]
+        [Route("")]
+        public  async Task<DataResult<bool>> PersonSlotDelete(SessionPersonDelete sessionPersonDelete)
+        {
+            var data = await sessionDetailManager.SessionPersonWithSessionDetailUpdateAsync(sessionPersonDelete);
+            return data;
+        }
     }
 }
+
