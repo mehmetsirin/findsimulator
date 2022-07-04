@@ -12,8 +12,8 @@ namespace FindSimulator.Service.Abstract
     public   interface IUserComponentManager
     {
 
-        Task<DataResult<List<UserWithComponentModel>>> GetUserComponentUserByIDsAsync(int userID);
-        Task<DataResult<bool>> UpdateAsync(UserComponentUpdate update);
+        Task<DataResult<UserWithComponentModel>> GetUserComponentUserByIDsAsync(int userID);
+        Task<DataResult<bool>> UpdateAsync(UserWithComponentModel update);
 
     }
 }

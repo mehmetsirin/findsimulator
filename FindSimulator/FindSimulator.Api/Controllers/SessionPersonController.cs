@@ -88,7 +88,13 @@ namespace FindSimulator.Api.Controllers
             var data =   await  sessionPersonManager.GetUserByIDSessions(UserID);
             return data;
         }
+        [HttpPost]
+        public async Task<Result> SessionPersonSlotRemoveAsync(int sessionDetailID)
+        {
+            var data = await sessionPersonManager.SessionPersonSlotRemoveAsync(sessionDetailID);
+            return data;
+        }
 
-        
+
     }
 }

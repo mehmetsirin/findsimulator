@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FindSimulator.Api.Controllers
@@ -28,18 +34,22 @@ namespace FindSimulator.Api.Controllers
 
         [HttpGet]
         [Route("get-user-component-user-by-id")]
-        public async Task<DataResult<List<UserWithComponentModel>>> GetUserComponentUserByIDsAsync(int userID)
+        public object GetUserComponentUserByIDsAsync(int userID)
         {
-            var res =  await _userComponentManager.GetUserComponentUserByIDsAsync(userID);
+            var res =   _userComponentManager.GetUserComponentUserByIDsAsync(userID).GetAwaiter().GetResult();
+           
             return res;
+         
         }
         [HttpPost]
         [Route("update-user-with-usercomponent")]
-        public  async  Task<DataResult<bool>>UpdateUserWithUserComponent(UserWithUserComponentUpdate componentUpdate)
+        public  async  Task<DataResult<bool>>UpdateUserWithUserComponent(UserWithComponentModel  model)
         {
+            var data = _userComponentManager.UpdateAsync(model);
 
             return new DataResult<bool>();
         }
+
         
     }
 }

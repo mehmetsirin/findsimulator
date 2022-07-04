@@ -20,7 +20,7 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
             {
                 if (_context == null)
                 {
-                    //_context = new  SimulatorContext();
+                //  _context = new  SimulatorContext();
                 }
                 
             }

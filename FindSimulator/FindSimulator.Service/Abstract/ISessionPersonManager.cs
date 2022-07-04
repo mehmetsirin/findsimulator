@@ -24,6 +24,7 @@ namespace FindSimulator.Service.Abstract
 
         Task<Result> UpdateAsync(SessionPersonUpdate update);
         Task<Result> Remove(int ID);
+        Task<Result> SessionPersonSlotRemoveAsync(int sessionDetail);
 
 
     }

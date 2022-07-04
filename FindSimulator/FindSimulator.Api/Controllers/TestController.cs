@@ -1,7 +1,10 @@
 ﻿using FindSimulator.Api.Action;
 using FindSimulator.Infrastructure.EventBus.Event;
+using FindSimulator.Service.Abstract;
+using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Event;
 using FindSimulator.Share.RabbitMq;
+using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +13,29 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [ServiceFilter(typeof(LogEventAction))]
+    //[ServiceFilter(typeof(LogEventAction))]
 
     [ApiController]
     public class TestController : BaseController
     {
 
         private readonly IEventBus eventBus;
-        public TestController(IEventBus eventBus)
+        private readonly IUserComponentManager _userComponentManager;
+        test1 Test1;
+        test2 Test2;
+
+        public TestController(IEventBus eventBus, IUserComponentManager userComponentManager, test2 test2, test1 test1)
         {
             this.eventBus = eventBus;
+            _userComponentManager = userComponentManager;
+            Test1 = test1;
+            Test2 = test2;
         }
 
         [HttpGet]
@@ -40,7 +51,56 @@ namespace FindSimulator.Api.Controllers
           
             return "Mehmet";
         }
+        [HttpGet]
+        public object Getaaa()
+        {
+            //    var pets = new List<Pet>
+            //{
+            //    new Pet { Type = "Cat", Name = "MooMoo", Age = 3.4 },
+            //    new Pet { Type = "Squirrel", Name = "Sandy", Age = 7 }
+            //};
+            //    var person = new Person
+            //    {
+            //        Name = "John",
+            //        Age = 34,
+            //        StateOfOrigin = "England",
+            //        Pets = pets
+            //    };
+            //    var options = new JsonSerializerOptions
+            //    {
+            //        WriteIndented = true
+            //    };
+            //    return JsonSerializer.Serialize(  new DataResult<Person>(person), options);
+            var res = _userComponentManager.GetUserComponentUserByIDsAsync(1).GetAwaiter().GetResult();
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+            return res;
+        }
+        [HttpGet]
+        public object Getact()
+        {
+            var tes = Test1.Get();
+            var tesx = Test2.Get();
+            return tes + "-" + tesx;
+        }
 
-        
+
     }
+
+    public class Pet
+    {
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public double Age { get; set; }
+    }
+    public class Person
+    {
+        public string Name { get; set; }
+        public int? Age { get; set; }
+        public string StateOfOrigin { get; set; }
+        public List<Pet> Pets { get; set; }
+    }
+
 }

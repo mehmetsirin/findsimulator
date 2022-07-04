@@ -32,8 +32,17 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
 
         public DataResult<TDocument> GetById<TDocument>( TKey id, string partitionKey = null) where TDocument : class,IEntity<TKey>
         {
-            var data =  _context.Set<TDocument>().Where(y => y.IsActive == true&&  Convert.ToInt32(y.ID)==Convert.ToInt32(id)).FirstOrDefault();
-            return new DataResult<TDocument>(ResultStatus.Success, data);
+            try
+            {
+                var data = _context.Set<TDocument>().Where(y => y.IsActive == true && Convert.ToInt32(y.ID) == Convert.ToInt32(id)).FirstOrDefault();
+                return new DataResult<TDocument>(ResultStatus.Success, data);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        
         }
 
         

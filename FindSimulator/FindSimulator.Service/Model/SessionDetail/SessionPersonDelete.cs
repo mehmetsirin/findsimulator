@@ -9,13 +9,13 @@ namespace FindSimulator.Service.Model.SessionDetail
   public  class SessionPersonDelete
     {
 
-        public int SessionsID { get; set; }
-        public int SessionsDeatailID { get; set; }
+        public int SessionID { get; set; }
+        public int SessionDetailID { get; set; }
 
         public SessionPersonDelete(int sessionsID, int sessionsDeatailID)
         {
-            SessionsID = sessionsID;
-            SessionsDeatailID = sessionsDeatailID;
+            SessionID = sessionsID;
+            SessionDetailID = sessionsDeatailID;
         }
 
         public SessionPersonDelete()

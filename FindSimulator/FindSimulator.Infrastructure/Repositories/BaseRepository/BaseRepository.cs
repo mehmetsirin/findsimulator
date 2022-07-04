@@ -20,7 +20,16 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
     {
         public int SaveChanges()
         {
-            return  _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+
+            }
+            catch (Exception  ex)
+            {
+
+                throw;
+            }
         }
 
         public Task<int> SaveChangesAsync()

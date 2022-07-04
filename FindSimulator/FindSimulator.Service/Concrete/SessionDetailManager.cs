@@ -234,7 +234,7 @@ namespace FindSimulator.Service.Concrete
         public  async Task<DataResult<bool>> SessionPersonWithSessionDetailUpdateAsync(SessionPersonDelete sessionPersonDelete)
         {
 
-            var sessionDetails = _sessionDetail.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionPersonDelete.SessionsDeatailID&&y.SessionID==sessionPersonDelete.SessionsID).ToList();
+            var sessionDetails = _sessionDetail.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionPersonDelete.SessionDetailID&&y.SessionID==sessionPersonDelete.SessionID).ToList();
             sessionDetails.ForEach(item=> {
 
                 item.UpdateDate = DateTime.Now;
@@ -242,8 +242,9 @@ namespace FindSimulator.Service.Concrete
             });
               await _sessionDetail.UpdateManyAsync<SessionPerson>(sessionDetails);
 
-            var sessionDetail = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID==sessionPersonDelete.SessionsDeatailID).FirstOrDefault();
-
+            var sessionDetail = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID==sessionPersonDelete.SessionDetailID).FirstOrDefault();
+            if (sessionDetail == null)
+                return new DataResult<bool>(ResultStatus.DataNull, "Böyle bir Slot bulunamadı");
             sessionDetail.Status = 1;
             sessionDetail.IsActive = true;
             sessionDetail.UpdateDate = DateTime.Now;

@@ -43,6 +43,7 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddScoped<IActionScope, ActionScope>();
             services.AddScoped<IUserComponentManager, UserComponentManager>();
+            services.AddScoped<IUserComponentRepository, UserComponentRepository>();
 
         }
 

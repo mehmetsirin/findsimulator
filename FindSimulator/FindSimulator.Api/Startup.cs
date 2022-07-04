@@ -19,6 +19,9 @@ using System;
 using FindSimulator.Share.RabbitMq;
 using FindSimulator.Share.Event;
 using FindSimulator.Api.Filter;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using FindSimulator.Api.Controllers;
 
 namespace FindSimulator.Api
 {
@@ -36,7 +39,7 @@ namespace FindSimulator.Api
         {
 
             var settings = Configuration.Get<AppConfiguration>();
-
+            var d = Configuration.GetSection("DocumentSettings");
             //services.AddDbContext<SimulatorContext>(options => options(settings.SqlServerSettings.ConnectionString));
             //services.AddScoped<LogEventAction>();
             services.AddTransient<LogEventHandler>(provider => { return new LogEventHandler(services); });
@@ -65,25 +68,33 @@ namespace FindSimulator.Api
             services.AddDbContext<SimulatorContext>(options => options.UseSqlServer(settings.SqlServerSettings.ConnectionString));
             services.Configure<TokenSettings>(Configuration.GetSection("TokenSettings"));
             services.Configure<DocumentSettings>(Configuration.GetSection("DocumentSettings"));
-            services.AddTransient<DbContext, SimulatorContext>();
+            services.AddScoped<DbContext, SimulatorContext>();
             services.AddScoped<IJWTAuthenticacationManager, JWTAuthenticacationManager>();
             services.AddScoped(typeof(FindSimulator.Infrastructure.Repositories.BaseRepository.IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseManager<>), typeof(BaseManager<>));
 
-            //services.AddScoped<IJWTAuthenticacationManager>(y => new JWTAuthenticacationManager(settings.TokenSettings.SigningKey));
+            //services.AddControllers().AddJsonOptions(j =>
+            //{
+            //    j.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            //});
+            services.AddTransient<test1, Test1>();
+            services.AddTransient<test2, Test2>();
+            services.AddTransient<test3, Test3>();
+
 
             services.Repositories();
             services.ServiceRedis();
             services.Jwt(settings.TokenSettings);
             services.Mapper();
             services.RabbitMq(settings.RabbitMQSetting);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FindSimulator.Api", Version = "v1" });
                 c.OperationFilter<SwaggerFileOperationFilter>();
             });
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 //c.SwaggerDoc("v1", new OpenApiInfo
                 //{
                 //    Title = "JWTToken_Auth_API",
@@ -126,7 +137,7 @@ namespace FindSimulator.Api
             app.App();
 
             app.UseCors("MyPolicy");
-            app.UseCors( options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            app.UseCors(options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             app.UseRouting();
 

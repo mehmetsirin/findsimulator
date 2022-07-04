@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +13,7 @@ namespace FindSimulator.Service.Model.SessionPerson
     }
   public   sealed record SessionPersonView
     {
-
+        [JsonIgnore]
         public int ID { get; init; } = default!;
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,9 +22,9 @@ namespace FindSimulator.Service.Model.SessionPerson
         public string Nationality { get; set; } = default;
         public string LicenseNumber { get; set; }
         public string CompanyName { get; set; }
-        public int SessionID { get; set; }
-        public int SessionDetailID { get; set; }
+       
         public string Url { get; set; }
+        public int  SessionPersonID { get; set; }
 
     }
     public    sealed record SessionPersonAdd

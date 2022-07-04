@@ -44,11 +44,21 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
        public  async   Task<bool> UpdateManyAsync<TDocument>(IList<TDocument> update) where TDocument : class, IEntity<TKey>
         {
 
-            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            try
+            {
+                _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            //_context.Entry(update).State = EntityState.Detached;
-            await Task.Run(() => { _context.Set<TDocument>().UpdateRange(update); });
-            return true;
+                //_context.Entry(update).State = EntityState.Detached;
+                await Task.Run(() => { _context.Set<TDocument>().UpdateRange(update); });
+                return true;
+            }
+            catch (Exception  ex)
+            {
+
+                throw;
+            }
+
+        
         }
     }
 }
