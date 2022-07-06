@@ -43,7 +43,7 @@ namespace FindSimulator.Service.AutoMapper
                 ForMember(dest => dest.ParentID, act => act.MapFrom(src => src.AirCraftsID));
             CreateMap<UserComponentView, UserComponent>();
             CreateMap<UserCreate, Users>();
-
+            CreateMap<UserLoginWebResponse, Users>().ReverseMap();
         }
     }
 }

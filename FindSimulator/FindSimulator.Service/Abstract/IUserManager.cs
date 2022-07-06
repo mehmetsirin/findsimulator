@@ -13,6 +13,7 @@ namespace FindSimulator.Service.Abstract
     public  interface IUserManager
     {
         Task<DataResult<UserModelView>> Login(string email, string pass, string  deviceID=null);
+        Task<DataResult<UserLoginWebResponse>> LoginWebAsync(string email, string pass);
 
         Task<DataResult<bool>> Register(UserRegisterModel user);
         Task<DataResult<UserModelView>> GetUserID(int id);

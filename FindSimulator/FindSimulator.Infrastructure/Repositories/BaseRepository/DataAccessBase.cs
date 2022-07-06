@@ -16,14 +16,14 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
         public SimulatorContext _context;
         protected DataAccessBase()
         {
-            lock (_initLock)
-            {
-                if (_context == null)
-                {
-                //  _context = new  SimulatorContext();
-                }
+            //lock (_initLock)
+            //{
+            //    if (_context == null)
+            //    {
+            //    //  _context = new  SimulatorContext();
+            //    }
                 
-            }
+            //}
 
 
         }

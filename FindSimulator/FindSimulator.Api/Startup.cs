@@ -22,6 +22,8 @@ using FindSimulator.Api.Filter;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using FindSimulator.Api.Controllers;
+using FindSimulator.Infrastructure.UnitWork;
+using FindSimulator.Infrastructure.Utilities;
 
 namespace FindSimulator.Api
 {
@@ -72,6 +74,7 @@ namespace FindSimulator.Api
             services.AddScoped<IJWTAuthenticacationManager, JWTAuthenticacationManager>();
             services.AddScoped(typeof(FindSimulator.Infrastructure.Repositories.BaseRepository.IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseManager<>), typeof(BaseManager<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //services.AddControllers().AddJsonOptions(j =>
             //{

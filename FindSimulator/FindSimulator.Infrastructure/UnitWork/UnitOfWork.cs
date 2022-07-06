@@ -54,12 +54,31 @@ namespace FindSimulator.Infrastructure.UnitWork
 
         public int Complete()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return _simulatorContext.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
-        public Task<int> CompleteAsync()
+        public    async Task<int> CompleteAsync()
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                return await _simulatorContext.SaveChangesAsync();
+
+            }
+            catch (Exception  ex)
+            {
+
+                throw;
+            }
         }
 
         public void RollbackTransaction()
