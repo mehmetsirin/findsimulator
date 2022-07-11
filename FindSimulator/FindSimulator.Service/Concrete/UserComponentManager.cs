@@ -100,7 +100,7 @@ namespace FindSimulator.Service.Concrete
                     }
                 }
             }
-            _unitOfWork.Complete();
+            //_unitOfWork.Complete();
             return new DataResult<bool>();
           
         }

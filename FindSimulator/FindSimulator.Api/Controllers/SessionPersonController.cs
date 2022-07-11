@@ -1,4 +1,7 @@
-﻿using FindSimulator.Service.Abstract;
+﻿using FindSimulator.Api.Filter;
+using FindSimulator.Infrastructure.Utilities;
+using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Share.Results.Concrete;
@@ -16,11 +19,12 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [TransactionActionFilter]
     public class SessionPersonController : BaseController
     {
         private readonly ISessionPersonManager sessionPersonManager;
 
-        public SessionPersonController(ISessionPersonManager sessionPersonManager)
+        public SessionPersonController(ISessionPersonManager sessionPersonManager, IUnitOfWork unitOfWork, BusinessManagerFactory factory):base(factory)
         {
             this.sessionPersonManager = sessionPersonManager;
         }

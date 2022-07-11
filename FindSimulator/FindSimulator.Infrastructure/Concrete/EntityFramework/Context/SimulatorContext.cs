@@ -19,10 +19,6 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         {
             _loggerFactory = loggerFactory;
         }
-
-      
-
-
         DbSet<Users> Users { get; set; }
         DbSet<AirCraft> AirCrafts { get; set; }
         DbSet<Simulator> Simulators { get; set; }
@@ -46,8 +42,11 @@ namespace FindSimulator.Infrastructure.Concrete.EntityFramework.Context
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+             
             optionsBuilder.UseLoggerFactory(_loggerFactory);
             optionsBuilder.EnableSensitiveDataLogging();
         }
+
+       
     }
 }

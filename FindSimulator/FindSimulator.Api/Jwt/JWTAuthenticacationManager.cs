@@ -58,7 +58,7 @@ namespace FindSimulator.Api.Jwt
                 audience: "mehmet",
                 claims: claims,
                 notBefore: now,
-                expires: now.Add(TimeSpan.FromDays(10)),
+                expires: now.Add(TimeSpan.FromMinutes(1)),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
             );
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

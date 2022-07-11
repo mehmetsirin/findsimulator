@@ -1,11 +1,14 @@
 ﻿using FindSimulator.Api.Action;
+using FindSimulator.Api.Filter;
 using FindSimulator.Infrastructure.EventBus.Event;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Event;
 using FindSimulator.Share.RabbitMq;
 using FindSimulator.Share.Results.Concrete;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -22,6 +25,9 @@ namespace FindSimulator.Api.Controllers
     //[ServiceFilter(typeof(LogEventAction))]
 
     [ApiController]
+    [Authorize]
+    [TransactionActionFilter]
+
     public class TestController : BaseController
     {
 
@@ -30,7 +36,7 @@ namespace FindSimulator.Api.Controllers
         test1 Test1;
         test2 Test2;
 
-        public TestController(IEventBus eventBus, IUserComponentManager userComponentManager, test2 test2, test1 test1)
+        public TestController(IEventBus eventBus, IUserComponentManager userComponentManager, test2 test2, test1 test1, BusinessManagerFactory factory):base(factory)
         {
             this.eventBus = eventBus;
             _userComponentManager = userComponentManager;
@@ -84,6 +90,15 @@ namespace FindSimulator.Api.Controllers
             var tes = Test1.Get();
             var tesx = Test2.Get();
             return tes + "-" + tesx;
+        }
+        [HttpGet]
+        private string ipAddress()
+        {
+            // get source ip address for the current request
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
 
 

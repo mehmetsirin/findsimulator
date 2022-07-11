@@ -14,6 +14,8 @@ namespace FindSimulator.Infrastructure.Utilities
         public ISessionsRepository SessionsRepository { get; set; }
         public IUserComponentRepository UserComponentRepository { get; }
         public IUsersRepository  UsersRepository { get; set; }
+
+        public ISessionPersonRepository  SessionPersonRepository { get; set; }
         int Complete();
 
         Task<int> CompleteAsync();

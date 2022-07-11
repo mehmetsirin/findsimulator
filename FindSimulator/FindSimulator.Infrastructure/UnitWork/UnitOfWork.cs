@@ -24,6 +24,7 @@ namespace FindSimulator.Infrastructure.UnitWork
             SessionDetailRepository = new SessionDetailRepository(_simulatorContext);
             SessionsRepository = new SessionsRepository(_simulatorContext);
             UsersRepository = new UsersRepository(_simulatorContext);
+            SessionPersonRepository = new SessionPersonRepository(_simulatorContext );
         }
 
 
@@ -34,28 +35,28 @@ namespace FindSimulator.Infrastructure.UnitWork
 
 
         public IUsersRepository UsersRepository {get;set;}
-
-        
+        public ISessionPersonRepository SessionPersonRepository { get; set; }
 
         public void BeginTransaction()
         {
-            throw new NotImplementedException();
+            _simulatorContext.Database.BeginTransaction();
         }
 
-        public Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync()
         {
-            throw new NotImplementedException();
+           await  _simulatorContext.Database.BeginTransactionAsync();
         }
 
         public void CommitTransaction()
         {
-            throw new NotImplementedException();
+            _simulatorContext.Database.CommitTransaction();
         }
 
         public int Complete()
         {
             try
             {
+                CommitTransaction();
                 return _simulatorContext.SaveChanges();
 
             }
@@ -83,7 +84,7 @@ namespace FindSimulator.Infrastructure.UnitWork
 
         public void RollbackTransaction()
         {
-            throw new NotImplementedException();
+            _simulatorContext.Database.RollbackTransaction();
         }
     }
 }

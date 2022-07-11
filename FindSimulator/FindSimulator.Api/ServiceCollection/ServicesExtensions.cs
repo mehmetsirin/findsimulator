@@ -44,7 +44,7 @@ namespace FindSimulator.Api.ServiceCollection
             services.AddScoped<IActionScope, ActionScope>();
             services.AddScoped<IUserComponentManager, UserComponentManager>();
             services.AddScoped<IUserComponentRepository, UserComponentRepository>();
-
+            services.AddScoped<ISessionPersonRepository, SessionPersonRepository>();
         }
 
         public static void Mapper(this IServiceCollection services)

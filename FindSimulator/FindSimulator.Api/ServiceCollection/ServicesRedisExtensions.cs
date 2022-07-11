@@ -17,8 +17,6 @@ namespace FindSimulator.Api.ServiceCollection
         {
             services.AddScoped<IRedisCache, RedisCache>();
             services.AddScoped<IRedisManager, RedisManager>();
-
-
         }
 
     }

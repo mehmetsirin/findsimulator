@@ -1,4 +1,6 @@
-﻿using FindSimulator.Service.Abstract;
+﻿using FindSimulator.Api.Filter;
+using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.UserComponent;
 using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.Results.Concrete;
@@ -22,12 +24,13 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
+    [TransactionActionFilter]
     public class ComponentController : BaseController
     {
         private readonly IUserComponentManager _userComponentManager;
 
-        public ComponentController(IUserComponentManager userComponentManager)
+        public ComponentController(IUserComponentManager userComponentManager, BusinessManagerFactory factory):base(factory)
         {
             _userComponentManager = userComponentManager;
         }

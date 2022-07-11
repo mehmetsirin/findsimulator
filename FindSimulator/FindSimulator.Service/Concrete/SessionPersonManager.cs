@@ -2,6 +2,8 @@
 
 using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
+using FindSimulator.Infrastructure.UnitWork;
+using FindSimulator.Infrastructure.Utilities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
@@ -26,21 +28,33 @@ namespace FindSimulator.Service.Concrete
         private readonly IMapper mapper;
         private ISessionDetailManager sessionDetailManager;
         private ISessionsManager sessionsManager;
-
-        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper, ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
+        private IUnitOfWork _unitOfWork;
+        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper, ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager, IUnitOfWork unitOfWork)
         {
             this.baseRepository = baseRepository;
             this.mapper = mapper;
             this.sessionsManager = sessionsManager;
             this.sessionDetailManager = sessionDetailManager;
+            this._unitOfWork = unitOfWork;
         }
 
         public async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> add, int userID)
         {
+
+            var sessionDetail =   await this._unitOfWork.SessionDetailRepository.GetByIdAsync<SessionDetails>(add[0].SessionDetailID);
+            if (sessionDetail.Data is null)
+                return new DataResult<bool>(ResultStatus.DataNull,"Böyle Bir slot bulunamadı");
+
+            if (sessionDetail.Data.Status != (int)CommonEnum.SessionDetailStatus.Open)
+                return new DataResult<bool>(ResultStatus.Warning,"Bu slotu satın almak için müsait değil:"+sessionDetail.Data.Status);
             var data = mapper.Map<List<SessionPerson>>(add);
             data.ForEach(y => { y.UserID = userID; });
-            await baseRepository.AddManyAsync<SessionPerson>(data);
-            baseRepository.SaveChanges();
+            //await baseRepository.AddManyAsync<SessionPerson>(data);
+            await _unitOfWork.SessionPersonRepository.AddManyAsync<SessionPerson>(data);
+            sessionDetail.Data.Status = (int)CommonEnum.SessionDetailStatus.Pending;
+            sessionDetail.Data.UpdateDate = DateTime.Now;
+            _unitOfWork.SessionDetailRepository.UpdateOne<SessionDetails>(sessionDetail.Data);
+            //baseRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success);
         }
 
