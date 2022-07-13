@@ -48,17 +48,11 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
         
         public async Task<DataResult<List<TDocument>>> List<TDocument>() where TDocument : class, IEntity<TKey>
         {
-            try
-            {
+            
                 var data =  _context.Set<TDocument>().Where(y => y.IsActive == true).ToList();
                 return new DataResult<List<TDocument>>(ResultStatus.Success, data);
 
-            }
-            catch (Exception  ex)
-            {
-
-                throw;
-            }
+           
 
            
         }

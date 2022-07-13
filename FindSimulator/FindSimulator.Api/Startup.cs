@@ -25,6 +25,7 @@ using FindSimulator.Api.Controllers;
 using FindSimulator.Infrastructure.UnitWork;
 using FindSimulator.Infrastructure.Utilities;
 using FindSimulator.Service.Core;
+using FindSimulator.Api.Middleware;
 
 namespace FindSimulator.Api
 {
@@ -140,7 +141,6 @@ namespace FindSimulator.Api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FindSimulator.Api v1"));
             app.App();
-
             app.UseCors("MyPolicy");
             app.UseCors(options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
