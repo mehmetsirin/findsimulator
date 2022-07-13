@@ -17,11 +17,12 @@ namespace FindSimulator.Service.Model.Users
     }
     public  class UserComponentUpdate
     {
-        public int ID { get; set; }
+        public int UserComponentID { get; set; }
 
         public bool IsRead { get; set; } = true;
         public bool IsWrite { get; set; } = true;
         public bool IsCreate { get; set; } = true;
         public bool IsDelete { get; set; } = true;
+        public bool IsUpdate { get; set; } = false;
     }
 }

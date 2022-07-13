@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,15 +15,18 @@ namespace FindSimulator.Infrastructure.Repositories.IBaseRepository
     {
         Task<bool> UpdateOneAsync<TDocument>(TDocument modifiedDocument)
           where TDocument : class, IEntity<TKey>;
-        
 
-        //bool UpdateOne<TDocument>(TDocument modifiedDocument)
-        //    where TDocument : class, IEntity<TKey>;
+
+        Task<bool> UpdateManyAsync<TDocument>(IList<TDocument> update)
+         where TDocument : class, IEntity<TKey>;
+
 
         TDocument UpdateOne<TDocument>(TDocument modifiedDocument)
             where TDocument : class, IEntity<TKey>;
-        
 
+
+        //Task<int> UpdateManyAsync<TDocument, TKey>(Expression<Func<TDocument, bool>> filter, UpdateDefinition<TDocument> updateDefinition, string partitionKey = null)
+        //   class, IEntity<TKey>;
 
         //Task<bool> UpdateOneAsync<TDocument, TKey>(TDocument documentToModify, UpdateDefinition<TDocument> update)
         //    where TDocument : IEntity

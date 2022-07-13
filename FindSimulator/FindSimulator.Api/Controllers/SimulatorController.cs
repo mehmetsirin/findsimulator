@@ -1,6 +1,8 @@
-﻿using FindSimulator.Domain.Entities;
+﻿using FindSimulator.Api.Filter;
+using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Concrete;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.Users;
 
 using Microsoft.AspNetCore.Http;
@@ -15,12 +17,14 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [TransactionActionFilter]
     public class SimulatorController : BaseController
     {
 
         public readonly IBaseManager<int> baseManager;
         public readonly ISessionsManager sessionsManager;
-        public SimulatorController(IBaseManager<int> baseManager, ISessionsManager sessionsManager)
+
+        public SimulatorController(IBaseManager<int> baseManager, ISessionsManager sessionsManager, BusinessManagerFactory factory):base(factory)
         {
             this.baseManager = baseManager;
             this.sessionsManager = sessionsManager;

@@ -230,5 +230,27 @@ namespace FindSimulator.Service.Concrete
                await _sessionDetail.SaveChangesAsync();
             return    new DataResult<bool>(ResultStatus.Success,true);
         }
+
+        public  async Task<DataResult<bool>> SessionPersonWithSessionDetailUpdateAsync(SessionPersonDelete sessionPersonDelete)
+        {
+
+            var sessionDetails = _sessionDetail.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionPersonDelete.SessionDetailID&&y.SessionID==sessionPersonDelete.SessionID).ToList();
+            sessionDetails.ForEach(item=> {
+
+                item.UpdateDate = DateTime.Now;
+                item.IsActive = false;
+            });
+              await _sessionDetail.UpdateManyAsync<SessionPerson>(sessionDetails);
+
+            var sessionDetail = _sessionDetail.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID==sessionPersonDelete.SessionDetailID).FirstOrDefault();
+            if (sessionDetail == null)
+                return new DataResult<bool>(ResultStatus.DataNull, "Böyle bir Slot bulunamadı");
+            sessionDetail.Status = 1;
+            sessionDetail.IsActive = true;
+            sessionDetail.UpdateDate = DateTime.Now;
+             await _sessionDetail.UpdateOneAsync<SessionDetails>(sessionDetail);
+          await  _sessionDetail.SaveChangesAsync();
+            return new DataResult<bool>(ResultStatus.Success,true);
+        }
     }
 }

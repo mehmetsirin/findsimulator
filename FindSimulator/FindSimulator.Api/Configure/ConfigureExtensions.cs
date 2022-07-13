@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FindSimulator.Api.Middleware;
+
+using Microsoft.AspNetCore.Builder;
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ namespace FindSimulator.Api.Configure
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
             app.UseEndpoints(endpoints =>

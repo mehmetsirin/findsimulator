@@ -24,13 +24,16 @@ namespace FindSimulator.Service.Concrete
         readonly IRedisManager redisManager;
         readonly INotificationRepository notificationRepository;
         readonly IActionScope _actionScope;
-        public UsersManager(IUsersRepository usersRepository, IMapper _mapper, IRedisManager redisManager, INotificationRepository notificationRepository, IActionScope actionScope)
+        private IUserComponentManager _userComponentManager;
+
+        public UsersManager(IUsersRepository usersRepository, IMapper _mapper, IRedisManager redisManager, INotificationRepository notificationRepository, IActionScope actionScope, IUserComponentManager userComponentManager)
         {
             this.usersRepository = usersRepository;
             this.mapper = _mapper;
             this.redisManager = redisManager;
             this.notificationRepository = notificationRepository;
             _actionScope = actionScope;
+            _userComponentManager = userComponentManager;
         }
 
         public async Task<DataResult<bool>> AddAsync(UserCreate create)
@@ -40,7 +43,7 @@ namespace FindSimulator.Service.Concrete
             user.CompanyID = _actionScope.IdCompany;
             await usersRepository.AddOneAsync<Users>(user);
             usersRepository.SaveChanges();
-            return new DataResult<bool>(ResultStatus.Authority,true);
+            return new DataResult<bool>(ResultStatus.Authority, true);
         }
 
         public async Task<DataResult<bool>> ChangeActiveAsync(int userID, bool isActive)
@@ -119,7 +122,25 @@ namespace FindSimulator.Service.Concrete
             //return new DataResult<UserModelView>(ResultStatus.Error, "Kullanıcı Bilgileriniz  Yanlış");
         }
 
+        public async Task<DataResult<UserLoginWebResponse>> LoginWebAsync(string email, string pass)
+        {
+            var user = this.usersRepository.List<Users>().GetAwaiter().GetResult().Data.Where(y => y.Password == pass && y.Email == email).FirstOrDefault();
 
+
+            if (user != null)
+            {
+                var modelView = mapper.Map<UserLoginWebResponse>(user);
+                var  userComponent=  await _userComponentManager.GetUserComponentUserByIDsAsync(user.ID);
+                modelView.userWithComponentModel = userComponent.Data;
+                //await Update(user);
+                return new DataResult<UserLoginWebResponse>(ResultStatus.Success, modelView);
+            }
+            else
+            {
+                return new DataResult<UserLoginWebResponse>(ResultStatus.DataNull, "Boyle Bir Kullanıcı Bulunamadı");
+
+            }
+        }
 
         public async Task<DataResult<bool>> Register(UserRegisterModel _user)
         {

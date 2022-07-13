@@ -20,8 +20,7 @@ namespace FindSimulator.Api.Controllers
     {
         readonly IUserManager userManager;
         public IJWTAuthenticacationManager JWTAuthenticacation;
-
-        public AuthController(IUserManager _userManager, IJWTAuthenticacationManager jWTAuthenticacation)
+        public AuthController(IUserManager _userManager, IJWTAuthenticacationManager jWTAuthenticacation )
         {
             userManager = _userManager;
 
@@ -37,6 +36,16 @@ namespace FindSimulator.Api.Controllers
             return response;
 
         }
-      
+        [HttpPost]
+        public async Task<Object> LoginWeb(UserLoginModel dto)
+        {
+            var response = await userManager.LoginWebAsync(dto.email, dto.pass);
+            if (response.ResultStatus == ResultStatus.Success)
+
+                JWTAuthenticacation.AuthhenticateWeb(ref response);
+            return response;
+
+        }
+
     }
 }

@@ -2,6 +2,8 @@
 
 using FindSimulator.Domain.Entities;
 using FindSimulator.Infrastructure.Repositories.BaseRepository;
+using FindSimulator.Infrastructure.UnitWork;
+using FindSimulator.Infrastructure.Utilities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
@@ -26,21 +28,33 @@ namespace FindSimulator.Service.Concrete
         private readonly IMapper mapper;
         private ISessionDetailManager sessionDetailManager;
         private ISessionsManager sessionsManager;
-
-        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper, ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
+        private IUnitOfWork _unitOfWork;
+        public SessionPersonManager(IBaseRepository<int> baseRepository, IMapper mapper, ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager, IUnitOfWork unitOfWork)
         {
             this.baseRepository = baseRepository;
             this.mapper = mapper;
             this.sessionsManager = sessionsManager;
             this.sessionDetailManager = sessionDetailManager;
+            this._unitOfWork = unitOfWork;
         }
 
         public async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> add, int userID)
         {
+
+            var sessionDetail =   await this._unitOfWork.SessionDetailRepository.GetByIdAsync<SessionDetails>(add[0].SessionDetailID);
+            if (sessionDetail.Data is null)
+                return new DataResult<bool>(ResultStatus.DataNull,"Böyle Bir slot bulunamadı");
+
+            if (sessionDetail.Data.Status != (int)CommonEnum.SessionDetailStatus.Open)
+                return new DataResult<bool>(ResultStatus.Warning,"Bu slotu satın almak için müsait değil:"+sessionDetail.Data.Status);
             var data = mapper.Map<List<SessionPerson>>(add);
             data.ForEach(y => { y.UserID = userID; });
-            await baseRepository.AddManyAsync<SessionPerson>(data);
-            baseRepository.SaveChanges();
+            //await baseRepository.AddManyAsync<SessionPerson>(data);
+            await _unitOfWork.SessionPersonRepository.AddManyAsync<SessionPerson>(data);
+            sessionDetail.Data.Status = (int)CommonEnum.SessionDetailStatus.Pending;
+            sessionDetail.Data.UpdateDate = DateTime.Now;
+            _unitOfWork.SessionDetailRepository.UpdateOne<SessionDetails>(sessionDetail.Data);
+            //baseRepository.SaveChanges();
             return new DataResult<bool>(ResultStatus.Success);
         }
 
@@ -110,20 +124,27 @@ namespace FindSimulator.Service.Concrete
             var sessionsPersons = baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.UserID == userID).ToList();
             var sessions = await sessionsManager.ListAsync(sessionsPersons.Select(y => y.SessionID).ToList());
             var SessionDetails = await sessionDetailManager.GetSessionDetail(sessions.Data.Select(y => y.ID).ToList());
+            var sessionsPersonsGroup = sessionsPersons.GroupBy(y =>   new { y.SessionDetailID, y.SessionID}).ToList();
 
-            foreach (var item in sessions.Data)
+            foreach (var item in sessionsPersonsGroup)
             {
+                var session = sessions.Data.Where(y => y.ID == item.Key.SessionID).FirstOrDefault();
+                var sessionDetail = SessionDetails.Data.Where(y => y.ID == item.Key.SessionDetailID).FirstOrDefault();
+                  
+                if (session is null||  sessionDetail is null)
+                    continue;
                 var itemdata = new SessionwithPersonwithDetailModel();
-                itemdata.AircraftType = item.AircraftType;
-                itemdata.EndDate = SessionDetails.Data.Where(y => y.SessionsID == item.ID).FirstOrDefault().EndDate;
-                itemdata.Engine = item.Engine;
-                itemdata.IsTeacher = item.IsTeacher;
-                itemdata.Location = item.Location;
-                itemdata.SimulatorType = item.SimulatorType;
-                itemdata.StartDate = SessionDetails.Data.Where(y => y.SessionsID == item.ID).FirstOrDefault().StartDate;
-
-
-                var personView = mapper.Map<List<SessionPersonView>>(sessionsPersons.Where(y => y.SessionID == item.ID).ToList());
+                itemdata.AircraftType = session.AircraftType;
+                itemdata.Engine = session.Engine;
+                itemdata.IsTeacher = session.IsTeacher;
+                itemdata.Location = session.Location;
+                itemdata.SimulatorType = session.SimulatorType;
+                itemdata.StartDate = sessionDetail.StartDate;
+                itemdata.EndDate = sessionDetail.EndDate;
+                itemdata.SessionDetailID = item.Key.SessionDetailID;
+                itemdata.SessionID = item.Key.SessionID;
+                itemdata.SessionDetailStatus = Enum.GetName(typeof(CommonEnum.SessionDetailStatus), sessionDetail.Status).ToString();
+                var personView = mapper.Map<List<SessionPersonView>>(sessionsPersons.Where(y => y.SessionDetailID == item.Key.SessionDetailID && y.UserID == userID).ToList());
                 itemdata.sessionPersonViews.AddRange(personView);
                 resData.Add(itemdata);
 
@@ -131,6 +152,20 @@ namespace FindSimulator.Service.Concrete
             return new DataResult<List<SessionwithPersonwithDetailModel>>(ResultStatus.Success, resData);
         }
 
-      
+        public   async Task<Result> SessionPersonSlotRemoveAsync(int sessionDetailID)
+        {
+
+            var sessionPersons = baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionDetailID).ToList();
+            var   sessionDetail = baseRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID == sessionDetailID).FirstOrDefault();
+            if (sessionDetail is null)
+                return new Result(ResultStatus.Warning,"Böyle bir slot bulunamadı");
+            if (sessionDetail.Status == 3)
+                return new Result(ResultStatus.Warning, "Bu slot onayladığı için silinemez");
+            sessionPersons.ForEach(y=> { y.IsActive = false;y.UpdateDate = DateTime.Now; });
+             await baseRepository.UpdateManyAsync<SessionPerson>(sessionPersons);
+            baseRepository.SaveChanges();
+
+            return new Result(ResultStatus.Success);
+        }
     }
 }

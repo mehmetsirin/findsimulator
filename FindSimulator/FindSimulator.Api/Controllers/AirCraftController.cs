@@ -1,4 +1,5 @@
-﻿using FindSimulator.Domain.Entities;
+﻿using FindSimulator.Api.Filter;
+using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Concrete;
 using FindSimulator.Share.ComplexTypes;
@@ -16,6 +17,8 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [TransactionActionFilter]
+    
     public class AirCraftController : ControllerBase
     {
         public  readonly IBaseManager<int> baseManager;

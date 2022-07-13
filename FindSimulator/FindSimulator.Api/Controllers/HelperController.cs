@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace FindSimulator.Api.Controllers
 
         public readonly IBaseManager<int> baseManager;
 
-        public HelperController(IBaseManager<int> baseManager)
+        public HelperController(IBaseManager<int> baseManager, BusinessManagerFactory factory):base(factory)
         {
             this.baseManager = baseManager;
         }

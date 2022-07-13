@@ -32,31 +32,34 @@ namespace FindSimulator.Infrastructure.Repositories.BaseRepository
 
         public DataResult<TDocument> GetById<TDocument>( TKey id, string partitionKey = null) where TDocument : class,IEntity<TKey>
         {
-            var data =  _context.Set<TDocument>().Where(y => y.IsActive == true&&  Convert.ToInt32(y.ID)==Convert.ToInt32(id)).FirstOrDefault();
-            return new DataResult<TDocument>(ResultStatus.Success, data);
+            try
+            {
+                var data = _context.Set<TDocument>().Where(y => y.IsActive == true && Convert.ToInt32(y.ID) == Convert.ToInt32(id)).FirstOrDefault();
+                return new DataResult<TDocument>(ResultStatus.Success, data);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        
         }
 
         
         public async Task<DataResult<List<TDocument>>> List<TDocument>() where TDocument : class, IEntity<TKey>
         {
-            try
-            {
+            
                 var data =  _context.Set<TDocument>().Where(y => y.IsActive == true).ToList();
                 return new DataResult<List<TDocument>>(ResultStatus.Success, data);
 
-            }
-            catch (Exception  ex)
-            {
-
-                throw;
-            }
+           
 
            
         }
 
         public   async Task<DataResult<TDocument>> GetByIdAsync<TDocument>(TKey id) where TDocument :class,IEntity<TKey>
         {
-            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //_context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
 
             try

@@ -94,6 +94,7 @@ namespace FindSimulator.Infrastructure.Notification
                 }
                 catch (Exception ex)
                 {
+                    return new DataResult<bool>(ResultStatus.Error,ex.Message);
                     //Logs.Log(ex.StackTrace + "---Hata Açıklaması---BUG---Not Sended Mail : " + item + "----" + ex.Message);
                 }
 

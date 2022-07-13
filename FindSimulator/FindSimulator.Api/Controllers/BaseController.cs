@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FindSimulator.Infrastructure.Utilities;
+using FindSimulator.Service.Core;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System;
@@ -9,10 +12,14 @@ using System.Threading.Tasks;
 namespace FindSimulator.Api.Controllers
 {
 
-    public class BaseController : ControllerBase
+    public abstract class BaseController : ControllerBase
     {
-        public BaseController()
+
+        public BusinessManagerFactory BusinessManagerFactory { get; }
+
+        public BaseController(BusinessManagerFactory businessManagerFactory)
         {
+            BusinessManagerFactory = businessManagerFactory;
         }
 
         public int CompanyID

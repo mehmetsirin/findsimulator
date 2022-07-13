@@ -37,5 +37,6 @@ namespace FindSimulator.Domain.Entities
         public string TelNo { get; set; }
         public string CountryCode { get; set; }
         public int CompanyID { get; set; } = 0;
+        public string BuyerCompany { get; set; }
     }
 }

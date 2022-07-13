@@ -6,6 +6,7 @@ using FindSimulator.Service.Model.Helper;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
 using FindSimulator.Service.Model.SimulatorDevice;
+using FindSimulator.Service.Model.UserComponent;
 using FindSimulator.Service.Model.Users;
 
 using System;
@@ -29,7 +30,7 @@ namespace FindSimulator.Service.AutoMapper
 
             CreateMap<Sessions, SessionsView>();
             CreateMap<SessionsView, Sessions>();
-            CreateMap<SessionPerson, SessionPersonView>().ReverseMap();
+            CreateMap<SessionPerson, SessionPersonView>().ForMember(dest=>dest.SessionPersonID,act=>act.MapFrom(src=>src.ID)).ReverseMap();
             CreateMap<SessionPerson, SessionPersonUpdate>().ReverseMap();
             CreateMap<SessionPerson, SessionPersonAdd>().ReverseMap();
             CreateMap<SimulatorDeviceView, SimulatorDevice>().ReverseMap();
@@ -40,9 +41,9 @@ namespace FindSimulator.Service.AutoMapper
             CreateMap<SessionDetails, SessionDetailView>();
             CreateMap<SimulatorDevice, SelectObject>().ForMember(dest=>dest.Value,act=>act.MapFrom(src=>src.Code)).
                 ForMember(dest => dest.ParentID, act => act.MapFrom(src => src.AirCraftsID));
-
+            CreateMap<UserComponentView, UserComponent>();
             CreateMap<UserCreate, Users>();
-
+            CreateMap<UserLoginWebResponse, Users>().ReverseMap();
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FindSimulator.Infrastructure.Utilities
+namespace FindSimulator.Service.Model.Payment
 {
-     public class UnitOfWork
+    class BasketItem
     {
     }
 }

@@ -38,5 +38,6 @@ namespace Fleet.Share.ComplexTypes
 
         }
 
+
     }
 }
