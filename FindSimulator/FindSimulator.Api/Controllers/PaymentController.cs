@@ -1,4 +1,5 @@
-﻿using FindSimulator.Service.Core;
+﻿using FindSimulator.Api.Action;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.Payment;
 using FindSimulator.Share.Event;
 using FindSimulator.Share.Utils;
@@ -23,6 +24,8 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [ServiceFilter(typeof(LogEventAction))]
+
     public class PaymentController : BaseController
     {
         public PaymentController(BusinessManagerFactory businessManagerFactory) : base(businessManagerFactory)
@@ -115,7 +118,7 @@ namespace FindSimulator.Api.Controllers
             request.BasketItems = basketItems;
 
             ThreedsInitialize threedsInitialize = ThreedsInitialize.Create(request, options);
-            BusinessManagerFactory.eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = JsonConvert.SerializeObject(threedsInitialize), UserID = 1 }, "LogEventTH");
+            BusinessManagerFactory._eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = JsonConvert.SerializeObject(threedsInitialize), UserID = 1 }, "LogEventTH");
             if (threedsInitialize.Status == "failure")
                 return new AddPaymentViewModel() { Status = "FAIL", ErrorMessage = threedsInitialize.ErrorMessage, Id = Guid.NewGuid() };
 
@@ -164,7 +167,7 @@ namespace FindSimulator.Api.Controllers
             paymentRequest.ConversationData = conversationData;
             ThreedsPayment threedsPayment = ThreedsPayment.Create(paymentRequest, options);
 
-            BusinessManagerFactory.eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = JsonConvert.SerializeObject(threedsPayment), UserID = 1 }, "LogEventTH");
+            BusinessManagerFactory._eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = JsonConvert.SerializeObject(threedsPayment), UserID = 1 }, "LogEventTH");
 
             //_dataOperator.UpdateThreeDSRawResult(_conversationId, JsonConvert.SerializeObject(threedsPayment));
 
@@ -194,7 +197,7 @@ namespace FindSimulator.Api.Controllers
             {
                 body1 = stream.ReadToEndAsync().GetAwaiter().GetResult();
             }
-            BusinessManagerFactory.eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = body1, UserID = 1 }, "LogEventTH");
+            BusinessManagerFactory._eventBus.Publish(new LogEventTH() { IP = "", Action = "PaymentResult", Content = body1, UserID = 1 }, "LogEventTH");
 
             string dosya_yolu = @"C:\payment.txt";
             //İşlem yapacağımız dosyanın yolunu belirtiyoruz.
@@ -219,97 +222,10 @@ namespace FindSimulator.Api.Controllers
         }
 
         [HttpPost]
-        public object Add(AddPaymentBO bo)
+        public  async Task<object> Add(AddPaymentBO bo)
         {
-            CreatePaymentRequest request = new CreatePaymentRequest();
-            request.Locale = Locale.TR.ToString();
-            request.ConversationId = "123456789";
-            request.Price = "1";
-            request.PaidPrice = "1";
-            request.Currency = Currency.TRY.ToString();
-            request.Installment = 1;
-            request.BasketId = "B67832";
-            request.PaymentChannel = PaymentChannel.WEB.ToString();
-            request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-
-            PaymentCard paymentCard = new PaymentCard();
-            paymentCard.CardHolderName = bo.LegalName;
-            paymentCard.CardNumber = bo.CreditCardNo;
-            paymentCard.ExpireMonth = bo.ExpirationDate.Split('/')[0];
-            paymentCard.ExpireYear = bo.ExpirationDate.Split('/')[1];
-            paymentCard.Cvc = bo.Cvv;
-            paymentCard.RegisterCard = 0;
-            request.PaymentCard = paymentCard;
-
-            Buyer buyer = new Buyer();
-            buyer.Id = "BY789";
-            buyer.Name = "John";
-            buyer.Surname = "Doe";
-            buyer.GsmNumber = "+905350000000";
-            buyer.Email = "email@email.com";
-            buyer.IdentityNumber = "74300864791";
-            buyer.LastLoginDate = "2015-10-05 12:43:35";
-            buyer.RegistrationDate = "2013-04-21 15:12:09";
-            buyer.RegistrationAddress = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-            buyer.Ip = "85.34.78.112";
-            buyer.City = "Istanbul";
-            buyer.Country = "Turkey";
-            buyer.ZipCode = "34732";
-            request.Buyer = buyer;
-
-            Address shippingAddress = new Address();
-            shippingAddress.ContactName = "Jane Doe";
-            shippingAddress.City = "Istanbul";
-            shippingAddress.Country = "Turkey";
-            shippingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-            shippingAddress.ZipCode = "34742";
-            request.ShippingAddress = shippingAddress;
-
-            Address billingAddress = new Address();
-            billingAddress.ContactName = "Jane Doe";
-            billingAddress.City = "Istanbul";
-            billingAddress.Country = "Turkey";
-            billingAddress.Description = "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1";
-            billingAddress.ZipCode = "34742";
-            request.BillingAddress = billingAddress;
-
-            List<BasketItem> basketItems = new List<BasketItem>();
-            //BasketItem firstBasketItem = new BasketItem();
-            //firstBasketItem.Id = "BI101";
-            //firstBasketItem.Name = "Binocular";
-            //firstBasketItem.Category1 = "Collectibles";
-            //firstBasketItem.Category2 = "Accessories";
-            //firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-            //firstBasketItem.Price = "0.3";
-            //basketItems.Add(firstBasketItem);
-
-            //BasketItem secondBasketItem = new BasketItem();
-            //secondBasketItem.Id = "BI102";
-            //secondBasketItem.Name = "Game code";
-            //secondBasketItem.Category1 = "Game";
-            //secondBasketItem.Category2 = "Online Game Items";
-            //secondBasketItem.ItemType = BasketItemType.VIRTUAL.ToString();
-            //secondBasketItem.Price = "0.5";
-            //basketItems.Add(secondBasketItem);
-
-            BasketItem thirdBasketItem = new BasketItem();
-            thirdBasketItem.Id = "BI103";
-            thirdBasketItem.Name = "Usb";
-            thirdBasketItem.Category1 = "Electronics";
-            thirdBasketItem.Category2 = "Usb / Cable";
-            thirdBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
-            thirdBasketItem.Price = "1";
-            basketItems.Add(thirdBasketItem);
-            request.BasketItems = basketItems;
-            IyzipayCore.Options options = new Options();
-
-
-            options.ApiKey = "sandbox-5LEsYIWr4OWI8Lt2KYEkWXdd2YQwPiFA";
-            options.SecretKey = "sandbox-wY8PvAtX7Uzu5WABnd454knpgAlN2uVc";
-            //options.BaseUrl = "https://api.iyzipay.com";
-            options.BaseUrl = "https://sandbox-api.iyzipay.com";
-            Payment payment = Payment.Create(request, options);
-            return payment;
+            var  data=  await BusinessManagerFactory._payment.Add(bo);
+            return data;
         }
 
     }

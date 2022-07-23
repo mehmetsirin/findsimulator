@@ -14,15 +14,15 @@ namespace FindSimulator.Api.Filter
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            ((BaseController)context.Controller).BusinessManagerFactory.UnitOfWork.BeginTransaction();
+            ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.BeginTransaction();
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Exception != null)
-                ((BaseController)context.Controller).BusinessManagerFactory.UnitOfWork.RollbackTransaction();
+                ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.RollbackTransaction();
             else
-                ((BaseController)context.Controller).BusinessManagerFactory.UnitOfWork.Complete();
+                ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.Complete();
         }
     }
 }

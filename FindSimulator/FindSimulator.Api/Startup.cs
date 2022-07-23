@@ -91,7 +91,7 @@ namespace FindSimulator.Api
             services.AddMvc(options => { options.Filters.Add<ActionScopeFilter>(); });
 
             services.AddScoped<IClaimService, ClaimService>();
-
+            services.AddScoped<IPaymentManager, PaymentManager>();
             services.Repositories();
             services.ServiceRedis();
             services.Jwt(settings.TokenSettings);

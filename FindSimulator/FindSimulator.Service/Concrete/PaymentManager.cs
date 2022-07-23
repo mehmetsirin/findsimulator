@@ -105,8 +105,9 @@ namespace FindSimulator.Service.Concrete
             firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
             firstBasketItem.Price = sessionDetail.Data.Price.ToString();
             basketItems.Add(firstBasketItem);
+            request.BasketItems = basketItems;
 
-         
+
             IyzipayCore.Options options = new Options();
 
 
@@ -115,15 +116,16 @@ namespace FindSimulator.Service.Concrete
             //options.BaseUrl = "https://api.iyzipay.com";
             options.BaseUrl = "https://sandbox-api.iyzipay.com";
             Payment payment = Payment.Create(request, options);
-            if (payment.PaymentStatus == "successfull")
+            if (payment.Status == "success")
             {
                 sessionDetail.Data.Status = (int)SessionDetailStatus.Sold;
                 sessionDetail.Data.UpdateDate = DateTime.Now;
-                 await   _unitOfWork.SessionDetailRepository.UpdateOneAsync<SessionDetails>(sessionDetail.Data);
-               var data=    await _unitOfWork.CompleteAsync();
+                    _unitOfWork.SessionDetailRepository.UpdateOne<SessionDetails>(sessionDetail.Data);
+                 var data=     _unitOfWork.SessionDetailRepository.SaveChanges();
                 _eventBus.Publish(new LogEventTH() { IP = "", Action = "Payment", Content = JsonConvert.SerializeObject(payment)+"/"+data, UserID = _claimService.UserID }, "LogEventTH");
+                return new DataResult<object>(ResultStatus.Success, payment.Status);
             }
-            return   new DataResult<object>(ResultStatus.Success,payment);
+            return new DataResult<object>(ResultStatus.Success,payment.ErrorMessage, payment.Status);
 
         }
     }

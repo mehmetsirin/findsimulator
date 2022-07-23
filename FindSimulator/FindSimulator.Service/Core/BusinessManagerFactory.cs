@@ -1,4 +1,5 @@
 ﻿using FindSimulator.Infrastructure.Utilities;
+using FindSimulator.Service.Abstract;
 using FindSimulator.Share.RabbitMq;
 
 using System;
@@ -11,14 +12,16 @@ namespace FindSimulator.Service.Core
 {
    public  class BusinessManagerFactory
     {
-        public IUnitOfWork UnitOfWork { get; }
-        public readonly IEventBus eventBus;
+        public IUnitOfWork _unitOfWork { get; }
+        public readonly IEventBus _eventBus;
 
-        public static int x = 10;
-        public BusinessManagerFactory(IUnitOfWork unitOfWork, IEventBus eventBus)
+       public  IPaymentManager _payment;
+
+        public BusinessManagerFactory(IUnitOfWork unitOfWork, IEventBus eventBus, IPaymentManager payment)
         {
-            UnitOfWork = unitOfWork;
-            this.eventBus = eventBus;
+            _unitOfWork = unitOfWork;
+            _eventBus = eventBus;
+            _payment = payment;
         }
     }
 }
