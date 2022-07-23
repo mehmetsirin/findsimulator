@@ -12,17 +12,25 @@ namespace FindSimulator.Share.Claims
 {
     public class ClaimService : IClaimService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ClaimService(IHttpContextAccessor httpContextAccessor)
+        public string UserName { get;set; }
+        public string Email { get;set; }
+        public string PersonIdentity { get;set; }
+        public string Surname { get;set; }
+        public string TelNo { get;set; }
+        public string CountryCode { get;set; }
+        public int UserID { get; set; }
+
+        public void SetInit(string userName, string email, string surname, string telNo, int userID)
         {
-            _httpContextAccessor = httpContextAccessor;
+            UserName = userName;
+            Email = email;
+            //PersonIdentity = personIdentity;
+            Surname = surname;
+            TelNo = telNo;
+            UserID = userID;
         }
 
-        public string GetToken()
-            => GetClaim(ClaimTypes.NameIdentifier);
-
-        public string GetClaim(string key)
-            => _httpContextAccessor.HttpContext.Request.Headers["token"].ToString();
+       
     }
 }

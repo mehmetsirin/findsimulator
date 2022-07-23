@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Share.Event
 {
-    public class LogEvent : IntegrationEvent
+    public class LogEventTH : IntegrationEvent
     {
         public int UserID { get; set; }
         public string Action { get; set; }

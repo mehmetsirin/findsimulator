@@ -26,6 +26,8 @@ using FindSimulator.Infrastructure.UnitWork;
 using FindSimulator.Infrastructure.Utilities;
 using FindSimulator.Service.Core;
 using FindSimulator.Api.Middleware;
+using FindSimulator.Share.Scope;
+using FindSimulator.Share.Claims;
 
 namespace FindSimulator.Api
 {
@@ -86,7 +88,9 @@ namespace FindSimulator.Api
             services.AddTransient<test1, Test1>();
             services.AddTransient<test2, Test2>();
             services.AddTransient<test3, Test3>();
+            services.AddMvc(options => { options.Filters.Add<ActionScopeFilter>(); });
 
+            services.AddScoped<IClaimService, ClaimService>();
 
             services.Repositories();
             services.ServiceRedis();
@@ -136,7 +140,7 @@ namespace FindSimulator.Api
 
 
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<LogEvent, LogEventHandler>();
+            eventBus.Subscribe<LogEventTH, LogEventHandler>();
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FindSimulator.Api v1"));

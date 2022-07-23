@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Service.Model.Users;
 using FindSimulator.Share.AppConfiguration;
+using FindSimulator.Share.Claims;
 using FindSimulator.Share.Results.Concrete;
 
 using Microsoft.Extensions.Options;
@@ -31,8 +32,11 @@ namespace FindSimulator.Api.Jwt
 
             var claims = new Claim[]
           {
-                   new Claim("name",user.Data.UserName),
-                    new Claim("userId",user.Data.ID.ToString()),
+                   new Claim(JwtClaimNames.UserName,user.Data.UserName),
+                    new Claim(JwtClaimNames.UserID,user.Data.ID.ToString()),
+                    new Claim(JwtClaimNames.Surname,user.Data.UserName??""),
+                    new Claim(JwtClaimNames.TelNo,user.Data.TelNo??""),
+                     new Claim(JwtClaimNames.Email,user.Data.Email??""),
 
           };
 

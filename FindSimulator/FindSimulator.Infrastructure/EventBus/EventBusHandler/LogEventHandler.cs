@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace FindSimulator.Infrastructure.EventBus.EventBusHandler
 {
-    public class LogEventHandler : IIntegrationEventHandler<LogEvent>
+    public class LogEventHandler : IIntegrationEventHandler<LogEventTH>
     {
         public Infrastructure.Repositories.BaseRepository.IBaseRepository<Guid> baseRepository;
         IServiceCollection services = null;
@@ -28,27 +28,25 @@ namespace FindSimulator.Infrastructure.EventBus.EventBusHandler
             services = serviceProvider;
         }
 
-        public async Task Handle(LogEvent @event)
+        public async Task Handle(LogEventTH @event)
         {
             await LogAdd(@event);
         }
 
-        public async Task LogAdd(LogEvent logEvent)
+        public async Task LogAdd(LogEventTH logEvent)
         {
-            ServiceProvider = services.BuildServiceProvider();
+               ServiceProvider = services.BuildServiceProvider();
 
                 baseRepository = ServiceProvider.GetRequiredService<IBaseRepository<Guid>>();
                 Logger logger = new Logger(logEvent.Action, logEvent.Content, logEvent.IP, logEvent.UserID);
                 baseRepository.AddOne<Logger>(logger);
                 baseRepository.SaveChanges();
-           
-            
         }
 
     }
     public interface ILogEventHandler
     {
-        public Task LogAdd(LogEvent @event);
+        public Task LogAdd(LogEventTH @event);
 
     }
 }

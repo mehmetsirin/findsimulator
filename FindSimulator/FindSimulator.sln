@@ -13,15 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FindSimulator.Service", "Fi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FindSimulator.Infrastructure", "FindSimulator.Infrastructure", "{FBBBFA93-8FA4-4A98-991F-A1312EC0CE60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindSimulator.Api", "FindSimulator.Api\FindSimulator.Api.csproj", "{08F10ABB-AD29-48AD-89E0-F63400F25B9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindSimulator.Api", "FindSimulator.Api\FindSimulator.Api.csproj", "{08F10ABB-AD29-48AD-89E0-F63400F25B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindSimulator.Domain", "FindSimulator.Domain\FindSimulator.Domain.csproj", "{19674626-24D8-45E2-842D-5F2737FBFD47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindSimulator.Domain", "FindSimulator.Domain\FindSimulator.Domain.csproj", "{19674626-24D8-45E2-842D-5F2737FBFD47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindSimulator.Infrastructure", "FindSimulator.Infrastructure\FindSimulator.Infrastructure.csproj", "{5C0FC5D8-3E1E-406C-B96F-3F78684F4D0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindSimulator.Infrastructure", "FindSimulator.Infrastructure\FindSimulator.Infrastructure.csproj", "{5C0FC5D8-3E1E-406C-B96F-3F78684F4D0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindSimulator.Service", "FindSimulator.Service\FindSimulator.Service.csproj", "{E8BB0C03-FDFF-4FFA-82C9-714F33CDF4B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindSimulator.Service", "FindSimulator.Service\FindSimulator.Service.csproj", "{E8BB0C03-FDFF-4FFA-82C9-714F33CDF4B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindSimulator.Share", "FindSimulator.Share\FindSimulator.Share.csproj", "{7945BC7D-1B02-4FC3-B744-AC59C5743B89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindSimulator.Share", "FindSimulator.Share\FindSimulator.Share.csproj", "{7945BC7D-1B02-4FC3-B744-AC59C5743B89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

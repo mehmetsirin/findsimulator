@@ -1,6 +1,9 @@
 ﻿using FindSimulator.Api.Model.Exception;
+using FindSimulator.Share.ComplexTypes;
 
 using Microsoft.AspNetCore.Http;
+
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +50,7 @@ namespace FindSimulator.Api.Middleware
                         break;
                 }
 
-                var result = JsonSerializer.Serialize(new { message = error?.Message });
+                string result = JsonConvert.SerializeObject(new Share.Results.Concrete.DataResult<string>(ResultStatus.Error, error.Message));
                 await response.WriteAsync(result);
             }
         }

@@ -23,5 +23,8 @@ namespace FindSimulator.Service.Model.Payment
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
+        public int SessionsID { get; set; }
+        public int SessionID { get; set; }
+        public int SessionDetailID { get; set; }
     }
 }

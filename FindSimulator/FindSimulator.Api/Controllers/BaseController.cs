@@ -36,7 +36,7 @@ namespace FindSimulator.Api.Controllers
         {
             get
             {
-                return  int.Parse(HttpContext.User.Claims.Where(a => a.Type == "userId").Select(x => x.Value).FirstOrDefault());
+                return  int.Parse(HttpContext.User.Claims.Where(a => a.Type == "UsaerID").Select(x => x.Value).FirstOrDefault());
             }
         }
 

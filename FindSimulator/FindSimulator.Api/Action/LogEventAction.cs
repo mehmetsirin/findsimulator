@@ -51,7 +51,7 @@ namespace FindSimulator.Api.Action
 
 
             if (url != null)
-                _eventBus.Publish(new LogEvent() { IP = actionContext.HttpContext.Connection.RemoteIpAddress.ToString(), Action = url, Content = paramsData, UserID = userID });
+                _eventBus.Publish(new LogEventTH() { IP = actionContext.HttpContext.Connection.RemoteIpAddress.ToString(), Action = url, Content = paramsData, UserID = userID }, "LogEventTH");
 
 
             base.OnActionExecuting(actionContext);

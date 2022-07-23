@@ -3,10 +3,12 @@ using FindSimulator.Api.Filter;
 using FindSimulator.Infrastructure.EventBus.Event;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Core;
+using FindSimulator.Share.Claims;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Event;
 using FindSimulator.Share.RabbitMq;
 using FindSimulator.Share.Results.Concrete;
+using FindSimulator.Share.Scope;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,11 +24,11 @@ using System.Threading.Tasks;
 namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
-    //[ServiceFilter(typeof(LogEventAction))]
+     [ServiceFilter(typeof(LogEventAction))]
 
     [ApiController]
-    [Authorize]
-    [TransactionActionFilter]
+     [Authorize]
+    //[TransactionActionFilter]
 
     public class TestController : BaseController
     {
@@ -35,24 +37,30 @@ namespace FindSimulator.Api.Controllers
         private readonly IUserComponentManager _userComponentManager;
         test1 Test1;
         test2 Test2;
+        IClaimService  claimService;
 
-        public TestController(IEventBus eventBus, IUserComponentManager userComponentManager, test2 test2, test1 test1, BusinessManagerFactory factory):base(factory)
+        public TestController(IEventBus eventBus, IUserComponentManager userComponentManager, test2 test2, test1 test1, BusinessManagerFactory factory, IClaimService  claimService) :base(factory)
         {
             this.eventBus = eventBus;
             _userComponentManager = userComponentManager;
             Test1 = test1;
             Test2 = test2;
+            this.claimService = claimService;
         }
 
         [HttpGet]
         public string GetToken(int x=10)
         {
+            eventBus.Publish(new LogEventTH() { IP = "", Action = "test", Content = "test", UserID = 1 }, "LogEventTH");
+
             return AccessToken;
+
         }
 
         [HttpGet]
         public string GetToken1(int x = 11)
         {
+            var xD= claimService.Email;
             return "Mehmet";
         }
         [HttpGet]
