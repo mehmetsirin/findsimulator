@@ -29,36 +29,13 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public object Add(AddPaymentBO bo)
         {
-            //PaymentUserModelDTO payingUser = ApiRequest.Get<PaymentUserModelDTO>(this.InternalHttpCallPath + "/User/GetUserProfile", this.AccessToken);
-            //if (payingUser == null)
-            //    return new AddPaymentViewModel() { Status = "FAIL", ErrorMessage = "Unable to find paying user.", Id = Guid.Empty };
-
-            //var command = new AddPaymentCommand()
-            //{
-            //    ActionUserId =1,
-            //    BillingType = bo.BillingType,
-            //    CompanyName = bo.CompanyName,//CompanyName ve LegalName
-            //    LegalName = bo.LegalName,
-            //    PlanId = bo.PlanId,
-            //    UserCount = bo.UserCount,
-            //    CardHolderName = CryptoHelper.Encrypt(bo.CardHolderName),
-            //    CreditCardNo = CryptoHelper.Encrypt(bo.CreditCardNo),
-            //    ExpirationDate = CryptoHelper.Encrypt(bo.ExpirationDate),
-            //    City = CryptoHelper.Encrypt(bo.City),
-            //    Country = CryptoHelper.Encrypt(bo.Country),
-            //    ZipCode = CryptoHelper.Encrypt(bo.ZipCode),
-            //    State = CryptoHelper.Encrypt(bo.State),
-            //    Address = CryptoHelper.Encrypt(bo.Address),
-            //    CVV = bo.Cvv
-            //};
-            //_commandPublisher.Publish(command);
-
+         
             Options options;
             options = new Options();
-            options.ApiKey = "U7zDK0zITab2cqJhE9mNq9z8kub4MXMK";
-            options.SecretKey = "HjI2nEH6uaZOklA3ofUnhRdSY1cFSJz2";
-            options.BaseUrl = "https://api.iyzipay.com";
-            //options.BaseUrl = "https://sandbox-api.iyzipay.com";
+            options.ApiKey = "sandbox-5LEsYIWr4OWI8Lt2KYEkWXdd2YQwPiFA";
+            options.SecretKey = "sandbox-wY8PvAtX7Uzu5WABnd454knpgAlN2uVc";
+            //options.BaseUrl = "https://api.iyzipay.com";
+            options.BaseUrl = "https://sandbox-api.iyzipay.com";
             CreatePaymentRequest request = new CreatePaymentRequest();
             request.Locale = Locale.TR.ToString();
             request.ConversationId = "command.CommandUniqueId.ToString()";//PaymentID
@@ -69,7 +46,7 @@ namespace FindSimulator.Api.Controllers
             request.BasketId = bo.PlanId.ToString();
             request.PaymentChannel = PaymentChannel.WEB.ToString();
             request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
-            request.CallbackUrl = "https://api.workybe.com:5009/Payment/PaymentResult";
+            request.CallbackUrl = "http://178.18.200.116:96/Payment/PaymentResult";
 
 
             PaymentCard paymentCard = new PaymentCard();
@@ -95,11 +72,11 @@ namespace FindSimulator.Api.Controllers
             buyer.Id = 1.ToString();
             buyer.Name = firstName;
             buyer.Surname = lastName;
-            buyer.GsmNumber = "payingUser.PhoneNumber";
-            buyer.Email = "payingUser.Email";
+            buyer.GsmNumber = "05443544268";
+            buyer.Email = "mhmtsirinsk@gmail.com";
             buyer.IdentityNumber = "11111111111";
-            buyer.LastLoginDate = DateTime.Now.ToString();
-            buyer.RegistrationDate = "payingUser.CreatedAt".ToString();
+            buyer.LastLoginDate = "2022-04-21 15:12:09";
+            buyer.RegistrationDate = "2022-04-21 15:12:09";
             buyer.RegistrationAddress = bo.Address;
             buyer.Ip = HttpContext.Connection.RemoteIpAddress.ToString();
             buyer.City = bo.City;
@@ -127,8 +104,8 @@ namespace FindSimulator.Api.Controllers
             BasketItem firstBasketItem = new BasketItem();
             firstBasketItem.Id = bo.PlanId.ToString();
             firstBasketItem.Name = "Workybe Monthly/Yearly Subscription";
-            firstBasketItem.Category1 = "WorkyBe";
-            firstBasketItem.Category2 = "WorkyBe";
+            firstBasketItem.Category1 = "test1";
+            firstBasketItem.Category2 = "test2";
             firstBasketItem.ItemType = BasketItemType.PHYSICAL.ToString();
             firstBasketItem.Price = "1.2";
             basketItems.Add(firstBasketItem);
@@ -185,26 +162,50 @@ namespace FindSimulator.Api.Controllers
 
             if (threedsPayment.Status == "success")
             {
-            //    ApiRequest.Put("https://api.workybe.com:4999/monitored_commands/" + conversationId + "/status/success/statusCode/" +
-            //        AllConstraints.SuccessCodes.Payment_PaymentSuccessful + "/statusMessage/Ödeme Başarılı", null);
+                //    ApiRequest.Put("https://api.workybe.com:4999/monitored_commands/" + conversationId + "/status/success/statusCode/" +
+                //        AllConstraints.SuccessCodes.Payment_PaymentSuccessful + "/statusMessage/Ödeme Başarılı", null);
 
-            //    _eventPublisher.Publish(new SuccessfulPaymentEvent()
-            //    {
-            //        ActionUserId = this.UserId,
-            //        UserId = this.UserId,
-            //        AmountPaid = Convert.ToDecimal(threedsPayment.PaidPrice),
-            //        PaymentId = Guid.Parse(threedsPayment.PaymentId),
-            //        PlanId = Guid.Parse(threedsPayment.BasketId),
-            //        UserCount = _dataOperator.GetUserCountOfPayment(_conversationId),
-            //        BillingPeriod = _dataOperator.GetPlanTypeOfPayment(_conversationId),
-            //        FraudStatus = threedsPayment.FraudStatus
-            //    });
+                //    _eventPublisher.Publish(new SuccessfulPaymentEvent()
+                //    {
+                //        ActionUserId = this.UserId,
+                //        UserId = this.UserId,
+                //        AmountPaid = Convert.ToDecimal(threedsPayment.PaidPrice),
+                //        PaymentId = Guid.Parse(threedsPayment.PaymentId),
+                //        PlanId = Guid.Parse(threedsPayment.BasketId),
+                //        UserCount = _dataOperator.GetUserCountOfPayment(_conversationId),
+                //        BillingPeriod = _dataOperator.GetPlanTypeOfPayment(_conversationId),
+                //        FraudStatus = threedsPayment.FraudStatus
+                //    });
 
-            //}
-            //else
-            //{
-            //    ApiRequest.Put("https://api.workybe.com:4999/monitored_commands/" + conversationId + "/status/failure/statusCode/" +
-            //        AllConstraints.SuccessCodes.Payment_PaymentError + "/statusMessage/" + payment.ErrorMessage, null);
+                //}
+                //else
+                //{
+                //    ApiRequest.Put("https://api.workybe.com:4999/monitored_commands/" + conversationId + "/status/failure/statusCode/" +
+                //        AllConstraints.SuccessCodes.Payment_PaymentError + "/statusMessage/" + payment.ErrorMessage, null);
+                string body1 = "";
+                using (StreamReader stream = new StreamReader(Request.Body))
+                {
+                    body1 = stream.ReadToEndAsync().GetAwaiter().GetResult();
+                }
+
+                string dosya_yolu = @"C:\payment.txt";
+                //İşlem yapacağımız dosyanın yolunu belirtiyoruz.
+                FileStream fs = new FileStream(dosya_yolu, FileMode.OpenOrCreate, FileAccess.Write);
+                //Bir file stream nesnesi oluşturuyoruz. 1.parametre dosya yolunu,
+                //2.parametre dosya varsa açılacağını yoksa oluşturulacağını belirtir,
+                //3.parametre dosyaya erişimin veri yazmak için olacağını gösterir.
+                StreamWriter sw = new StreamWriter(fs);
+                //Yazma işlemi için bir StreamWriter nesnesi oluşturduk.
+                sw.WriteLine("1.Satır:Merhaba:");
+                sw.WriteLine("2.Satır:Merhaba:" + body1);
+                sw.WriteLine("2.Satır:Merhaba:" + DateTime.Now);
+
+                //Dosyaya ekleyeceğimiz iki satırlık yazıyı WriteLine() metodu ile yazacağız.
+                sw.Flush();
+                //Veriyi tampon bölgeden dosyaya aktardık.
+                sw.Close();
+                fs.Close();
+
             }
             return "Request Finished";
         }
