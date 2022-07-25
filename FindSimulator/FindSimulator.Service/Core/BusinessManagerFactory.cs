@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Infrastructure.Utilities;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Share.Claims;
 using FindSimulator.Share.RabbitMq;
 
 using System;

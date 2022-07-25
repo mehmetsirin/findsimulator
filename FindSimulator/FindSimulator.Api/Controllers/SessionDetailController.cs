@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
