@@ -16,7 +16,7 @@ namespace FindSimulator.Api.Filter
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.Request.Path.Value == "/api/Auth/Login")
+            if (context.HttpContext.Request.Path.Value == "/api/Auth/Login" || context.HttpContext.Request.Path.Value == "/api/auth/LoginWeb")
             {
                 return;
             }
@@ -30,10 +30,9 @@ namespace FindSimulator.Api.Filter
             var telNo = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.TelNo)?.Value;
             var countryCode = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CountryCode)?.Value;
             var companyID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CompanyID)?.Value;
-            actionScope.SetInit(userName,email,surname,telNo,userId);
+
+            actionScope.SetInit(userName, email, surname, telNo, userId);
             actionScope.CompanyID = companyID == null ? 0 : int.Parse(companyID);
-
-
         }
     }
 }
