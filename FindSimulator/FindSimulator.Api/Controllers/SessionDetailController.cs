@@ -22,7 +22,8 @@ namespace FindSimulator.Api.Controllers
     {
         private ISessionDetailManager sessionDetailManager;
         readonly private ISessionsManager sessionsManager;
-        public SessionDetailController(ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
+
+        public SessionDetailController(ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager, BusinessManagerFactory factory):base(factory)
         {
             this.sessionDetailManager = sessionDetailManager;
             this.sessionsManager = sessionsManager;
