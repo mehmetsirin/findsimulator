@@ -18,7 +18,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SessionDetailController : ControllerBase
+    public class SessionDetailController : BaseController
     {
         private ISessionDetailManager sessionDetailManager;
         readonly private ISessionsManager sessionsManager;
