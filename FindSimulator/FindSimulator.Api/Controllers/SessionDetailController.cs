@@ -44,6 +44,7 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public  async  Task<object> SessionAdd(SessionCreate create)
         {
+
             var data =  await sessionDetailManager.SessionAddAsync(create,BusinessManagerFactory._claimService.CompanyID,BusinessManagerFactory._claimService.UserID);
             return data;
         }
