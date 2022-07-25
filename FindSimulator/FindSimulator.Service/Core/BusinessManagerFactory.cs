@@ -16,8 +16,9 @@ namespace FindSimulator.Service.Core
         public readonly IEventBus _eventBus;
 
        public  IPaymentManager _payment;
+        public IClaimService _claimService;
 
-        public BusinessManagerFactory(IUnitOfWork unitOfWork, IEventBus eventBus, IPaymentManager payment)
+        public BusinessManagerFactory(IUnitOfWork unitOfWork, IEventBus eventBus, IPaymentManager payment,IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
             _eventBus = eventBus;
