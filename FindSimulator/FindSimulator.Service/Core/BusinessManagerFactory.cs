@@ -18,6 +18,7 @@ namespace FindSimulator.Service.Core
 
        public  IPaymentManager _payment;
         public IClaimService _claimService;
+
         public BusinessManagerFactory(IUnitOfWork unitOfWork, IEventBus eventBus, IPaymentManager payment,IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
