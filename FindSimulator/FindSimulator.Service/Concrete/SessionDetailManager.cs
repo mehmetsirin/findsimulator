@@ -145,7 +145,7 @@ namespace FindSimulator.Service.Concrete
 
                 for (int i = 0; i < model.SlotDate.Count; i++)
                 {
-                    sessionDetails.Add(  new SessionDetails() { Price=model.Price,SessionsID=session.Data.ID, StartDate= new DateTime(model.StartDate.Year,model.StartDate.Month,model.StartDate.Day,model.SlotDate[i].StartDate.Hour,model.SlotDate[i].StartDate.Minute,0), EndDate= new DateTime(model.StartDate.Year,model.StartDate.Month, model.StartDate.Day, model.SlotDate[i].EndDate.Hour, model.SlotDate[i].EndDate.Minute, 0) });
+                     sessionDetails.Add(new SessionDetails() { OrderID = Guid.NewGuid(), Price = model.Price, SessionsID = session.Data.ID, StartDate = new DateTime(model.StartDate.Year, model.StartDate.Month, model.StartDate.Day, model.SlotDate[i].StartDate.Hour, model.SlotDate[i].StartDate.Minute, 0), EndDate = new DateTime(model.StartDate.Year, model.StartDate.Month, model.StartDate.Day, model.SlotDate[i].EndDate.Hour, model.SlotDate[i].EndDate.Minute, 0) });
                 }
             }
             await  _sessionDetail.AddManyAsync<SessionDetails>(sessionDetails);
