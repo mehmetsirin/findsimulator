@@ -15,6 +15,5 @@ namespace FindSimulator.Share.Claims
         public const string Surname = "Surname";
         public const string TelNo = "TelNo";
         public const string CountryCode = "CountyCode";
-        public const string CompanyID = "CompanyID"; 
     }
 }

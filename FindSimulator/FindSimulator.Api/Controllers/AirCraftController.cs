@@ -17,7 +17,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[TransactionActionFilter]
+    [TransactionActionFilter]
     
     public class AirCraftController : ControllerBase
     {

@@ -37,8 +37,6 @@ namespace FindSimulator.Api.Jwt
                     new Claim(JwtClaimNames.Surname,user.Data.UserName??""),
                     new Claim(JwtClaimNames.TelNo,user.Data.TelNo??""),
                      new Claim(JwtClaimNames.Email,user.Data.Email??""),
-                     new Claim(JwtClaimNames.CompanyID,user.Data.CompanyID.ToString()),
-
 
           };
 
@@ -84,16 +82,11 @@ namespace FindSimulator.Api.Jwt
             var now = DateTime.UtcNow;
 
             var claims = new Claim[]
-           {
-                   new Claim(JwtClaimNames.UserName,user.Data.UserName),
-                    new Claim(JwtClaimNames.UserID,user.Data.ID.ToString()),
-                    new Claim(JwtClaimNames.Surname,user.Data.UserName??""),
-                    new Claim(JwtClaimNames.TelNo,user.Data.TelNo??""),
-                     new Claim(JwtClaimNames.Email,user.Data.Email??""),
-                    new Claim(JwtClaimNames.CompanyID,user.Data.CompanyID.ToString()),
+          {
+                   new Claim("name",user.Data.UserName),
+                    new Claim("userId",user.Data.ID.ToString()),
 
-
-           };
+          };
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenSettings.SigningKey));
             var tokenValidationParameters = new TokenValidationParameters

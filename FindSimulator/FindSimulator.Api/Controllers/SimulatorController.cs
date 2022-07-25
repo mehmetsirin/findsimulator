@@ -17,7 +17,7 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    //[TransactionActionFilter]
+    [TransactionActionFilter]
     public class SimulatorController : BaseController
     {
 
@@ -56,7 +56,7 @@ namespace FindSimulator.Api.Controllers
         public  async  Task<object> SimulatorDeviceLocationList()
         {
             var data = await baseManager.ListAsync<SimulatorDeviceLocation>();
-            return data.Data.Where(y => y.CompanyID ==BusinessManagerFactory._claimService.CompanyID).ToList();
+            return data.Data.Where(y => y.CompanyID == 1).ToList();
 
         }
 
