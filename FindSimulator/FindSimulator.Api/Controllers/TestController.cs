@@ -53,7 +53,7 @@ namespace FindSimulator.Api.Controllers
         {
             eventBus.Publish(new LogEventTH() { IP = "", Action = "test", Content = "test", UserID = 1 }, "LogEventTH");
 
-            return AccessToken;
+            return BusinessManagerFactory._claimService.UserName;
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
+using FindSimulator.Service.Core;
 using FindSimulator.Service.Model.Session;
 using FindSimulator.Service.Model.SessionDetail;
 using FindSimulator.Service.Model.SessionPerson;
@@ -17,11 +18,11 @@ namespace FindSimulator.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SessionDetailController : ControllerBase
+    public class SessionDetailController : BaseController
     {
         private ISessionDetailManager sessionDetailManager;
         readonly private ISessionsManager sessionsManager;
-        public SessionDetailController(ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager)
+        public SessionDetailController(ISessionDetailManager sessionDetailManager, ISessionsManager sessionsManager, BusinessManagerFactory factory):base(factory)
         {
             this.sessionDetailManager = sessionDetailManager;
             this.sessionsManager = sessionsManager;
@@ -43,7 +44,7 @@ namespace FindSimulator.Api.Controllers
         [HttpPost]
         public  async  Task<object> SessionAdd(SessionCreate create)
         {
-            var data =  await sessionDetailManager.SessionAddAsync(create,1,1);
+            var data =  await sessionDetailManager.SessionAddAsync(create,BusinessManagerFactory._claimService.CompanyID,BusinessManagerFactory._claimService.UserID);
             return data;
         }
         [HttpGet]

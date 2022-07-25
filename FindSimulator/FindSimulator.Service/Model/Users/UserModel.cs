@@ -24,7 +24,8 @@ namespace FindSimulator.Service.Model.Users
          public string RefreshToken { get; set; }
         public  string FullName { get; set; }
         public string BuyerCompany { get; set; }
-     
+        public int CompanyID { get; set; }
+
     }
 
 
@@ -44,5 +45,7 @@ namespace FindSimulator.Service.Model.Users
         public string FullName { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public int CompanyID { get; set; }
+
     }
 }

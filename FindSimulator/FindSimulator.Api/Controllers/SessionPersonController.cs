@@ -68,7 +68,7 @@ namespace FindSimulator.Api.Controllers
         public   async Task<DataResult<bool>> AddMultipleAsync(List<SessionPersonAdd> adds)
         {
          
-            var data = await sessionPersonManager.AddMultipleAsync(adds,UserID);
+            var data = await sessionPersonManager.AddMultipleAsync(adds,BusinessManagerFactory._claimService.UserID);
             return data;
         }
         [HttpPost]
@@ -89,7 +89,7 @@ namespace FindSimulator.Api.Controllers
         [HttpGet]
          public  async  Task<Object> GetUserSessions()
         {
-            var data =   await  sessionPersonManager.GetUserByIDSessions(UserID);
+            var data =   await  sessionPersonManager.GetUserByIDSessions(BusinessManagerFactory._claimService.UserID);
             return data;
         }
         [HttpPost]

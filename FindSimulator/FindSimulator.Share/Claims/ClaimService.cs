@@ -20,6 +20,7 @@ namespace FindSimulator.Share.Claims
         public string TelNo { get;set; }
         public string CountryCode { get;set; }
         public int UserID { get; set; }
+        public int CompanyID { get; set; }
 
         public void SetInit(string userName, string email, string surname, string telNo, int userID)
         {
