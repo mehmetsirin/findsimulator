@@ -19,6 +19,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static Fleet.Share.ComplexTypes.CommonEnum;
+
 namespace FindSimulator.Service.Concrete
 {
     public sealed partial class SessionPersonManager : ISessionPersonManager
@@ -155,16 +157,17 @@ namespace FindSimulator.Service.Concrete
         public   async Task<Result> SessionPersonSlotRemoveAsync(int sessionDetailID)
         {
 
-            var sessionPersons = baseRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionDetailID).ToList();
-            var   sessionDetail = baseRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID == sessionDetailID).FirstOrDefault();
+            var sessionPersons = _unitOfWork.SessionPersonRepository.GetQueryable<SessionPerson>().GetAwaiter().GetResult().Data.Where(y => y.SessionDetailID==sessionDetailID).ToList();
+            var   sessionDetail = _unitOfWork.SessionDetailRepository.GetQueryable<SessionDetails>().GetAwaiter().GetResult().Data.Where(y => y.ID == sessionDetailID).FirstOrDefault();
             if (sessionDetail is null)
                 return new Result(ResultStatus.Warning,"Böyle bir slot bulunamadı");
             if (sessionDetail.Status == 3)
                 return new Result(ResultStatus.Warning, "Bu slot onayladığı için silinemez");
             sessionPersons.ForEach(y=> { y.IsActive = false;y.UpdateDate = DateTime.Now; });
-             await baseRepository.UpdateManyAsync<SessionPerson>(sessionPersons);
-            baseRepository.SaveChanges();
-
+            sessionDetail.UpdateDate = DateTime.Now;
+            sessionDetail.Status =(int)SessionDetailStatus.Open;
+             await _unitOfWork.SessionPersonRepository.UpdateManyAsync<SessionPerson>(sessionPersons);
+            await _unitOfWork.SessionDetailRepository.UpdateOneAsync<SessionDetails>(sessionDetail);
             return new Result(ResultStatus.Success);
         }
     }

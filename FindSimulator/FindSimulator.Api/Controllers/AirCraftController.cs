@@ -2,6 +2,7 @@
 using FindSimulator.Domain.Entities;
 using FindSimulator.Service.Abstract;
 using FindSimulator.Service.Concrete;
+using FindSimulator.Service.Core;
 using FindSimulator.Share.ComplexTypes;
 using FindSimulator.Share.Results.Concrete;
 
@@ -19,12 +20,12 @@ namespace FindSimulator.Api.Controllers
     [ApiController]
     [TransactionActionFilter]
     
-    public class AirCraftController : ControllerBase
+    public class AirCraftController : BaseController
     {
         public  readonly IBaseManager<int> baseManager;
         public readonly IAirCraftManager airCraftManager;
 
-        public AirCraftController(IBaseManager<int> baseManager, IAirCraftManager airCraftManager)
+        public AirCraftController(IBaseManager<int> baseManager, IAirCraftManager airCraftManager, BusinessManagerFactory factory):base(factory)
         {
             this.baseManager = baseManager;
             this.airCraftManager = airCraftManager;

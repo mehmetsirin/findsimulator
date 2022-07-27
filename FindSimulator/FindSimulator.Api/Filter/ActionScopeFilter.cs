@@ -20,18 +20,27 @@ namespace FindSimulator.Api.Filter
             {
                 return;
             }
+            try
+            {
+                var actionScope = context.HttpContext.RequestServices.GetService(typeof(IClaimService)) as IClaimService;
+                var claimsIdentity = context.HttpContext.User.Identity as ClaimsIdentity;
+                var userId = int.Parse(claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.UserID)?.Value);
+                var userName = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.UserName)?.Value;
+                var email = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.Email)?.Value;
+                var surname = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.Surname)?.Value;
+                var telNo = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.TelNo)?.Value;
+                var countryCode = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CountryCode)?.Value;
+                var companyID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CompanyID)?.Value;
+                actionScope.SetInit(userName, email, surname, telNo, userId);
+                actionScope.CompanyID = companyID == null ? 0 : int.Parse(companyID);
+            }
+            catch (Exception  ex)
+            {
 
-            var actionScope = context.HttpContext.RequestServices.GetService(typeof(IClaimService)) as IClaimService;
-            var claimsIdentity = context.HttpContext.User.Identity as ClaimsIdentity;
-            var userId = int.Parse(claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.UserID)?.Value);
-            var userName = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.UserName)?.Value;
-            var email = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.Email)?.Value;
-            var surname = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.Surname)?.Value;
-            var telNo = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.TelNo)?.Value;
-            var countryCode = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CountryCode)?.Value;
-            var companyID = claimsIdentity.Claims.FirstOrDefault(c => c.Type == JwtClaimNames.CompanyID)?.Value;
-            actionScope.SetInit(userName, email, surname, telNo, userId);
-            actionScope.CompanyID = companyID == null ? 0 : int.Parse(companyID);
+                new UnauthorizedAccessException("Yetkiniz Yok");
+            }
+
+           
         }
     }
 }
