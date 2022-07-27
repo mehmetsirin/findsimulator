@@ -19,10 +19,11 @@ namespace FindSimulator.Api.Filter
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            int useeffect = 0;
             if (context.Exception != null)
                 ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.RollbackTransaction();
             else
-                ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.Complete();
+             useeffect=  ((BaseController)context.Controller).BusinessManagerFactory._unitOfWork.Complete();
         }
     }
 }
