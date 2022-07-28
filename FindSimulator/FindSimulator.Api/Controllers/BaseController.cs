@@ -22,25 +22,7 @@ namespace FindSimulator.Api.Controllers
             BusinessManagerFactory = businessManagerFactory;
         }
 
-        public int CompanyID
-        {
-            get
-            {
-
-                return int.Parse(HttpContext.User.Claims.Where(a => a.Type == "companyId").Select(x => x.Value).FirstOrDefault());
-            }
-        }
-
-
-        public int UserID
-        {
-            get
-            {
-                return  int.Parse(HttpContext.User.Claims.Where(a => a.Type == "UsaerID").Select(x => x.Value).FirstOrDefault());
-            }
-        }
-
-
+       
       
         public string AccessToken
         {

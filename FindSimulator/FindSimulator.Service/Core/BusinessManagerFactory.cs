@@ -24,6 +24,7 @@ namespace FindSimulator.Service.Core
             _unitOfWork = unitOfWork;
             _eventBus = eventBus;
             _payment = payment;
+            _claimService = claimService;
         }
     }
 }
